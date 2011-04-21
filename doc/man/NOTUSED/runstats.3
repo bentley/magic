@@ -1,0 +1,75 @@
+.TH RUNSTATS 3
+.UC 4
+.SH NAME
+runstats \- keep track of process time and memory utilization (in libmagicutils.a)
+
+.SH SYNOPSIS
+.nf
+.B #include <sys/types.h>
+.B #include <sys/times.h>
+.B #include <sys/time.h>
+.B #include "runstats.h"
+.PP
+.B "char *RunStats(flags, lastt, deltat)"
+.B int flags;
+.B struct tms *lastt, *deltat;
+.PP
+.B "char *RunStatsRealTime()"
+.fi
+
+.SH DESCRIPTION
+.I RunStats
+collects information about a process's utilization of memory
+and CPU time.
+Depending on the flags provided, the following information is
+returned:
+.TP
+.B RS_TCUM
+cumulative user and system time
+.TP
+.B RS_TINCR
+the difference between the current cumulative user and system
+time and the values stored in the \fItms\fR struct pointed to
+by \fIlastt\fR.  This struct is usually the one last passed
+to \fIRunStats\fR when it was last called with \fBRS_TINCR\fR
+as a flag.
+.TP
+.B RS_MEM
+the number of bytes by which the data segment has grown past
+its initial size.
+.PP
+\fIRunStats\fR returns a pointer to a statically allocated
+character string of the form
+``\fB[\fR\...\ \fIstuff\fR\ ...\fB]\fR'',
+where \fIstuff\fR contains the information specified by the flags.
+Times are of the form \fImins\fR:\fIsecsu\ mins\fR:\fIsecss\fR,
+where the first time is the amount of user CPU time this process has
+used, and the second time is the amount of system time used.
+Memory is specified by a string of the form \fIN\fBk\fR, where \fIN\fR
+is the number of kilobytes by which the data segment has grown past
+its initial size.
+.PP
+If \fBRS_TINCR\fR is specified, the parameters \fIlastt\fR and \fIdeltat\fR
+are set if they are non-NULL.
+Both point to \fItms\fR structs;
+the one pointed to by \fIdeltat\fR is set to the difference between
+the current user/system time and the time given in the \fItms\fR struct
+pointed to by \fIlastt\fR; the one pointed to by \fIlastt\fR is then set to
+the current user/system time.
+.PP
+.I RunStatsRealTime
+reports the real time, both since the first invocation and incremental
+since the last invocation.
+It returns a statically allocated string of the form
+\fIx\fB:\fIxx\fB.\fIx\fR \fIx\fB:\fIxx\fB.\fIx\fR,
+where the first number is the amount of elapsed real time since the
+first call to \fIRunStatsRealTime\fR,
+and the second is the amount of elapsed
+real time since the latest call.
+
+.SH BUGS
+The interfaces to \fIRunStats\fR and \fIRunStatsRealTime\fR should
+really be consistent.
+
+.SH SEE ALSO
+magicutils\|(3)

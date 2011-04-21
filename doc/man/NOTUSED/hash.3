@@ -1,0 +1,146 @@
+.TH HASH 3
+.UC 4
+.SH NAME
+hash \- procedures for managing hash tables in libmagicutils.a
+
+.SH SYNOPSIS
+.nf
+.B #include "hash.h"
+.PP
+.B "HashInit(table, initsize, keysize)"
+.B HashTable *table;
+.B int initsize, keysize;
+.PP
+.B "HashInitClient(table, initsize, keysize, compareFn, copyFn, hashFn, killFn)"
+.B HashTable *table;
+.B int initsize, keysize;
+.B int (*compareFn)(key1, key2);
+.B char *(*copyFn)(key);
+.B int (*hashFn)(key);
+.B Void (*killFn)(key);
+.PP
+.B "int HashSize(keybytes)"
+.B int keybytes;
+.PP
+.B "HashKill(table)"
+.B HashTable *table;
+.PP
+.B "HashEntry *HashLookOnly(table, key)"
+.B HashTable *table;
+.B ClientData key;
+.PP
+.B "HashEntry *HashFind(table, key)"
+.B HashTable *table;
+.B ClientData key;
+.PP
+.B "ClientData HashGetValue(he)"
+.B HashEntry *he;
+.PP
+.B "HashSetValue(he, value)"
+.B HashEntry *he;
+.B ClientData value;
+.PP
+.B "HashStartSearch(hs)"
+.B HashSearch *hs;
+.PP
+.B "HashEntry *HashNext(table, hs)"
+.B HashTable *table;
+.B HashSearch *hs;
+.fi
+
+.SH DESCRIPTION
+This module provides procedures for creating, accessing, and
+destroying hash tables.  These tables grow automatically as
+more elements are added to them to avoid overloading.  They
+may be indexed by strings, single words, or multi-word structures.
+Single-word can be interpreted (e.g., compared or hashed)
+by user-supplied procedures.
+Each entry stores a single word value, which may be set or read
+by the macros \fIHashSetValue\fR or \fIHashGetValue\fR but should
+not be manipulated directly.
+.PP
+.I HashInit
+is used to allocate space for the initially empty hash table \fItable\fR.
+Enough space is allocated for \fIinitsize\fR buckets (which should be
+a power of two), although subsequent additions to the hash table can
+cause the number of buckets to increase.  Tables can be organized
+in one of three different ways, depending on the value of \fIkeysize\fR.
+.PP
+If \fIkeysize\fR is \fBHT_STRINGKEYS\fR, then keys passed to \fIHashFind\fR
+(or \fIHashLookOnly\fR)
+are treated as the addresses of NULL-terminated strings.
+The \fIHashEntry\fR structures for this type of key are variable-sized;
+sufficient space is allocated at the end of each structure to hold
+the key string and its trailing NULL byte.
+If \fIkeysize\fR is \fBHT_WORDKEYS\fR,
+then keys are single words of data passed directly
+to \fIHashFind\fR, and are compared using \fIstrcmp\fR\|(1).
+If \fIkeysize\fR is \fBHT_STRUCTKEYS\fR or greater,
+keys are multiple words of data,
+but their address is passed to \fIHashFind\fR (instead of the actual
+value as when \fIkeysize\fR was \fBHT_WORDKEYS\fR).
+The value of \fIkeysize\fR in
+this case should be the number of words in a key.  The macro
+\fIHashSize\fR should be used to produce this number;
+\fIHashSize\fR(\fBsizeof \fR(\fBstruct \fIfoo\fR))
+gives the number of words
+needed if keys are to be of type (\fIstruct foo\fR).
+In general, single-word keys (\fIkeysize\fR equal to \fBHT_WORDKEYS\fR)
+are the fastest, but the most restrictive.
+.PP
+A second procedure, \fIHashInitClient\fR, may be used to initialize
+a hash table instead of \fIHashInit\fR.  This second procedure is a
+more general one, in that it allows a fourth value of \fIkeysize\fR
+to be provided, \fBHT_CLIENTKEYS\fR, along with four client procedures.
+The keys in such a case are single-word values, passed to \fIHashFind\fR
+just like keys when \fIkeysize\fR is \fBHT_WORDKEYS\fR.  However, they
+are interpreted using the client procedures passed in the call to
+\fIHashInitClient\fR.  These procedures perform four functions;
+if any are NULL, then those functions are performed exactly as in
+the case of \fBHT_WORDKEYS\fR.
+The first, \fI(*compareFn)(key1, key2)\fR, takes two single-word key values
+and returns either 0 if they are equal, or 1 if they are not.
+The next procedure, \fI(*copyFn)(key)\fR, is called when a new entry
+is being created for a key; it performs whatever processing is needed
+to ensure that the key can be kept around permanently (e.g., making a
+copy of it), and returns the value that will actually be stored as the
+key in the hash table (e.g., the copy).
+The third procedure, \fI(*hashFn)(key)\fR, is used to produce a single
+32-bit value from \fIkey\fR.  It is primarily useful when \fIkey\fR is
+in fact a pointer to a structure, and the contents of the structure,
+rather than its address, determine the hash value.
+Finally, \fI(*killFn)(key)\fR is called when the hash table is being
+freed by \fIHashKill\fR to perform any final cleanup of a key,
+such as freeing a key that had been copied by \fI(*copyFn)()\fR when
+it was installed in the hash table.
+.PP
+.I HashKill
+can be used to free all the storage associated with \fItable\fR.
+.PP
+Both \fIHashLookOnly\fR and \fIHashFind\fR are used for retrieving
+the entry from \fItable\fR that matchs \fIkey\fR.
+They differ in their behavior when \fIkey\fR is not in the table.
+.I HashLookOnly
+will return NULL if the key is not found, while 
+.I HashFind
+will create a new HashEntry whose value (as returned by \fIHashGetValue\fR)
+is zero.
+.PP
+It is possible to scan sequentially through a hash table to
+visit all its entries.
+.I HashStartSearch
+initializes the \fIHashSearch\fR structure \fIhs\fR,
+which is then passed to \fIHashNext\fR, which keeps returning
+subsequent entries in the table until all have been returned,
+when it returns NULL.
+
+.SH BUGS
+If it is possible for initialized entries in the hash table to
+have NULL values, then \fIHashLookOnly\fR must be called before
+\fIHashFind\fR if you are to be certain that an entry was not
+already in the table, since there is no distinction between
+a NULL value that was already in the table and a NULL value
+that signifies that the entry was newly created by \fIHashFind\fR.
+
+.SH SEE ALSO
+magicutils\|(3)

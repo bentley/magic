@@ -1,0 +1,175 @@
+.TH MALLOC 3
+.UC 4
+.SH NAME
+mallocMagic, freeMagic \- a new memory allocator in libmagicutils.a
+
+.SH SYNOPSIS
+.nf
+.B #include "magic.h"
+.B #include "malloc.h"
+.PP
+.B "char *mallocMagic(size)"
+.B unsigned size;
+.PP
+.B "char *callocMagic(size)"
+.B unsigned size;
+.PP
+\fBMALLOC(\fItype_decl\fB, var, size)\fR
+.B \fItype_decl\fB var;
+.B unsigned size;
+.PP
+\fBCALLOC(\fItype_decl\fB, var, size)\fR
+.B \fItype_decl\fB var;
+.B unsigned size;
+.PP
+.B "freeMagic(var)"
+.B char *var;
+.PP
+.B "FREE(var)"
+.B char *var;
+.PP
+.B "cc -DMALLOCTRACE ... ~cad/src/magic/lib/libmagictrace.a"
+.PP
+.B mallocTraceInit(filename)
+.B char *filename;
+.PP
+.B mallocTraceEnable()
+.PP
+.B mallocTraceDisable()
+.PP
+.B mallocTraceDone()
+.PP
+.B mallocTraceOnlyWatched(only)
+.B bool only;
+.PP
+.B bool mallocTraceWatch(addr)
+.B char *addr;
+.PP
+.B bool mallocTraceUnWatch(addr)
+.B char *addr;
+
+.SH DESCRIPTION
+These procedures implement a new memory allocator.
+They provide fast allocation and freeing for
+programs that allocate thousands or
+millions of objects of similar sizes.
+Speed results from maintaining separate free-lists for objects
+of each size, providing fast macros \fIMALLOC\fR and \fIFREE\fR
+for doing allocation and freeing, and clustering objects of the
+same size on the same page in an attempt to improve locality of
+reference.
+In addition, these procedures
+provide features to aid in the debugging of programs that
+do a lot of memory allocation and freeing; used in conjunction
+with \fIprleak\fR\|(8) they can detect storage leaks and
+also duplicate attempts to free the same storage location.
+.PP
+Memory is allocated using either the procedure \fImallocMagic\fR
+or the macro \fIMALLOC\fR.  The former has an interface identical
+to that of the standard UNIX library procedure \fImalloc\fR\|(3),
+namely, it returns a pointer to a region of memory sufficiently
+large to hold \fIsize\fR bytes.
+The macro \fIMALLOC\fR is noticeably faster, particularly on
+machines with brain-dead procedure calls (such as a certain
+popular machine made by the second largest U.S. computer
+manufacturer).  Its usage is a bit unusual, in that its
+first argument is a type specification and its second is
+modified in place.  For example, to allocate an object of
+type \fIHashEntry *\fR that is 20 bytes long, and to assign
+this to the pointer \fIhe\fR, one could write:
+.sp
+.ti +1i
+\fBMALLOC(HashEntry *, he, 20);\fR
+.sp
+Note that there are no parentheses around the \fBHashEntry *\fR above.
+After executing this macro, \fIhe\fR would point to a \fIHashEntry\fR
+that was 20 bytes long.
+.PP
+The macro \fICALLOC\fR and the procedure \fIcallocMagic\fR perform
+function analagous to \fIMALLOC\fR and \fImallocMagic\fR except that
+the malloc'd memory is zeroed.
+.PP
+Memory can be freed using either the procedure \fIfreeMagic\fR,
+which frees its argument \fIvar\fR exactly as does the UNIX \fIfree\fR\|(3),
+or using the \fIFREE\fR macro, which does the same thing to \fIvar\fR
+but is faster.
+.PP
+Users of \fIMALLOC\fR and \fIFREE\fR should beware that they are
+macros that include C statements enclosed in a pair of braces (\fB{\ ...\ }\fR),
+and should be treated accordingly.  For example, it is not legal to
+type:
+.sp
+.in +1i
+.nf
+.ta +1i
+\fBif (i != j)
+	MALLOC(HashEntry *, he, i);
+else
+	return (NULL);\fR
+.fi
+.in -1i
+One should instead use:
+.sp
+.in +1i
+.nf
+.ta +1i
+\fBif (i != j)
+{
+	MALLOC(HashEntry *, he, i);
+}
+else
+	return (NULL);\fR
+.fi
+.in -1i
+.PP
+If you wish to take advantage of the debugging features of this
+memory allocator, you must do two things.  First, compile all
+of your \fB.c\fR files that #include ``malloc.h'' with the
+\fB-DMALLOCTRACE\fR flag.  Second, when you link your program
+to build an \fIa.out\fR file, use the library
+\fB~cad/src/magic/lib/libmagictrace.a\fR
+instead of the normal \fBlibmagicutils.a\fR.
+The \fBlibmagictrace.a\fR library contains additional code to
+maintain the information needed by the debugging procedures
+below.  If you link your program with the standard library,
+it will link successfully, but the debugging procedures won't
+do anything.
+.PP
+The debugging procedures produce a trace file for subsequent
+analysis by \fIprleak\fR\|(8).
+Before any memory is allocated, you should call \fImallocTraceInit\fR
+to create the trace file \fIname\fR.  Tracing won't actually begin,
+however, until you call \fImallocTraceEnable\fR.  From that point
+until \fImallocTraceDisable\fR, all calls to \fImallocMagic\fR
+or \fIfreeMagic\fR (or their corresponding macro versions \fIMALLOC\fR
+and \fIFREE\fR) will be logged to the trace file.  Calls to
+\fImallocTraceDisable\fR and \fImallocTraceEnable\fR may be nested;
+only the outermost \fImallocTraceEnable\fR has any effect.
+.PP
+If more selective tracing is desired, you can specify that trace
+information is to be output only for certain addresses.
+Calling \fImallocTraceOnlyWatched\fR with \fIonly\fR equal to \fBTRUE\fR
+causes this to happen.
+An address \fIaddr\fR is added to the list of addresses to trace by
+calling \fImallocTraceWatch\fR, or removed from this list by calling
+\fImallocTraceUnWatch\fR.  When \fImallocTraceOnlyWatched\fR is
+called with \fIonly\fR equal to \fBFALSE\fR, operation reverts to
+the normal mode of tracing all addresses.
+.PP
+When you are finished with all memory allocation tracing and want
+to flush all results out to the trace file, call \fImallocTraceDone\fR.
+Subsequent calls to the memory allocator will not be traced.
+
+.SH BUGS
+The \fIMALLOC\fR and \fIFREE\fR macros are syntactically clumsy,
+but unfortunately some C optimizers have trouble with syntactically
+cleaner forms.
+.sp
+The ability to trace specific addresses is only useful if you
+know which ones to watch.  A more generally useful facility
+would probably be to watch certain sizes of objects, or to
+allow the user to supply a procedure that could determine
+whether or not an address was to be traced.
+
+.SH SEE ALSO
+magicutils\|(3)

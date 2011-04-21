@@ -1,0 +1,329 @@
+.TH EXTFLAT 3
+.UC 4
+.SH NAME
+extflat \- procedures in libextflat.a for flattening extractor \fB.ext\fR files
+
+.SH SYNOPSIS
+.nf
+\fB
+#include "hash.h"
+#include "extflat.h"
+.sp
+typedef struct hiername { ... } HierName;
+typedef struct efnn { ... } EFNodeName;
+typedef struct efnhdr { ... } EFNodeHdr;
+typedef struct efnode { ... } EFNode;
+typedef struct fet { ... } Fet;
+
+
+EFInit()
+
+EFDone()
+
+char *
+EFArgs(argc, argv, argsProc, cdata)
+    int argc;
+    char *argv[];
+    Void (*argsProc)(pargc, pargv, cdata);
+    ClientData cdata;
+
+EFReadFile(name)
+    char *name;
+
+EFFlatBuild(rootName, flags)
+    char *rootName;
+    int flags;
+
+EFFlatDone()
+
+EFVisitCaps(capProc, cdata)
+    int (*capProc)(hn1, hn2, double cap, cdata);
+    ClientData cdata;
+
+EFVisitFets(fetProc, cdata)
+    int (*fetProc)(fet, prefix, trans, cdata)
+    ClientData cdata;
+
+EFVisitNodes(nodeProc, cdata)
+    int (*nodeProc)(node, int r, double c, cdata);
+    ClientData cdata;
+
+int
+EFNodeResist(node)
+    EFNode *node;
+
+EFVisitResists(resProc, cdata)
+    int (*resProc)(hn1, hn2, res, cdata);
+    ClientData cdata;
+
+bool
+EFLookDist(hn1, hn2, pMinDist, pMaxDist)
+    HierName *hn1, *hn2;
+    int *pMinDist, *pMaxDist;
+
+char *
+EFHNToStr(hn)
+    HierName *hn;
+
+HierName *
+EFStrToHN(prefix, suffixStr)
+    HierName *prefix;
+    char *suffixStr;
+
+HierName *
+EFHNConcat(prefix, suffix)
+    HierName *prefix, *suffix;
+
+HashEntry *
+EFHNLook(prefix, suffixStr, errorStr)
+    HierName *prefix;
+    char *suffixStr;
+    char *errorStr;
+
+HashEntry *
+EFHNConcatLook(prefix, suffix, errorStr)
+    HierName *prefix, *suffix;
+    char *errorStr;
+
+EFHNOut(hn, outf)
+    HierName *hn;
+    FILE *outf;
+
+EFHNFree(hn, prefix, type)
+    HierName *hn, *prefix;
+    int type;
+
+bool
+EFHNBest(hn1, hn2)
+    HierName *hn1, *hn2;
+
+bool
+EFHNIsGND(hn)
+    HierName *hn;
+
+bool
+EFHNIsGlob(hn)
+    HierName *hn;
+
+typedef struct hiername { ... } HierName;
+typedef struct efnn { ... } EFNodeName;
+typedef struct efnhdr { ... } EFNodeHdr;
+typedef struct efnode { ... } EFNode;
+typedef struct fet { ... } Fet;
+\fR
+.fi
+
+.SH DESCRIPTION
+This module provides procedures for reading, flattening, and
+traversing the hierarchical extracted circuits (in \fIext\fR\|(5) format)
+produced by the Magic circuit extractor.
+.PP
+To use the procedures in this library, a client should first call
+.I EFInit
+to initialize various hash tables.  When a client is finally finished
+with this library, and wishes to free up any remaining memory used
+by it,
+.I EFDone
+should be called.
+
+.SH "COMMAND-LINE ARGUMENT PROCESSING"
+The procedure
+.I EFArgs
+is provided for parsing of command-line flags; it
+should be passed the arguments to \fImain\fR.  It will scan
+through them, recognizing those specific to \fIextflat\fR
+(see \fIextcheck\fR\|(1) for a list of these arguments) and
+passing unrecognized arguments to the user-supplied procedure
+\fIargsProc\fR, which should update \fI*pargc\fR and \fI*pargv\fR
+to point after each argument it recognizes, or else print an error
+message if the argument is unrecognized.  If it is necessary to
+pass any additional information to \fIargsProc\fR, the
+\fIcdata\fR argument of
+.I EFArgs
+is automatically passed as the third argument to \fIargsProc\fR.
+If \fIargsProc\fR is NULL, any arguments not recognized by
+.I EFArgs
+are considered to be errors.
+.I EFArgs
+considers any argument not beginning with a dash (``\fB\-\fR'')
+to be a filename, of which there can be at most one.
+The argument containing this filename is returned to the caller.
+
+.SH "FLATTENING A CIRCUIT"
+Once command-line argument processing is complete, the caller
+can cause \fIext\fR\|(5) files to be read by calling \fIEFReadFile\fR.
+This procedure will read \fIname\fB.ext\fR and all of the \fB.ext\fR
+files it refers to, recursively until the entire tree rooted at
+\fIname\fR has been read and converted into an internal, hierarchical
+representation.
+.I EFReadFile
+may be called several times with different values of \fIname\fR;
+any portions of the tree rooted at \fIname\fR that aren't already
+read in will be.
+.PP
+To build up the flat representation of a circuit read using
+.I EFReadFile
+one should call \fIEFFlatBuild\fR.
+The argument \fIrootName\fR gives the name of the cell,
+which should have been read with
+.I EFReadFile
+above, that is the root of the hierarchical circuit to be flattened.
+After all subsequent processing of the flat design is complete,
+the caller may call
+.I EFFlatDone
+to free the memory associated with the flattened circuit,
+possibly in preparation for calling
+.I EFFlatBuild
+with a different \fIrootName\fR.
+.PP
+A different procedure is provided for visiting all of the structures of
+each type in the flattened circuit:
+\fIEFVisitCaps\fR, \fIEFVisitFets\fR, \fIEFVisitNodes\fR,
+and \fIEFVisitResists\fR.
+Each takes two arguments: a search procedure to apply
+to all structures visited, and a ClientData field used to pass
+additional information to this search procedure.
+.PP
+.I EFVisitCaps
+visits each of the internodal capacitors in the
+flat circuit, applying \fIcapProc\fR to each.  The arguments
+to \fIcapProc\fR are the HierNames \fIhn1\fR and \fIhn2\fR
+of the two nodes between which the capacitor sits, the
+capacitance \fIcap\fR in attofarads (type double from 6.5 and later), 
+and the client data \fIcdata\fR with which \fIEFVisitCaps\fR was called.
+If it's necessary to obtain a pointer to the flat EFNode
+structures to which \fIhn1\fR or \fIhn2\fR refer, they
+can be passed to \fIEFHNLook\fR (see below). 
+.PP
+.I EFVisitFets
+visits each of the transistors in the circuit, applying
+\fIfetProc\fR to each.
+The arguments to \fIfetProc\fR are the transistor structure
+itself, \fIfet\fR, the hierarchical path \fIprefix\fR that should be
+prepended to the node names of all the fet's terminals,
+a geometric transform that must be applied to all coordinates
+in the fet to convert them to root coordinates,
+the computed length \fIl\fR and width \fIw\fR of the transistor channel
+(taking into account substitution of symbolic values
+with the \fB\-s\fR flag),
+and the client data \fIcdata\fR with which \fIEFVisitFets\fR was called.
+.PP
+.I EFVisitNodes
+visits each of the flat nodes in the circuit, applying
+\fInodeProc\fR to each.
+The arguments to \fInodeProc\fR are the flat EFNode \fInode\fR,
+its lumped resistance \fIr\fR and capacitance to substrate \fIc\fR
+(r type is integer and c type is double from 6.5 and later),
+and the client data \fIcdata\fR with which \fIEFVisitNodes\fR was called.
+An auxiliary procedure, \fIEFNodeResist\fR, is provided to
+compute the lumped resistance of a node from the perimeter and
+area information stored in it; it returns the resistance estimate
+in milliohms.
+.PP
+.I EFVisitResists
+visits each of the explicit resistors in the circuit,
+applying \fIresProc\fR to each.
+The arguments to \fIresProc\fR are similar to those of \fIcapProc\fR:
+the HierNames \fIhn1\fR and \fIhn2\fR of the two terminals of the
+resistor, its resistance \fIres\fR, and
+the client data \fIcdata\fR with which \fIEFVisitResists\fR was called.
+.PP
+A final procedure is provided for looking up distance information.
+.I EFLookDist
+searches to find if there was a distance measured between
+the points with the HierNames \fIhn1\fR and \fIhn2\fR.
+If there was a distance found, it returns TRUE and leaves
+\fI*pMinDist\fR and \fI*pMaxDist\fR set respectively to the
+minimum and maximum measured distance between the two points;
+otherwise, it returns FALSE.
+
+.SH "NODE ORGANIZATION"
+Each electrical node in the circuit is represented by an \fIEFNode\fR
+structure, which points to a NULL-terminated list of \fIEFNodeName\fRs,
+each of which in turn points to the \fIHierName\fR list representing
+the hierarchical name.  \fIEFNode\fRs contain capacitance, perimeter,
+and area information for a node.  If this information is not required,
+an application may use \fIEFNodeHdr\fR structures in place of \fIEFNode\fRs
+in many cases; an \fIEFNodeHdr\fR consists of just the first few fields
+of an \fIEFNode\fR.
+Each \fIEFNodeName\fR is pointed to by a \fIHashEntry\fR in a hash table
+of all flattened node names.
+
+.SH "HIERARCHICAL NAME MANIPULATION"
+Hierarchical node names are represented as lists of \fIHierName\fR
+structures.  These structures store a hierarchical pathname such
+as \fBfoo/bar[1][3]/bletch\fR in reverse order, with the last
+component (\fIe.g.\fR, \fBbletch\fR) first.  Pathnames sharing a common
+prefix can therefore be shared.
+.PP
+.I EFStrToHN
+is the fundamental procedure for creating HierNames; it builds
+a path of HierNames from the string \fIsuffixStr\fR, and then
+leaves this path pointing to the prefix path \fIprefix\fR.
+For example, if \fIprefix\fR were the path of HierNames
+representing \fBfoo/bar[1][3]\fR,
+and \fIsuffix\fR were the string \fBshift/Vb1\fR,
+the resulting HierName would be
+\fBfoo/bar[1][3]/shift/Vb1\fR, but only the \fBshift/Vb1\fR part would 
+be newly allocated.
+.I EFHNFree
+frees the memory allocated for the portions of the
+HierName path pointed to by \fIhn\fR between \fIhn\fR and
+\fIprefix\fR, which should be the same as the \fIprefix\fR
+passed to \fIEFStrToHN\fR.
+The \fItype\fR parameter is used only for measuring memory
+usage and should be zero.
+.I EFHNToStr
+converts a HierName back into a string;
+it returns a pointer to a statically-allocated copy of the string
+representation of the HierName \fIhn\fR.
+.PP
+.I EFHNConcat
+is like
+.I EFStrToHN
+in that it concatenates a prefix and a suffix, but the suffix
+passed to \fIEFHNConcat\fR has already been converted to a HierName.
+.I EFHNConcat
+creates a copy of the HierName path \fIsuffix\fR whose final element
+points to the prefix \fIprefix\fR, in effect producing the concatenation
+of the two HierNames.
+.PP
+.I EFHNLook
+finds the HashEntry in the flat node hash table corresponding
+to the HierName that is the concatenation of the HierName \fIprefix\fR
+and the HierName formed from the suffix string \fIsuffixStr\fR.
+The value field of this HashEntry (obtained through \fIHashGetValue\fR)
+is a pointer to an EFNodeName, which in turn points to the EFNode
+for this name.
+.I EFHNLook
+returns NULL if there wasn't an entry in the node hash table
+by this name, and also prints an error message of the form
+``\fIerrorStr\fR: node \fIprefix/suffixStr\fR not found''.
+.I EFHNConcatLook
+performs a similar function, but its second argument is a HierName
+instead of a string.
+.PP
+.I EFHNOut
+writes the HierName \fIhn\fR to the output FILE \fI*outf\fR.
+The \fB-t\fR flag can be passed to \fIEFArgs\fR
+to request suppression of trailing ``\fB!\fR'' or ``\fB#\fR''
+characters in node names when they are output by \fIEFHNOut\fR.
+.PP
+Three predicates are defined for HierNames.
+.I EFHNBest
+returns TRUE if \fIhn1\fR is ``preferred'' to \fIhn2\fR, or FALSE
+if the opposite is true.
+Global names (ending in ``\fB!\fR'') are preferred to ordinary names,
+which are preferred to automatically-generated names (ending in ``\fB#\fR'').
+Among two names of the same type, the one with the least number of
+pathname components is preferred.  If two names have the same number
+of components, the one lexicographically earliest is preferable.
+.I EFHNIsGND
+returns TRUE if its argument is the ground node ``\fBGND!\fR''.
+.I EFHNIsGlob
+returns TRUE if its argument is a global node name, i.e., ends
+in an exclamation point.
+
+.SH SEE ALSO
+extcheck\|(1), ext2dlys\|(1), ext2sim\|(1), ext2spice\|(1),
+magic\|(1) magicutils\|(3), ext\|(5)

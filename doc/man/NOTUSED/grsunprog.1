@@ -1,0 +1,73 @@
+.\" sccsid @(#)grsunprog.1	4.1 MAGIC (Berkeley) 11/29/85
+.\"
+.\" CONVENTIONS:  
+.\"	italics:  things that are substituted for
+.\"	boldface: characters that are typed as-is
+.\"
+.\"	EXAMPLE:  \fIfilename\fB.mag\fR
+.\"	     or:  \fBcif \fR[\fIfile\fR]
+.\"
+.TH GRSUNPROG 1 
+.UC 4
+.SH NAME
+grSunProg \- internal process for Magic's Sun 120 display driver
+.SH SYNOPSIS
+\fBgrSunProg \fIcolorWindowName textWindowName notifyPID requestFD pointFD buttonFD\fR
+.SH DESCRIPTION
+.PP
+GrSunProg is an internal program used by Magic when using the Sun 120
+workstation's display.  This manual page is intended only for Magic
+maintainers.
+.PP
+GrSunProg collects button pushes from the color window and sends them
+over a pipe to Magic.  The program also responds to requests
+from Magic for the mouse position.  In addition, this program 
+tells Suntools to
+forward characters typed in the color window directly to Magic's text window.
+.SH ARGUMENTS
+.PP
+All six arguments are required:
+.RS
+.TP 
+.I colorWindowName
+This is the name of the color window that magic is running under (such
+as \fB/dev/win3\fR).  Magic normally opens up the color monitor with
+a single, large, window on it.
+.TP
+.I textWindowName
+This is the name of the text window that contains Magic's command log.
+Keyboard events are forwarded to this window.
+.TP
+.I notifyPID
+If this processID is not 0, then SIGIO signals are sent to this process when
+there is data for it.
+.TP
+.I requestFD pointFD buttonFD
+These are the file descriptors that grSunProg should use in its
+interface (see below).  They are small integers printed as strings.
+.RE
+.SH INTERFACE
+.PP
+Button pushes are sent out over file descriptor \fIbuttonFD\fR.  A button
+push is encoded as two characters followed by two integers giving the
+location of the button push.  The first character is either 'L', 'M', or 'R' 
+depending on the button pushed: Left, Middle, or Right.  The next
+character is either 'D' or 'U' depending on the action: Up or Down.
+The two numbers are the X and Y coordinates of the button push.  
+This string is followed by a newline.
+Example: \fBLD 123 342\fR means that the left button was pushed down
+at location (123, 342).  
+.PP
+GrSunProg sometimes receives a character from Magic over file
+descriptor \fIrequestFD\fR.  If this character is an EOF, then the program
+terminates.  If this character is an 'A', then grSunProg responds
+with a 'P' and the current mouse coordinates over file 
+descriptor \fIpointFD\fR.  
+This string is followed by a newline.
+Example: \fBP 101 23\fR means that the mouse is currently 
+at location (101, 23).  
+.SH "SEE ALSO"
+magic(1) 
+grsunprog2(1)
+.SH AUTHOR
+Robert N. Mayo

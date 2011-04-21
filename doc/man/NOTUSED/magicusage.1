@@ -1,0 +1,75 @@
+.\" sccsid @(#)magicusage.1	4.1 MAGIC (Berkeley) 11/29/85
+.\"
+.\" CONVENTIONS:  
+.\"	italics:  things that are substituted for
+.\"	boldface: characters that are typed as-is
+.\"
+.\"	EXAMPLE:  \fIfilename\fB.mag\fR
+.\"	     or:  \fBcif \fR[\fIfile\fR]
+.\"
+.TH MAGICUSAGE 1 
+.UC 4
+.SH NAME
+magicusage \- print the names of all cells and files used in a Magic design
+.SH SYNOPSIS
+.B magicusage
+[
+.B \-T
+.I technology
+] [
+.B \-p
+.I path
+]
+.I rootcell
+.SH DESCRIPTION
+Magicusage will print the names of all cells and files used in the
+design whose root cell is
+.IR rootcell .
+Each line of the output is of the form
+.sp
+.ti +8
+\fIcellname\fR \fB:::\fR \fIfilename\fR
+.sp
+where
+.I cellname
+is the name of the cell as it is used, and
+.I filename
+is the \fB.mag\fP file containing the cell.
+If a cell is not found, a line of the form
+.sp
+.ti +8
+\fIcellname\fR \fB:::\fR \fB<< not found >>\fR
+.sp
+is output instead.
+.PP
+If \fB\-p\fI\ path\fR is specified, the search path used to find \fB.mag\fR
+files will be \fIpath\fR.  Otherwise, the
+search path is initialized by first reading
+the system-wide .magic file in ~cad/lib/magic/sys,
+then the .magic file in the user's home directory,
+and finally the .magic file in the current directory.
+The most recent
+.B path
+command read from the three files determines the search path used to find cells.
+.PP
+In addition, a library path of ~cad/lib/magic/\fItechname\fP is used
+when searching for cells.  By default, \fItechname\fP is the technology
+of the first cell read, but it may be overridden by specifying an explicit
+technology with the \fB\-T\fI\ techname\fR flag.
+
+.SH "FILES"
+.PP
+.ta 5c
+~cad/lib/magic/\fItech\fR
+.br
+~cad/lib/magic/sys/.magic
+.br
+~/.magic
+.br
+\.magic
+
+.SH "SEE ALSO"
+magic\|(1), magic\|(5)
+
+.SH AUTHOR
+Walter Scott

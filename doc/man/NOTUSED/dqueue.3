@@ -1,0 +1,108 @@
+.TH DQUEUE 3
+.UC 4
+.SH NAME
+dqueue \- procedures for managing double-ended queues in libmagicutils.a
+
+.SH SYNOPSIS
+.nf
+.B #include "magic.h"
+.B #include "malloc.h"
+.B #include "dqueue.h"
+.PP
+.B DQInit(q, capacity)
+.B DQueue *q;
+.B int capacity;
+.PP
+.B DQFree(q)
+.B DQueue *q;
+.PP
+.B DQPushFront(q, elem)
+.B DQueue *q;
+.B ClientData elem;
+.PP
+.B DQPushRear(q, elem)
+.B DQueue *q;
+.B ClientData elem;
+.PP
+.B ClientData DQPopFront(q)
+.B DQueue *q;
+.PP
+.B ClientData DQPopRear(q)
+.B DQueue *q;
+.PP
+.B DQChangeSize(q, newSize)
+.B DQueue *q;
+.B int newSize
+.PP
+.B DQCopy(dst, src)
+.B DQueue *dst;
+.B DQueue *src;
+.PP
+.B bool DQIsEmpty(q)
+.B DQueue *q;
+.fi
+
+.SH DESCRIPTION
+These procedures manipulate double-ended queues.
+A double-ended queue (\fIDQueue\fR) is a structure
+to which single word elements of type \fIClientData\fR
+(actually type \fI(char *)\fR, but intended to mean
+``any one-word type at all'') may be added to either
+end or removed from either end.
+Callers should not reference fields of a \fIDQueue\fR directly, but
+rather should use the following procedures:
+.PP
+.I DQInit
+initializes the DQueue \fIq\fR to have sufficient capacity
+to hold \fIcapacity\fR entries at first.  If more than this
+many entries are pushed on the queue, it automatically doubles
+its size (at the cost of copying, however),
+so \fIcapacity\fR should be treated as the expected
+number of entries on the queue rather than the maximum number.
+.I DQFree
+frees the storage allocated by \fIDQinit\fR for the DQueue \fIq\fR.
+.PP
+.I DQPushFront
+and
+.I DQPushRear
+each place a new entry \fIelem\fR on the queue \fIq\fR;
+.I DQPushFront
+places it on the front of the queue, while
+.I DQPushRear
+places it on the rear.
+If the current maximum size of the queue would be exceeded by
+either operation, twice as much space is allocated automatically
+and the existing queue contents are copied to the bigger area.
+.I DQPopFront
+and
+.I DQPopRear
+remove an element from respectively the front or rear of the
+DQueue \fIq\fR and return it.  If no elements are left, they
+return \fINULL\fR (zero).
+.PP
+Although \fIDQPushFront\fR and \fIDQPushRear\fR 
+take care of increasing the space for a queue automatically,
+sometimes it is desirable to change the size of a queue
+explicitly.  This can be done with \fIDQChangeSize\fR,
+which changes the size of the DQueue \fIq\fR to
+\fInewSize\fR, as long as \fInewSize\fR is at
+least as great as the number of entries already
+in the queue.  If there are more than \fInewSize\fR
+entries in the queue, nothing happens.
+.PP
+One DQueue may be copied to another by \fIDQCopy\fR, which
+copies the DQueue \fIsrc\fR to the DQueue \fIdst\fR.
+.PP
+Finally, to check whether a queue \fIq\fR is empty, one may
+call \fIDQIsEmpty\fR, which returns \fBTRUE\fR (non-zero)
+if the queue is empty, or \fBFALSE\fR (zero) if it contains
+any elements.
+
+.SH BUGS
+Using \fBNULL\fR to indicate end-of-queue in \fIDQPopFront\fR
+and \fIDQPopRear\fR is of marginal usefulness.  Callers should
+stick to using \fIDQIsEmpty\fR unless they are certain not to
+have pushed any zero elements on the queue.
+
+.SH SEE ALSO
+magicutils\|(3)

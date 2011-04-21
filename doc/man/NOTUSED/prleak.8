@@ -1,0 +1,105 @@
+.\" sccsid @(#)prleak.8	4.1 MAGIC (Berkeley) 11/29/85
+.\"
+.\" CONVENTIONS:  
+.\"	italics:  things that are substituted for
+.\"	boldface: characters that are typed as-is
+.\"
+.\"	EXAMPLE:  \fIfilename\fB.mag\fR
+.\"	     or:  \fBcif \fR[\fIfile\fR]
+.\"
+.TH PRLEAK 8
+.SH NAME
+prleak \- aid for debugging programs using malloc/free
+.SH SYNOPSIS
+prleak
+[
+.B \-a
+] [
+.B \-d
+] [
+.B \-l
+] [
+.I objfile
+[
+.I tracefile
+] ]
+.SH DESCRIPTION
+.I Prleak
+is a tool for use in debugging programs that make use of
+Magic's versions of \fImalloc\fR and \fIfree\fR.
+It examines the trace file produced by special versions of
+.I malloc
+and
+.I free
+produced when they are compiled with the \fB\-DMALLOCTRACE\fR flag.
+The output of prleak is the average allocation size, a list
+of `leaky' allocations (blocks still allocated at program exit)
+if \fB\-l\fR is specified,
+a list of duplicate frees (blocks that the program attempted
+to free after they had already been deallocated) if \fB\-d\fR
+is specified, and a list of all calls to malloc and free
+if \fB\-a\fR is specified.  If no switches are given, the
+default action is as though \fB\-l\fR and \fB\-d\fR were
+in effect.
+.PP
+For each entry output, both the address of the allocated
+block and a stack backtrace at the time of the call to
+.I malloc
+or
+.I free
+are printed.
+.I Prleak
+attempts to use the namelist from
+.I objfile
+(\fBa.out\fR if no file is given)
+to produce a symbolic backtrace.  If no namelist can be found,
+the backtrace is printed in hex.
+If
+.I tracefile
+is specified, the malloc trace is read from it; otherwise, it
+is read from the file \fBmalloc.out\fR in the current directory.
+.PP
+An example output might be as follows:
+.DS L
+.sp
+.nf
+    \fBAverage allocation size = 12 bytes\fR
+
+    \fB------\fR
+    \fBLeaks:\fR
+    \fB------\fR
+
+    \fB0x11540      [11 bytes]\fR
+            \fBat _foo+0x14\fR
+            \fBcalled from ~main+026\fR
+
+    \fB0x11556      [14 bytes]\fR
+            \fBat _bar+0x50\fR
+            \fBcalled from _foo+0x36\fR
+            \fBcalled from ~main+0x26\fR
+
+    \fB--------- ------\fR
+    \fBDuplicate frees:\fR
+    \fB--------- ------\fR
+
+    \fB0x11556  \fR
+            \fBat _bar+0x40\fR
+            \fBcalled from _foo+0x36\fR
+            \fBcalled from ~main+0x26\fR
+.fi
+.DE
+
+.SH FILES
+malloc.out
+
+.SH "SEE ALSO"
+\fIACM SIGPLAN Notices\fR, Vol 17, No 5 (May 1982), the
+article by Barach and Taenzer.
+
+.SH AUTHOR
+Walter Scott
+
+.SH BUGS
+Local symbols (beginning with ``~'')
+in the backtrace output should be tagged with
+the source file to which they refer.

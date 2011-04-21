@@ -1,0 +1,428 @@
+.
+.	sccsid "@(#)mpack.3	4.1 MAGIC (Berkeley) 11/29/85";
+.
+.TH MPACK 3 2/20/85
+.UC
+.SH NAME
+mpack \- routines for generating semi-regular modules
+.SH DESCRIPTION
+\fBMpack\fR is a library of `C' routines that 
+aid the process of generating semi-regular modules.
+Decoder planes, barrel shifters, and PLAs are common examples of 
+semi-regular modules.
+.PP
+Using Magic,
+an mpack user will draw an example of a finished module and then break
+it into tiles.
+These tiles represent the building blocks for more complicated instances
+of the module.
+The mpack library provides routines to aid in
+assembling tiles into a finished module.
+.SH MAKING AN EXAMPLE MODULE
+.PP
+The first step in using mpack is to create an example instance of the
+module, called a \fItemplate\fR.
+The basic building blocks of the structure, or \fItiles\fR, are then
+chosen.
+Each tile should be given a name by means of a rectangular
+label which defines its contents.
+If the tiles in the module do not abut (e.g. they overlap)
+it is useful to define another tile whose size indicates how 
+far apart the tiles should be placed.
+.PP
+Templates should be in Magic format and, by convention, 
+end with a \fB.mag\fR suffix.
+With some programs, it is
+possible to generate the same structure in a
+different technology or style by changing just the template.
+If this is the case, each template should have a filename of the 
+.br
+form \fRbasename\fB-\fIstyle\fB.mag\fR.
+The \fIstyle\fR part of the filename interacts with the
+\fB-s\fR option (see later part of this manual).
+.SH WRITING AN MPACK PROGRAM
+.PP
+An mpack program is the `C' code which assembles tiles into the
+desired module.
+Typically this program reads a file (such as a truth table) and then
+calls the tile placement routines in the mpack library.
+.PP
+The mpack program must first include the file \fB~cad/lib/mpack.h\fR
+which defines the interface to the mpack system.
+Next the \fBTPinitialize\fR procedure is called.
+This procedure processes command line arguments, opens an input file as the
+standard input (\fBstdin\fR),
+and loads in a template.
+.PP
+The program should now read from the standard input and
+compute where to place the next tile.
+Tiles may be aligned with previously placed tiles or placed at
+absolute coordinates.
+If a tile is to overlap an existing tile the program must space over
+the distance of the overlap 
+before placing the tile.
+.PP
+When all tiles are placed the program should call the routine
+\fBTPwrite_tile\fR to create the output file that was specified on the
+command line.
+.PP
+To use the mpack library be sure to include it with your compile
+or load command (e.g. \fBcc \fIyour_file\fB ~cad/lib/mpack.lib\fR).
+.SH ROUTINES 
+.sp
+.LP
+Initialization and Output Routines
+.RS
+.sp
+\fBTPinitialize(\fIargc, argv, base_name\fB)\fR
+.RS
+The mpack system is initialized, command line arguments are
+processed, and a template is loaded.
+The file descriptor \fBstdin\fR is attached to the input file 
+specified on the command line.
+The template's filename is formed by taking the \fIbase_name\fR,
+adding any extension indicated by the \fB-s\fR option, and
+then adding the \fB.mag\fR suffix.
+The \fB-t\fR option allows the user to override \fIbase_name\fR from
+the command line.
+.PP
+\fIArgc\fR and \fIargv\fR should contain the command line arguments.
+\fIArgc\fR is a count of the number of arguments, while \fIargv\fR
+is an array of pointers to strings.
+Strings of length zero are ignored (as is the flag consisting of a 
+single space), in order to make it easy for the
+calling program to intercept its own arguments.
+\fIArgc\fR and \fIargv\fR are of the same structure as
+the two parameters passed to the
+main program.
+A later section of this manual summarizes the command line options.
+.RE
+.sp
+\fBTPload_tiles(\fIfile_name\fB)\fR
+.RS
+The given \fIfile_name\fR is read, and each rectangular label found in
+the file becomes a tile accessible via TPname_to_tile.
+No extensions are added to \fIfile_name\fR.
+.RE
+.sp
+\fBTILE TPread_tile(\fIfile_name\fB)\fR
+.RS
+A tile is created and \fIfile_name\fR is read into it.
+The tile is returned as the value of the function.
+.RE
+.sp
+\fBTPwrite_tile(\fItile, filename\fB)\fR
+.RS
+The tile \fItile\fR is written to the file specified by \fIfilename\fR,
+with \fB.ca\fR or \fB.cif\fR extensions added.
+See the description of the \fB-o\fR option for information on what 
+file name is chosen if \fIfilename\fR is the null string.
+The choice between Magic or CIF format is chosen with the \fB-a\fR
+or \fB-c\fR command line options.
+.RE
+.sp
+.RE
+.LP
+Tile creation, deletion, and access
+.sp
+.RS
+\fBTPdelete_tile(\fItile\fB)\fI
+.RS
+The tile \fItile\fR is deleted from the database and the space occupied by
+it is reused.
+.RE
+.sp
+\fBTILE TPcreate_tile(\fIname\fB)\fI
+.RS
+A new, empty tile is created and given the name \fIname\fR.  
+This name is used by
+the routine \fBTPname_to_tile\fR and in error messages.
+The type \fBTILE\fR returned is a unique ID for the tile, not the tile
+itself.  Currently this is implemented by defining the type 
+TILE to be a pointer to the internal database representation of the tile.
+.RE
+.sp
+\fBint TPtile_exists(\fIname\fB)\fR
+.RS
+TRUE (1) is returned if a tile with the given \fIname\fR exists (such as
+in the template or from a call to TPcreate_tile).
+.RE
+.sp
+\fBTILE TPname_to_tile(\fIname\fB)\fR
+.RS
+A value of type \fBTILE\fR is returned.  This value is a unique ID for
+the tile that has the name \fIname\fR.  This name comes from a call to
+TPcreate_tile(), or from the rectangular label that defined it in a template
+that was read in by TPread_tiles() or TPinitialize().  If the tile does
+not exist then a value of NULL is returned and an error message is printed.
+.RE
+.sp
+\fBRECTANGLE TPsize_of_tile(\fItile\fB)\fR
+.RS
+A rectangle is returned that is the same size as the tile \fItile\fR.
+The rectangle's lower left corner is located at the coordinate (0, 0).
+All coordinates in mpack are specified in half-lambda.
+.RE
+.sp
+.RE
+.LP
+Painting and Placement Routines
+.sp
+.RS
+\fBRECTANGLE TPpaint_tile(\fIfrom_tile, to_tile, ll_corner\fB)\fR
+.RS
+The tile \fIfrom_tile\fR is painted into the tile \fIto_tile\fR such that
+its lower left corner is placed at the
+point \fIll_corner\fR in the tile \fIto_tile\fR .
+The location of the newly painted area in the output tile is returned 
+as a value of type RECTANGLE.
+The tile \fIto_tile\fR is often an empty tile made by \fBTPcreate_tile()\fR.
+The point \fIll_corner\fR is almost never provided directly, it is
+usually generated by routines such as \fBalign()\fR.
+.RE
+.sp
+\fBTPdisp_tile(\fIfrom_tile, ll_corner\fB)\fR
+.RS
+A rectangle the size of \fIfrom_tile\fR with the lower left corner located
+at \fIll_corner\fR is returned.  Note that this routine behaves exactly like
+the routine TPpaint_tile except that no output tile is modified.
+This routine, in conjunction with the \fBalign\fR routine, is useful for
+controlling the overlap of tiles.
+.RE
+.sp
+\fBRECTANGLE TPpaint_cell(\fIfrom_tile, to_tile, ll_corner\fB)\fR
+.RS
+This routine behaves like \fBTPpaint_tile()\fR except that the \fIfrom_tile\fR
+is placed as a subcell rather than painted into place.  The tile \fIfrom_tile\fR
+must exist in the file system (i.e. it must have been read in 
+from disk or have been written out to disk).
+.RE
+.sp
+.RE
+.LP
+Label Manipulation Routines
+.sp
+.RS
+\fBTPplace_label(\fItile, rect, label_name\fB)\fR
+.RS
+A label named \fIlabel_name\fR is place in the tile \fItile\fR.
+The size and location of the label is the given by the RECTANGLE \fIrect\fR.
+.RE
+.sp
+\fBint TPfind_label(\fItile, &rect1, str, &rect2\fB)\fR
+.RS
+The tile \fItile\fR is searched for a label of name \fIstr\fR.  The location
+of the first such label found is returned in the rectangle \fIrect2\fR.
+The function returns 1 if such a label was found, and 0 otherwise.
+The rectangle pointer \fI&rect1\fR, if non-NULL, restricts the search to an
+area of the tile.
+.RE
+.sp
+\fBTPstrip_labels(\fItile, ch\fB)\fR
+.RS
+All labels in the tile \fItile\fR that begin with the character \fIch\fR
+are deleted.
+.RE
+.sp
+\fBTPremove_labels(\fItile, name, r\fB)\fR
+.RS
+All labels in the tile \fItile\fR that are completely within the area \fIr\fR
+are deleted.  
+If \fIname\fR is non-NULL, then only labels with that name will be affected.
+.RE
+.sp
+\fBTPstretch_tile(\fItile, str, num\fB)\fR
+.RS
+The string \fIstr\fR is the name of one or more labels within the 
+tile \fItile\fR.  Each of these labels must be of zero width or zero height,
+i.e. they must be lines.  
+Each of these lines define a line across which the tile will be stretched.
+The amount of the stretch is specified by \fInum\fR in units of \fBhalf\fR-lambda.
+Stretching such a line turns it into a rectangle.
+Note that if the tile contains 2 lines that are co-linear, the stretching of
+one of them will turn both into rectangles.
+.RE
+.sp
+.RE
+.LP
+Point-Valued Routines
+.RS
+.sp
+\fBPOINT tLL(\fItile\fB)\fR
+.br
+\fBPOINT tLR(\fItile\fB)\fR
+.br
+\fBPOINT tUL(\fItile\fB)\fR
+.br
+\fBPOINT tUR(\fItile\fB)\fR
+.RS
+The location of the specified corner of tile \fItile\fR, relative to the tile's
+lower left corner, is returned as a point.  
+LL stands for lower-left, LR for lower-right, UL for upper-left, and
+UR for upper-right.
+Note that \fBtLL()\fR returns (0, 0).
+.RE
+.sp
+\fBPOINT rLL(\fIrect\fB)\fR
+.br
+\fBPOINT rLR(\fIrect\fB)\fR
+.br
+\fBPOINT rUL(\fIrect\fB)\fR
+.br
+\fBPOINT rUR(\fIrect\fB)\fR
+.RS
+The location of the specified corner of the rectangle \fIrect\fR
+is returned as a point.  
+LL stands for lower-left, LR for lower-right, UL for upper-left, and
+UR for upper-right.
+.RE
+.sp
+\fBPOINT align(\fIp1, p2\fB)\fR
+.RS
+A point is computed such that when added to the point \fIp2\fR gives the
+point \fIp1\fR.  \fIp1\fR is normally a corner of a rectangle within a tile
+and \fIp2\fR is normally a corner of a tile.  In this case the point
+computed can be treated as the location for the placement of the tile.
+.PP
+For example, TPpaint_tile(outtile, fromtile, align(rUL(rect), tLL(fromtile)))
+will paint the tile \fIfromtile\fR into \fIouttile\fR such that the lower
+left corner of \fIfromtile\fR is aligned with the 
+upper-left corner of \fIrect\fR.
+In this example \fIrect\fR would probably be something returned from a
+previous TPpaint_tile() call.
+.RE
+.sp
+.RE
+.LP
+Point and Rectangle Addition Routines
+.RS
+.sp
+\fBPOINT TPadd_pp(\fIp1, p2\fB)\fR
+.br
+\fBPOINT TPsub_pp(\fIp1, p2\fB)\fR
+.RS
+The points \fIp1\fR and \fIp2\fR are added or subtracted, and the result is
+returned as a point.  In the subtract case \fIp2\fR is subtracted from \fIp1\fR.
+.RE
+.sp
+\fBRECTANGLE TPadd_rp(\fIr1, p1\fB)\fR
+.br
+\fBRECTANGLE TPsub_rp(\fIr1, p1\fB)\fR
+.RS
+The rectangle \fIr1\fR has the point \fIp1\fR added
+or subtracted from it. This has
+the effect of displacing the rectangle in the X and/or Y dimensions.
+.RE
+.sp
+.RE
+.LP
+Miscellaneous Functions
+.RS
+.sp
+\fBint TPget_lambda()\fR
+.RS
+This function returns the current value of lambda in centi-microns.
+.RE
+.sp
+.RE
+.SH INTERFACE DATA STRUCTURES
+.PP
+In those cases where tiles must be placed using absolute, 
+(half-lambda) coordinates,
+it is useful to know that \fBRECTANGLE\fRs and \fBPOINT\fRs are defined as:
+.RS
+.nf
+
+typedef struct {
+    int x_left, x_right, y_top, y_bot;
+} RECTANGLE;
+
+typedef struct {
+    int x, y;
+} POINT;
+
+.fi
+.RE
+The variable \fBorigin_point\fR is predefined to be (0, 0). \fBorigin_rect\fR
+is defined to be a zero-sized rectangle located at the origin.
+.SH OPTIONS ACCEPTED BY \fBTPinitialize()\fI
+.LP
+Typical command line: \fIprogram_name\fR  [-t \fItemplate\fR] [-s \fIstyle\fR]  [-o \fIoutput_file\fR]  \fIinput_file\fR
+.IP \fB-a\fR
+produce Magic format (this is the default)
+.IP \fB-c\fR
+produce CIF format
+.IP \fB-v\fR
+be verbose (sequentially label the tiles in the output
+for debugging purposes; also print out information 
+about the number of rectangles processed by mpack)
+.IP \fB-s\fI\ style\fR
+generate output using the template for this style
+(see TPinitialize for details)
+.IP \fB-o\fR
+The next argument is taken to be the base name of the 
+output file.  The default is the input file name with any 
+extensions removed.  If there is not input file specified and no
+-o option specified, the output will go to \fBstdout\fR.
+.IP \fB-p\fR
+(pipe mode) Send the output to \fBstdout\fR.
+.IP \fB-t\fR
+The next argument specifies the template base name to use.  
+This overrides the default supplied by the program.  
+A \fB.mag\fR extension is automatically added.
+(see TPinitialize)
+.IP \fB-l\fI\ name\fR
+Set the cif output style to \fIname\fR. \fIname\fR is the name of
+a cif output style as defined in Magic's technology file.
+If this option is not specified then the first output style in the
+technology file is 
+used.  (Note:  In the old tpack system this option set the size of lambda.)
+.IP \fIinput_file\fR
+The name of the file that the program should read from 
+(such as a truth table file).  If this filename is omitted 
+then the input is taken from the standard input (such as a pipe).
+.IP \fB-M\fI\ num\fR
+This option is accepted by mpack, but ignored.  It is a leftover
+from the tpack system.
+.IP \fB-D\fI\ num1\ num2\fR
+The \fIDemo\fR or \fIDebug\fR option.  This option will
+cause \fBmpack\fR to place only the first \fInum1\fR tiles,
+and the last \fInum2\fR of those will be outlined with rectangular
+labels.  In addition, if a tile called "blotch" is defined then
+a copy of it will be placed in the output tile upon each call to
+the \fIalign\fR function during the placing of the last \fInum2\fR  
+tiles. The blotch tile will be centered on the 
+first point passed to \fIalign\fR, and usually consists of a small 
+blotch of brightly colored paint.  This has the effect of 
+marking the alignment points of tiles.  The last tile painted
+into is assumed to be the output tile.
+.SH EXAMPLE
+It is highly recommended that the example in \fB~cad/src/mquilt\fR
+be examined.  Look at both the template and the `C' code.
+A more complex example is in \fB~cad/src/mpla\fR.
+.SH FILES
+.nf
+\~cad/lib/mpack.h		(definition of the mpack interface)
+\~cad/lib/mpack.lib		(linkable mpack library)
+\~cad/lib/mpack.ln		(lint-library for lint)
+\~cad/src/mquilt/* 		(an example of an mpack program)
+\~cad/lib/magic/sys/*.tech*	(technology description files)
+.fi
+.SH ALSO SEE
+magic(CAD), mquilt(CAD), mpla(CAD)
+.br
+Robert N. Mayo 
+.I
+Pictures with Parentheses: Combining Graphics and Procedures in a VLSI Layout Tool,
+.R
+Proceedings of the 20th Design Automation Conference, June, 1983.
+.br
+\`C' Manual
+.SH HISTORY
+This is a port of the tpack(1) system which generated Caesar files.
+.SH AUTHOR
+Robert N. Mayo
+.SH BUGS
+When a tile contains part of a subcell, or touches a subcell, 
+then the whole subcell is considered
+to be part of the tile.  The same goes for arrays of subcells.

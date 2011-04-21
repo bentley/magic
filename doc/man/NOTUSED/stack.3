@@ -1,0 +1,96 @@
+.TH STACK 3
+.UC 4
+.SH NAME
+stack \- procedures for managing stacks in libmagicutils.a
+
+.SH SYNOPSIS
+.nf
+.B #include "magic.h"
+.B #include "stack.h"
+.PP
+.B Stack *StackNew(sincr)
+.B int sincr;
+.PP
+.B StackFree(stack)
+.B Stack *stack;
+.PP
+.B ClientData StackPop(stack)
+.B Stack *stack;
+.PP
+.B ClientData StackLook(stack)
+.B Stack *stack;
+.PP
+.B StackPush(arg, stack)
+.B ClientData arg;
+.B Stack *stack;
+.PP
+.B StackEnum(stack, func, cdata)
+.B Stack *stack;
+.B int (*func)(item, i, cdata)
+.B ClientData item, cdata;
+.B int i;
+.PP
+.B StackCopy(src, dest, copystr)
+.B Stack *src, **dest;
+.B bool copystr;
+.PP
+.B bool StackEmpty(stack)
+.B Stack *stack;
+.PP
+.B ClientData STACKPOP(stack)
+.B Stack *stack;
+.PP
+.B ClientData STACKLOOK(stack)
+.B Stack *stack;
+.PP
+.B STACKPUSH(arg, stack)
+.B ClientData arg;
+.B Stack *stack;
+.fi
+
+.SH DESCRIPTION
+These procedures implement a simple stack mechanism, allowing stacks
+containing an arbitrary number of one-word elements to be created,
+manipulated, and destroyed.
+.PP
+.I StackNew
+creates and returns a new \fIStack\fR.  This stack grows automatically as
+new items are pushed on it.  The number of new elements for which space
+is added each time the stack grows is specified by \fIsincr\fR.  When
+the stack is through being used, \fIStackFree\fR frees it.
+.PP
+Elements can be pushed on the stack using \fIStackPush\fR.
+The top of the stack can be viewed without removing it by
+using \fIStackLook\fR, or removed by \fIStackPop\fR.  Both
+return the top element from the stack, or NULL if the stack
+is empty.
+Fast macro versions exist for each of these functions:
+\fISTACKPUSH\fR, \fISTACKLOOK\fR, and \fISTACKPOP\fR.
+To test whether \fIstack\fR is empty, one can call \fIStackEmpty\fR,
+which returns \fBTRUE\fR if the stack is empty, or \fBFALSE\fR if
+it contains any entries.
+.PP
+\fIStackEnum\fR visits all the elements in \fIstack\fR without popping them.
+It applies \fI(*func)()\fR to each element.
+The arguments to \fI(*func)()\fR are \fIitem\fR, the stack element
+being visited, \fIi\fR, its index on the stack (1 for the top of the
+stack, increasing as one moves down the stack), and the same \fIcdata\fR
+as was passed to \fIStackEnum\fR.
+If \fI(*func)()\fR returns a non-zero value, the enumeration of the
+stack aborts and \fIStackEnum\fR returns 1; otherwise, \fIStackEnum\fR
+returns 0 after visiting all elements in the stack.
+.PP
+.I StackCopy
+is used to make a copy of a stack \fIsrc\fR.  It leaves \fI*dest\fR
+pointing to the copy.  If the parameter \fIcopystr\fR is \fBTRUE\fR,
+then the elements of \fIsrc\fR are interpreted as pointers to NULL-terminated
+ASCII strings, which are copied into newly allocated memory before the
+address of the new string is stored in \fI*dest\fR; otherwise, the elements
+of \fIsrc\fR are just copied to \fI*dest\fR.
+
+.SH BUGS
+There should be a way of declaring a \fIStack\fR that pushes or pops
+more than a single word at a time.
+
+.SH SEE ALSO
+magicutils\|(3)

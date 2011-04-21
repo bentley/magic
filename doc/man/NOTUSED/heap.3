@@ -1,0 +1,97 @@
+.TH HEAP 3
+.UC 4
+.SH NAME
+heap \- procedures for managing sorted heaps in libmagicutils.a
+
+.SH SYNOPSIS
+.nf
+.B #include "magic.h"
+.B #include "heap.h"
+.PP
+.B "typedef struct { int he_key, char *he_id; } HeapEntry;"
+.PP
+.B bool HEAP_EMPTY(h)
+.B Heap *h;
+.PP
+.B "HeapInit(h, initsize, descending, stringids)"
+.B Heap *h;
+.B int initsize;
+.B bool descending, stringids;
+.PP
+.B "HeapKill(h, func)"
+.B Heap *h;
+.B int (*func)(h, index);
+.PP
+.B "HeapFreeIdFunc(h, index)"
+.B Heap *h;
+.B int index;
+.PP
+.B "HeapEntry *HeapRemoveTop(h, entry);"
+.B Heap *h;
+.B HeapEntry *entry;
+.PP
+.B "HeapAdd(h, key, id)"
+.B Heap *h;
+.B int key;
+.B char *id;
+.fi
+
+.SH DESCRIPTION
+These procedures create, manipulate, and destroy heaps.
+A heap is essentially an array that automatically sorts itself when
+items are added to it.  The items added to the heap consist of an
+integer key and a one-word datum which can either be the address of
+a NULL-terminated string (treated specially), or any other one-word
+data item.
+Heaps can be sorted in either ascending or descending order.
+The data storage
+for a heap automatically grows as more elements are added to the heap.
+.PP
+The \fIHeapEntry\fR structure identifies the integer
+key value (\fIhe_key\fR) on which the element is sorted,
+and a one-word datum (\fIhe_id\fR).
+Heaps are created by \fIHeapInit\fR, which initializes the
+data storage for \fIh\fR.  Enough space is left initially
+for \fIinitsize\fR elements, although the heap will grow
+automatically as more elements are added.
+If \fIdescending\fR is \fBTRUE\fR, the largest element
+in the heap will be removed first; otherwise, the smallest
+element will be the first to be removed by \fIHeapRemoveTop\fR.
+Each heap entry has an associated datum or \fIid\fR; if
+\fIstringids\fR is TRUE, these are considered to be ASCII
+strings and handled specially by \fIHeapAdd\fR and \fIHeapKill\fR.
+.PP
+.I HeapKill
+deallocates the storage associated with a heap.
+If \fIfunc\fR is non-NULL, it is applied to each element in the heap.
+A common use of \fIfunc\fR is to free the storage associated with
+string ids in the heap, such as is necessary when the heap was
+created with \fIstringids\fR set to \fBTRUE\fR in the call to
+\fIHeapInit\fR above.  A library function, \fIHeapFreeIdFunc\fR,
+is provided for this purpose.
+.PP
+.I HeapRemoveTop
+places the top element from \fIh\fR in the \fIHeapEntry\fR
+pointed to by \fIentry\fR and returns \fIentry\fR.  However,
+if the heap was empty, \fIHeapRemoveTop\fR returns NULL.
+.I HeapRemoveTop
+always removes the smallest (if keys are ascending) or largest
+(if keys are descending) element from the heap.
+.PP
+.I HeapAdd
+is used to add a new entry to \fIh\fR.  The new entry has an
+integer key of \fIkey\fR, and a value of \fIid\fR.
+If the heap was created with \fIstringids\fR to be \fBTRUE\fR in
+\fIHeapInit\fR, then \fIid\fR is interpreted as a NULL-terminated
+ASCII string; sufficient additional memory to hold this string
+is allocated, the string is copied into this new memory, and a
+pointer to this new memory is stored with the heap entry.
+Otherwise, the value of \fIid\fR is just stored directly
+in the heap entry.
+.SH BUGS
+The management of the \fIhe_id\fR field should be consistent with
+the management of keys for hash tables, i.e, multi-word structures
+should be supported along with strings and single-word values.
+
+.SH SEE ALSO
+magicutils\|(3)

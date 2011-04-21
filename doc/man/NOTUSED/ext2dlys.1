@@ -1,0 +1,155 @@
+.TH EXT2DLYS 1 
+.SH NAME
+ext2dlys \- create a SCALD wire-delays file from a tree of .ext files
+.SH SYNOPSIS
+.B ext2dlys
+[
+.B \-d\ 
+\fIpsPerPf\fR
+] [
+.B \-l\ 
+\fIpsPerCentimicron\fR
+] [
+.B \-m\ 
+\fIminmult\fR
+\fImaxmult\fR
+] [
+.B \-o\ 
+\fIoutfile\fR
+] [
+.B \-t\ 
+\fIcapscale\fR
+] [
+.B \-D\ 
+\fIdrivefile\fR
+] [
+.B \-I\ 
+\fIiload\fR
+] [
+.B \-L\ 
+\fInetfile\fR
+] [
+.B \-M\ 
+\fIscaldmapfile\fR
+] [
+.B \-O\ 
+\fIoload\fR
+] [
+.I "extcheck-options"
+]
+.I file
+.SH DESCRIPTION
+.I Ext2dlys
+is used to produce a SCALD wire-delays file (in \fIdlys\fR\|(5) format)
+on standard output, to be used in simulation and timing verification.
+It computes the wire delay information from capacitance in the circuit
+extracted from a layout by \fImagic\fR\|(1).
+.PP
+The filename \fIfile\fR given to \fIext2dlys\fR is the name of
+the root \fB.ext\fR file of the extracted circuit,
+and also of the \fB.net\fR file.
+The \fB.ext\fR files, in \fIext\fR\|(5) format,
+contain the capacitance to substrate for each
+electrical node, specify the connectivity of the circuit, and also
+give distance information.
+The \fB.net\fR file, in \fInet\fR\|(5) format,
+lists the nets and terminals in the circuit that will
+be present in the \fB.dlys\fR file.
+All terminals in the \fB.net\fR file are by default considered to be
+inputs (receivers) unless explicitly identified as drivers in the
+\fIdrivefile\fR given with the \fB\-D\fR option; see the description below.
+In addition to identifying the terminals of interest, the \fB.net\fR file
+gives the signal name associated with each
+net as a comment line immediately prior to the list of terminals in the net.
+.PP
+The remaining arguments to \fIext2dlys\fR tell how this
+capacitance and distance information is to be converted into delay, as
+well as specifying the use of alternate files:
+.TP
+\fB\-d\fI\ psPerPf\fR
+Used to turn capacitance into delay; one picofarad is equal to
+\fIpsPerPf\fR picoseconds of delay.
+The default value is \fB100.0\fR, or roughly what one would
+expect if using 100 ohm drivers.
+The value of \fIpsPerPf\fR is used only for drivers whose effective
+on resistance hasn't been given explicitly in the \fIdrivefile\fR
+specified with the \fB\-D\fR flag (see below).
+.TP
+\fB\-l\fI\ psPerCentimicron\fR
+Used to turn distance into delay; one centimicron of distance
+is equal to \fIpsPerCentimicron\fR picoseconds of delay.
+.TP
+\fB\-m\fI\ minmult\ maxmult\fR
+Multipliers to convert estimated delays into best-case (\fIminmult\fR) and
+worst-case (\fImaxmult\fR).
+Both are \fB1.0\fR by default.
+.TP
+\fB\-o\fI\ outfile\fR
+Write the output to \fIoutfile\fR (note that no suffix is implied)
+instead of to the standard output.
+.TP
+\fB\-t\fI\ capscale\fR
+Gives a scale factor by which units of capacitance in the \fB.sim\fR file
+will be multiplied in order to give femtofarads.  \fICapscale\fR may be
+a real number; its default value is \fB1.0\fR.
+.TP
+\fB\-D\fI\ drivefile\fR
+Also used to turn capacitance into delay, but on a per-net basis.
+Each line of the file \fIdrivefile\fR consists of a hierarchical
+pin name (of an output driver) and its associated ``drive factor''
+(equivalent to \fIdelay\fR in the \fB\-d\fR flag above),
+namely the number of picoseconds per picofarad for the net
+driven by that output pin.
+Nets driven by a pin listed not in this file use the default
+delay specified by \fB\-d\fR above.
+If this file isn't given, we don't know for certain which pins
+are the drivers in each net, so we arbitrarily pick one pin
+per net and assume it is the driver.
+.TP
+\fB\-I\fI\ iload\fR
+In addition to the capacitance reported in the \fB.sim\fR file for each
+net, add an additional \fIiload\fR attofarads of capacitance for each
+input on a given net to the total capacitance for that net.
+(Inputs are counted only if they appear in the \fB.net\fR file.)
+The default
+value of \fIiload\fR is \fB0.0\fR, since it varies so much from one
+technology to the next.
+This option is provided to account
+for extra transistor capacitance not computed by the extractor, such as
+when the technology of the circuit being extracted is non-MOS (e.g, bipolar).
+.TP
+\fB\-L\fI\ netfile\fR
+Instead of using \fIfile\fB.net\fR as the netlist file, use
+\fInetfile\fB.net\fR instead.
+.TP
+\fB\-M\fI scaldmap\fR
+If specified, then \fIscaldmap\fR is read (note no suffix implied)
+to obtain a translation between
+Magic terminal names and SCALD pin names.  
+Each line in \fIscaldmap\fR contains a Magic name followed by a SCALD
+name.  The Magic name is terminated by the first blank; the SCALD
+name continues from the next non-blank character to the end of
+the line, possibly including embedded blanks.
+When writing the output file, the corresponding SCALD name is
+used instead of the Magic name for each pin in a net.
+See \fIdlys\fR\|(5)
+for more details of the output file format.
+.TP
+\fB\-O\fI\ oload\fR
+In addition to the capacitance reported in the \fB.sim\fR file for each
+net, add an additional \fIoload\fR attofarads of capacitance for each
+output on a given net to the total capacitance for that net.
+The default
+value of \fIoload\fR is \fB0.0\fR.  If only \fB\-I\fR and not \fB\-O\fR
+is specified, \fIext2dlys\fR treats this as though both \fB\-I\fR and
+\fB\-O\fR had been specified with the same values; inputs and outputs
+are not distinguished.
+.PP
+In addition, all of the options of \fIextcheck\fR\|(1) are accepted.
+
+.SH "SEE ALSO"
+extcheck\|(1), ext2sim\|(1), ext2spice\|(1),
+magic\|(1), dlys\|(5), ext\|(5)
+
+.SH AUTHOR
+Walter Scott

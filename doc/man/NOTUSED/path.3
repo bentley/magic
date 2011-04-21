@@ -1,0 +1,114 @@
+.TH PATH 3
+.UC 4
+.SH NAME
+path \- procedures for managing search paths in libmagicutils.a
+
+.SH SYNOPSIS
+.nf
+.B #include <stdio.h>
+.B #include "utils.h"
+.PP
+.B "int PaConvertTilde(psource, pdest, size)"
+.B char **psource, **pdest;
+.B int size;
+.PP
+.B "FILE *PaOpen(file, mode, ext, path, libpath, prealname)"
+.B "char *file, *mode, *ext;"
+.B char *path, *libpath;
+.B char **prealname;
+.PP
+.B "char *PaSubsWD(path, newWD)"
+.B char *path, *newWD;
+.PP
+.B "int PaEnum(path, file, func, cdata)"
+.B char *path, *file;
+.B "int (*func)(name, cdata);"
+.B ClientData cdata;
+.fi
+
+.SH DESCRIPTION
+These procedures implement a path mechanism, whereby several
+places may be searched for files.
+.PP
+.I PaConvertTilde
+is used to convert \fIcsh\fR\|(1)-style tilde notation for
+users' home directories (e.g., ``~wss'', ``~/mydir/file.o'')
+to standard directory names as understood by \fIopen\fR\|(2), etc.
+If \fI**psource\fR is a tilde (``\fB~\fR''), then the name
+following the tilde up to the first slash or end of string
+is converted to a home directory and stored in the string
+pointed to by \fI*pdest\fR.  Then
+remaining characters in the file name at \fI*psource\fR
+are copied to \fI*pdest\fR (the file name is terminated by white space,
+a NULL character, or a colon) and \fI*psource\fR is updated.
+Upon return, \fI*psource\fR points
+to the terminating character in the source file name, and \fI*pdest\fR
+points to the null character terminating the expanded name.
+If a tilde cannot be converted because the user name cannot
+be found, \fI*psource\fR is still advanced past the current entry, but
+nothing is stored at the destination.
+At most \fIsize\fR characters
+(including the terminating null character) will be stored at \fI*pdest\fR.
+The name consisting of a single tilde, i.e, ``\fB~\fR'' with no user name,
+expands to the current user's home directory.
+.I PaConvertTilde
+returns the number of bytes of space left in the destination area
+if successful, or -1 if the user name couldn't be found in the
+password file.
+.PP
+.I PaOpen
+opens a file, looking it up in the current path and supplying a default
+extension.  It either returns a pointer to a \fIFILE\fR, as does
+\fIfopen\fR\|(3s), or NULL if no file could be opened.
+The mode of the file opened is determined by \fImode\fR, also as
+in \fIfopen\fR.
+If \fIext\fR is specified, then it is tacked onto the end of \fIname\fR
+to construct the name of the file \fIPaOpen\fR will attempt to find.
+(\fIExt\fR must begin with a dot if that is the extension separator;
+none is inserted automatically.)
+If the first character of \fIname\fR is a tilde or slash,
+\fIPaOpen\fR tries to look up the file with the original name
+(and extension), doing tilde expansion if necessary and returning
+the result.  Otherwise, it goes through the search path \fIpath\fR
+(a colon-separated list of directories much as in \fIcsh\fR\|(1))
+one entry at a time, trying to look up the file
+once for each path entry by prepending the
+path entry to the original file name.
+This concatenated name is stored in a static string and
+made available to the caller by setting \fI*prealName\fR to point
+to it if \fIprealName\fR is non-NULL and if the open succeeds.
+If the entire \fIpath\fR is tried, and still nothing works,
+then we try each entry in the library path \fIlibpath\fR next.
+The static string will be trashed on the next call to this
+routine.
+Also, no individual file name is allowed to be more than
+200 characters long; excess characters are lost.
+.PP
+.I PaSubsWD
+replaces all uses of the working directory in a path
+by some fixed directory.
+It returns a pointer to a path
+that is just like \fIpath\fR,
+except that every implicit or explicit use of
+the working directory (``.'') is replaced by the \fInewWD\fR argument.
+The result is a static array, which will be trashed on
+the next call to this procedure.
+.PP
+.I PaEnum
+is used to call a client procedure with each directory in
+\fIpath\fR prepended to the string \fIfile\fR.  The client procedure
+is of the form \fI(*func)(name, cdata)\fR, where \fIname\fR
+is a directory in the path prepended to \fIfile\fR, and
+\fIcdata\fR is the same as \fIcdata\fR passed to \fIPaEnum\fR.
+This client procedure should
+return 0 normally, or 1 to abort the path enumeration.
+If a directory in the search path
+refers to a non-existent user name (using the ``~user'' syntax),
+we skip that component.
+.I PaEnum
+returns 0 if all clients returned 0, or 1 if some client
+returned 1.  If some client returns 1, the enumeration is
+aborted.
+
+.SH SEE ALSO
+magicutils\|(3)
