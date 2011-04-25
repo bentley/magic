@@ -2996,6 +2996,7 @@ donesides:
 	if (pMask = DBAllConnPlanes[type])
 	{
 	    Rect biggerArea;
+	    bool is_split = IsSplit(tile);
 
 	    extNbrUn = extUnInit;
 	    TITORECT(tile, &pla.area);
@@ -3004,9 +3005,17 @@ donesides:
 		if ((pNum != tilePlaneNum) && PlaneMaskHasPlane(pMask, pNum))
 		{
 		    pla.plane = pNum;
-		    (void) DBSrPaintArea((Tile *) NULL,
-			    arg->fra_def->cd_planes[pNum], &biggerArea,
-			    mask, extNbrPushFunc, (ClientData) &pla);
+		    if (is_split)
+		        DBSrPaintNMArea((Tile *) NULL,
+				arg->fra_def->cd_planes[pNum],
+				TiGetTypeExact(tile) &
+				(TT_DIAGONAL | TT_SIDE | TT_DIRECTION),
+				&biggerArea, mask, extNbrPushFunc,
+				(ClientData) &pla);
+		    else
+		        DBSrPaintArea((Tile *) NULL,
+				arg->fra_def->cd_planes[pNum], &biggerArea,
+				mask, extNbrPushFunc, (ClientData) &pla);
 		}
 	}
     }
