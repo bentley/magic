@@ -1563,12 +1563,14 @@ AC_OUTPUT(defs.mak)
 dnl 
 dnl Print configuration and report problems
 
+ECHO_N=printf
+
 echo
 echo "-----------------------------------------------------------"
 echo "Configuration Summary (principle requirements):"
 echo
 
-echo -n "X11:          "
+${ECHO_N} "X11:          "
 if test $usingX11 ; then
    echo "yes"
 else
@@ -1582,10 +1584,10 @@ else
    echo
 fi
 
-echo -n "OpenGL:       "
+${ECHO_N} "OpenGL:       "
 if test $usingOGL ; then
    echo "yes"
-   echo -n "Vector fonts: "
+   ${ECHO_N} "Vector fonts: "
    if test "x$use_libglu" != "x" ; then
       echo "yes"
    else
@@ -1605,14 +1607,14 @@ else
 fi
 
 if test $usingTcl ; then
-   echo -n "Tcl/Tk:       "
+   ${ECHO_N} "Tcl/Tk:       "
    echo "yes"
 else
    if test $usingScheme ; then
-     echo -n "Scheme:       "
+     ${ECHO_N} "Scheme:       "
      echo "yes"
    else
-     echo -n "Tcl/Tk:       "
+     ${ECHO_N} "Tcl/Tk:       "
      echo "no"
      echo
      echo "  Without Tcl/Tk, you cannot run the enhanced version of magic"
