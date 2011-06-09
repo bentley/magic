@@ -122,11 +122,13 @@ DefAddRoutes(rootDef, f, oscale, special, defLayerMap)
 		if (w != 0)
 		    paintWidth = (int)roundf(w / oscale);
 		else
-		    paintWidth = (lefl) ? lefl->info.route.width : DEFAULT_WIDTH;
+		    paintWidth = (lefl) ? lefl->info.route.width :
+				DEFAULT_WIDTH * DBLambda[1] / DBLambda[0];
 		saveWidth = paintWidth;
 	    }
 	    else
-		paintWidth = (lefl) ? lefl->info.route.width : DEFAULT_WIDTH;
+		paintWidth = (lefl) ? lefl->info.route.width :
+				DEFAULT_WIDTH * DBLambda[1] / DBLambda[0];
 	}
 	else if (*token != '(')	/* via name */
 	{
@@ -236,7 +238,7 @@ DefAddRoutes(rootDef, f, oscale, special, defLayerMap)
 				    paintWidth = saveWidth;
 				else
 				    paintWidth = (lefl) ? lefl->info.route.width
-					: DEFAULT_WIDTH;
+					: DEFAULT_WIDTH * DBLambda[1] / DBLambda[0];
 				break;
 			    }
 		}
