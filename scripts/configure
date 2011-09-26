@@ -868,6 +868,7 @@ Optional Features:
   --disable-readline	disable readline package
   --disable-threads        disable threaded graphics
   --disable-route        disable routing package
+  --disable-modular        embed ext2sim and ext2spice packages
   --disable-rsim        disable IRSIM tool
   --disable-new-macros        disable new macro set
 
@@ -9652,6 +9653,24 @@ _ACEOF
 	\${MAGICDIR}/mzrouter/libmzrouter.o \${MAGICDIR}/router/librouter.o \
 	\${MAGICDIR}/irouter/libirouter.o \${MAGICDIR}/grouter/libgrouter.o \
 	\${MAGICDIR}/gcr/libgcr.o"
+
+fi;
+
+# Check whether --enable-modular or --disable-modular was given.
+if test "${enable_modular+set}" = set; then
+  enableval="$enable_modular"
+
+  modules="$modules ext2sim ext2spice"
+  extra_libs="$extra_libs \${MAGICDIR}/ext2sim/libext2sim.o"
+  extra_libs="$extra_libs \${MAGICDIR}/ext2spice/libext2spice.o"
+
+else
+
+  programs="$programs ext2sim ext2spice"
+  cat >>confdefs.h <<\_ACEOF
+#define MODULAR 1
+_ACEOF
+
 
 fi;
 

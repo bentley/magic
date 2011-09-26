@@ -3,7 +3,7 @@
 #
 
 MAGICDIR   = .
-PROGRAMS   = magic ext2sim ext2spice
+PROGRAMS   = magic
 TECH       = scmos
 LIBRARIES  = database utils extflat
 MODULES    = cmwind commands database dbwind debug drc extflat extract \

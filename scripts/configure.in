@@ -949,6 +949,16 @@ AC_ARG_ENABLE(route,
 	\${MAGICDIR}/gcr/libgcr.o"
 ])
 
+AC_ARG_ENABLE(modular,
+[  --disable-modular        embed ext2sim and ext2spice packages], [
+  modules="$modules ext2sim ext2spice"
+  extra_libs="$extra_libs \${MAGICDIR}/ext2sim/libext2sim.o"
+  extra_libs="$extra_libs \${MAGICDIR}/ext2spice/libext2spice.o"
+  ], [ 
+  programs="$programs ext2sim ext2spice"
+  AC_DEFINE(MODULAR)
+])
+
 AC_ARG_ENABLE(rsim,
 [  --disable-rsim        disable IRSIM tool], , [ 
   if ! test $usingTcl ; then

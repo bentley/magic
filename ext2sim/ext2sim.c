@@ -52,20 +52,32 @@ int simdevVisit(), simresistVisit(), simcapVisit(), simnodeVisit();
 int simmergeVisit();
 
 /* Options specific to ext2sim */
+#ifdef MODULAR
 bool esDoExtResis = FALSE;
 bool esDevNodesOnly = FALSE;
-bool esNoAlias = TRUE;
-bool esNoLabel = TRUE;
 bool esNoAttrs = FALSE;
 bool esHierAP = FALSE;
 bool esMergeDevsA = FALSE;	/* merge devices of equal length */
 bool esMergeDevsC = FALSE;	/* merge devices of equal length & width */
+int esCapAccuracy = 1;
+
+#else
+extern bool esDoExtResis;
+extern bool esDevNodesOnly;
+extern bool esNoAttrs;
+extern bool esHierAP;
+extern bool esMergeDevsA;
+extern bool esMergeDevsC;
+extern int esCapAccuracy;
+#endif
+
+bool esNoAlias = TRUE;
+bool esNoLabel = TRUE;
 char simesDefaultOut[FNSIZE];
 char *simesOutName = simesDefaultOut;
 char esDefaultAlias[FNSIZE], esDefaultLabel[FNSIZE];
 char *esAliasName = esDefaultAlias;
 char *esLabelName = esDefaultLabel;
-int  esCapAccuracy = 1;
 char esCapFormat[FNSIZE];
 FILE *esSimF = NULL;
 FILE *esAliasF = NULL;
@@ -157,7 +169,11 @@ typedef struct _devMerge {
         struct _devMerge *next;
 } devMerge;
 
+#ifdef MODULAR
 devMerge *devMergeList = NULL ;
+#else
+extern devMerge *devMergeList;
+#endif
 
 /* attributes controlling the Area/Perimeter extraction of fet terminals */
 #define ATTR_FLATAP	"*[Ee][Xx][Tt]:[Aa][Pp][Ff]*"
@@ -919,7 +935,7 @@ usage:
 /*
  * ----------------------------------------------------------------------------
  *
- * GetNode --
+ * SimGetNode --
  *
  * function to find a node given its hierarchical prefix and suffix
  *
@@ -929,7 +945,7 @@ usage:
  * ----------------------------------------------------------------------------
  */
 EFNode *
-GetNode(prefix, suffix)
+SimGetNode(prefix, suffix)
 HierName *prefix;
 HierName *suffix;
 {
@@ -938,6 +954,7 @@ HierName *suffix;
 	he = EFHNConcatLook(prefix, suffix, "output");
 	return(((EFNodeName *) HashGetValue(he))->efnn_node);
 }
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -1130,7 +1147,7 @@ simdevVisit(dev, hierName, trans)
 	         simnAPHier(source, hierName, fetInfo[dev->dev_type].resClassSD, 
 		      scale, esSimF);
 	       else {
-	         snode= GetNode(hierName,
+	         snode= SimGetNode(hierName,
 			     source->dterm_node->efnode_name->efnn_hier);
 	         simnAP(snode, fetInfo[dev->dev_type].resClassSD, scale, esSimF);
 	       }
@@ -1148,7 +1165,7 @@ simdevVisit(dev, hierName, trans)
 	         simnAPHier(drain, hierName, fetInfo[dev->dev_type].resClassSD, 
 		      scale, esSimF);
 	       else {
-	         dnode = GetNode(hierName,
+	         dnode = SimGetNode(hierName,
 			      drain->dterm_node->efnode_name->efnn_hier);
 	         simnAP(dnode, fetInfo[dev->dev_type].resClassSD, 
 		      scale, esSimF);
@@ -1634,9 +1651,9 @@ Transform *trans;	/* Coordinate transform not used */
 		drain = &dev->dev_terms[2];
 	subnode = dev->dev_subsnode;
 
-	gnode = GetNode (hierName, gate->dterm_node->efnode_name->efnn_hier);
-	snode = GetNode (hierName, source->dterm_node->efnode_name->efnn_hier);
-	dnode = GetNode (hierName, drain->dterm_node->efnode_name->efnn_hier);
+	gnode = SimGetNode (hierName, gate->dterm_node->efnode_name->efnn_hier);
+	snode = SimGetNode (hierName, source->dterm_node->efnode_name->efnn_hier);
+	dnode = SimGetNode (hierName, drain->dterm_node->efnode_name->efnn_hier);
 
     	GeoTransRect(trans, &dev->dev_rect, &r);
     	scale = GeoScale(trans);

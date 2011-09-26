@@ -1044,7 +1044,7 @@ usage:
 /*
  * ----------------------------------------------------------------------------
  *
- * GetNode --
+ * SpiceGetNode --
  *
  * function to find a node given its hierarchical prefix and suffix
  *
@@ -1054,7 +1054,7 @@ usage:
  * ----------------------------------------------------------------------------
  */
 EFNode *
-GetNode(prefix, suffix)
+SpiceGetNode(prefix, suffix)
 HierName *prefix;
 HierName *suffix;
 {
@@ -1902,7 +1902,7 @@ spcdevVisit(dev, hierName, trans)
 			scale, "d", sdM, esSpiceF);
 	    else
 	    {
-		dnode = GetNode(hierName, drain->dterm_node->efnode_name->efnn_hier);
+		dnode = SpiceGetNode(hierName, drain->dterm_node->efnode_name->efnn_hier);
         	spcnAP(dnode, fetInfo[dev->dev_type].resClassSD, scale,
 			"d", sdM, esSpiceF, w);
 	    }
@@ -1910,7 +1910,7 @@ spcdevVisit(dev, hierName, trans)
 		spcnAPHier(source, hierName, fetInfo[dev->dev_type].resClassSD,
 			scale, "s", sdM, esSpiceF);
 	    else {
-		snode= GetNode(hierName, source->dterm_node->efnode_name->efnn_hier);
+		snode= SpiceGetNode(hierName, source->dterm_node->efnode_name->efnn_hier);
 		spcnAP(snode, fetInfo[dev->dev_type].resClassSD, scale,
 			"s", sdM, esSpiceF, w);
 	    }
@@ -2776,9 +2776,9 @@ devMergeVisit(dev, hierName, trans)
 	drain = &dev->dev_terms[2];
 
 
-    gnode = GetNode(hierName, gate->dterm_node->efnode_name->efnn_hier);
-    snode = GetNode(hierName, source->dterm_node->efnode_name->efnn_hier);
-    dnode = GetNode(hierName, drain->dterm_node->efnode_name->efnn_hier);
+    gnode = SpiceGetNode(hierName, gate->dterm_node->efnode_name->efnn_hier);
+    snode = SpiceGetNode(hierName, source->dterm_node->efnode_name->efnn_hier);
+    dnode = SpiceGetNode(hierName, drain->dterm_node->efnode_name->efnn_hier);
     if (dev->dev_subsnode)
 	subnode = spcdevSubstrate(hierName,
 			dev->dev_subsnode->efnode_name->efnn_hier, 
@@ -2966,7 +2966,7 @@ devDistJunctVisit(dev, hierName, trans)
 
     for (i = 1; i<dev->dev_nterm; i++)
     {
-	n = GetNode(hierName,
+	n = SpiceGetNode(hierName,
 		dev->dev_terms[i].dterm_node->efnode_name->efnn_hier);
 	update_w(fetInfo[dev->dev_type].resClassSD, w, n);
     }
