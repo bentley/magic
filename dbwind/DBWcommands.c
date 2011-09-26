@@ -137,8 +137,16 @@ extern void CmdAutoLef();
  */ 
 
 #ifdef MAGIC_WRAPPER
+#ifdef EXT2SIM_AUTO
 extern void CmdAutoExtToSim();
+#else
+extern void CmdExtToSim();
+#endif
+#ifdef EXT2SPICE_AUTO
 extern void CmdAutoExtToSpice();
+#else
+extern void CmdExtToSpice();
+#endif
 #endif
 
 /*
@@ -488,26 +496,46 @@ DBWInitCommands()
 	CmdSplitErase, FALSE);   
 
 #ifdef MAGIC_WRAPPER
-    /* Add the Tcl commands for exttospice and exttosim */
+    /* Add the Tcl commands for exttospice, exttosim, and aliases ext2spice, ext2sim */
+#ifdef EXT2SIM_AUTO
     WindAddCommand(DBWclientID,
 	"exttosim [args]	convert extracted file(s) to a sim format file;"
 	" type\n\t\t\t\"exttosim help\" for information on options",
 	CmdAutoExtToSim, FALSE);
     WindAddCommand(DBWclientID,
-	"exttospice [args]	convert extracted file(s) to a SPICE format file;"
-	" type\n\t\t\t\"exttospice help\" for information on options",
-	CmdAutoExtToSpice, FALSE);
-
-    /* Add the aliases ext2spice and ext2sim */
-    WindAddCommand(DBWclientID,
 	"ext2sim [args]	convert extracted file(s) to a sim format file;"
 	" type\n\t\t\t\"ext2sim help\" for information on options",
 	CmdAutoExtToSim, FALSE);
+#else
+    WindAddCommand(DBWclientID,
+	"exttosim [args]	convert extracted file(s) to a sim format file;"
+	" type\n\t\t\t\"exttosim help\" for information on options",
+	CmdExtToSim, FALSE);
+    WindAddCommand(DBWclientID,
+	"ext2sim [args]	convert extracted file(s) to a sim format file;"
+	" type\n\t\t\t\"ext2sim help\" for information on options",
+	CmdExtToSim, FALSE);
+#endif /* EXT2SIM_AUTO */
+#ifdef EXT2SPICE_AUTO
+    WindAddCommand(DBWclientID,
+	"exttospice [args]	convert extracted file(s) to a SPICE format file;"
+	" type\n\t\t\t\"exttospice help\" for information on options",
+	CmdAutoExtToSpice, FALSE);
     WindAddCommand(DBWclientID,
 	"ext2spice [args]	convert extracted file(s) to a SPICE format file;"
 	" type\n\t\t\t\"ext2spice help\" for information on options",
 	CmdAutoExtToSpice, FALSE);
-#endif
+#else
+    WindAddCommand(DBWclientID,
+	"exttospice [args]	convert extracted file(s) to a SPICE format file;"
+	" type\n\t\t\t\"exttospice help\" for information on options",
+	CmdExtToSpice, FALSE);
+    WindAddCommand(DBWclientID,
+	"ext2spice [args]	convert extracted file(s) to a SPICE format file;"
+	" type\n\t\t\t\"ext2spice help\" for information on options",
+	CmdExtToSpice, FALSE);
+#endif	/* EXT2SPICE_AUTO */
+#endif  /* MAGIC_WRAPPER */
 
 
 #ifdef USE_READLINE

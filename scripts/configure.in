@@ -956,7 +956,8 @@ AC_ARG_ENABLE(modular,
   extra_libs="$extra_libs \${MAGICDIR}/ext2spice/libext2spice.o"
   ], [ 
   programs="$programs ext2sim ext2spice"
-  AC_DEFINE(MODULAR)
+  AC_DEFINE(EXT2SPICE_AUTO)
+  AC_DEFINE(EXT2SIM_AUTO)
 ])
 
 AC_ARG_ENABLE(rsim,

@@ -52,7 +52,7 @@ int simdevVisit(), simresistVisit(), simcapVisit(), simnodeVisit();
 int simmergeVisit();
 
 /* Options specific to ext2sim */
-#ifdef MODULAR
+#ifdef EXT2SIM_AUTO
 bool esDoExtResis = FALSE;
 bool esDevNodesOnly = FALSE;
 bool esNoAttrs = FALSE;
@@ -169,7 +169,7 @@ typedef struct _devMerge {
         struct _devMerge *next;
 } devMerge;
 
-#ifdef MODULAR
+#ifdef EXT2SIM_AUTO
 devMerge *devMergeList = NULL ;
 #else
 extern devMerge *devMergeList;
@@ -187,6 +187,7 @@ extern devMerge *devMergeList;
 /* Forward declaration */
 int _ext2sim_start();
 
+#ifdef EXT2SIM_AUTO
 /*
  * ----------------------------------------------------------------------------
  *
@@ -221,6 +222,8 @@ Exttosim_Init(interp)
     Tcl_PkgProvide(interp, "Exttosim", MAGIC_VERSION);
     return TCL_OK;
 }
+
+#endif /* EXT2SIM_AUTO */
 
 
 /*

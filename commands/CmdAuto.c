@@ -29,6 +29,7 @@
 #include "windows/windows.h"
 #include "textio/txcommands.h"
 
+#ifdef EXT2SIM_AUTO
 /*
  * ----------------------------------------------------------------------------
  * CmdAutoExtToSim() --
@@ -61,7 +62,9 @@ CmdAutoExtToSim(w, cmd)
     if (result == TCL_OK)
 	WindSendCommand(w, cmd);
 }
+#endif /* EXT2SIM_AUTO */
 
+#ifdef EXT2SPICE_AUTO
 /*
  * ----------------------------------------------------------------------------
  * CmdAutoExtToSpice() --
@@ -94,6 +97,7 @@ CmdAutoExtToSpice(w, cmd)
     if (result == TCL_OK)
 	WindSendCommand(w, cmd);
 }
+#endif /* EXT2SPICE_AUTO */
 
 #ifdef ROUTE_AUTO
 /*

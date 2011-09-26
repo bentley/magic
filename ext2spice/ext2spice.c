@@ -119,6 +119,7 @@ devMerge *devMergeList = NULL ;
 
 #ifdef MAGIC_WRAPPER
 
+#ifdef EXT2SPICE_AUTO
 /*
  * ----------------------------------------------------------------------------
  *
@@ -153,6 +154,7 @@ Exttospice_Init(interp)
     Tcl_PkgProvide(interp, "Exttospice", MAGIC_VERSION);
     return TCL_OK;
 }
+#endif /* EXT2SPICE_AUTO */
 
 /*
  * ----------------------------------------------------------------------------

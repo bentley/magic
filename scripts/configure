@@ -9668,7 +9668,11 @@ else
 
   programs="$programs ext2sim ext2spice"
   cat >>confdefs.h <<\_ACEOF
-#define MODULAR 1
+#define EXT2SPICE_AUTO 1
+_ACEOF
+
+  cat >>confdefs.h <<\_ACEOF
+#define EXT2SIM_AUTO 1
 _ACEOF
 
 
