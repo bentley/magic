@@ -1001,7 +1001,8 @@ void
 extSeparateBounds(nterm)
     int nterm;			/* last terminal (# terminals - 1) */
 {
-    LinkedBoundary *lb, *lbcomp, *lblast, *lbnext;
+    Rect lbrect;
+    LinkedBoundary *lb, *lbstart, *lbend, *lblast, *lbnext;
     bool found;
 
     /* Avoid crash condition on a badly-defined extract definition */
@@ -1015,7 +1016,8 @@ extSeparateBounds(nterm)
 	extSpecialBounds[nterm]->b_next = NULL;
 
 	/* Add connected segments until no more are found */
-	lbcomp = extSpecialBounds[nterm];
+	lbstart = lbend = extSpecialBounds[nterm];
+	lbrect = lbstart->r;
 	found = TRUE;
 	while (found == TRUE)
 	{
@@ -1027,22 +1029,61 @@ extSeparateBounds(nterm)
 		/* checking the direction of the segment. . . 	*/
 
 		lbnext = lb->b_next;
-		if (((lb->r.r_xbot == lbcomp->r.r_xbot) &&
-		    (lb->r.r_ybot == lbcomp->r.r_ybot)) ||
-		    ((lb->r.r_xtop == lbcomp->r.r_xtop) &&
-		    (lb->r.r_ytop == lbcomp->r.r_ytop)) ||
-		    ((lb->r.r_xtop == lbcomp->r.r_xbot) &&
-		    (lb->r.r_ytop == lbcomp->r.r_ybot)) ||
-		    ((lb->r.r_xbot == lbcomp->r.r_xtop) &&
-		    (lb->r.r_ybot == lbcomp->r.r_ytop)))
+		if (((lb->r.r_xbot == lbrect.r_xbot) &&
+		    (lb->r.r_ybot == lbrect.r_ybot)))
 		{
 		    if (lblast == NULL)
 			extSpecialBounds[0] = lb->b_next;
 		    else
 			lblast->b_next = lb->b_next;
-		    lbcomp->b_next = lb;
-		    lbcomp = lb;
-		    lb->b_next = NULL;
+		    // Insert lb after lbstart
+		    lb->b_next = lbstart->b_next;
+		    lbstart->b_next = lb;
+		    lbstart = lb;
+		    lbrect.r_xbot = lb->r.r_xtop;
+		    lbrect.r_ybot = lb->r.r_ytop;
+		    found = TRUE;
+		}
+		else if (((lb->r.r_xtop == lbrect.r_xbot) &&
+		    (lb->r.r_ytop == lbrect.r_ybot)))
+		{
+		    if (lblast == NULL)
+			extSpecialBounds[0] = lb->b_next;
+		    else
+			lblast->b_next = lb->b_next;
+		    lb->b_next = lbstart->b_next;
+		    lbstart->b_next = lb;
+		    lbstart = lb;
+		    lbrect.r_xbot = lb->r.r_xbot;
+		    lbrect.r_ybot = lb->r.r_ybot;
+		    found = TRUE;
+		}
+		else if (((lb->r.r_xtop == lbrect.r_xtop) &&
+		    (lb->r.r_ytop == lbrect.r_ytop)))
+		{
+		    if (lblast == NULL)
+			extSpecialBounds[0] = lb->b_next;
+		    else
+			lblast->b_next = lb->b_next;
+		    lb->b_next = lbend->b_next;
+		    lbend->b_next = lb;
+		    lbend = lb;
+		    lbrect.r_xtop = lb->r.r_xbot;
+		    lbrect.r_ytop = lb->r.r_ybot;
+		    found = TRUE;
+		}
+		else if (((lb->r.r_xbot == lbrect.r_xtop) &&
+		    (lb->r.r_ybot == lbrect.r_ytop)))
+		{
+		    if (lblast == NULL)
+			extSpecialBounds[0] = lb->b_next;
+		    else
+			lblast->b_next = lb->b_next;
+		    lb->b_next = lbend->b_next;
+		    lbend->b_next = lb;
+		    lbend = lb;
+		    lbrect.r_xtop = lb->r.r_xtop;
+		    lbrect.r_ytop = lb->r.r_ytop;
 		    found = TRUE;
 		}
 		else
