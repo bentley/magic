@@ -2706,11 +2706,12 @@ drcSurround(argc, argv)
 	for (j = 0; j < DBNumTypes; j++)
 	{
 	    if (i == j) continue;	/* Ignore false edges */
-	    if (pset = (DBTypesOnSamePlane(i, j) & pmask))
+	    if (pset = (DBTypesOnSamePlane(i, j) & pmask2))
 	    {
 		if (TTMaskHasType(&set1, i) && TTMaskHasType(&set2, j))
 		{
-		    plane1 = LowestMaskBit(pset);
+		    plane1 = LowestMaskBit(pmask);
+		    plane2 = LowestMaskBit(pset);
 
 		    /* Find bucket preceding the new one we wish to insert */
 		    dp = drcFindBucket(i, j, distance);
@@ -2718,7 +2719,7 @@ drcSurround(argc, argv)
 		    drcAssign(dpnew, distance, dp->drcc_next, &invM, &set2,
 				why, distance,
 				DRC_FORWARD | DRC_BOTHCORNERS,
-				plane1, plane1);
+				plane1, plane2);
 		    dp->drcc_next = dpnew;
 
 		    /* find bucket preceding new one we wish to insert */
@@ -2727,7 +2728,7 @@ drcSurround(argc, argv)
 		    drcAssign(dpnew, distance, dp->drcc_next, &invM, &set2,
 				why, distance,
 				DRC_REVERSE | DRC_BOTHCORNERS,
-				plane1, plane1);
+				plane1, plane2);
 		    dp->drcc_next = dpnew;
 		}
 	    }
