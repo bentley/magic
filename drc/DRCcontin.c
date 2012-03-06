@@ -615,9 +615,6 @@ drcCheckTile(tile, arg)
     Rect erasebox;		/* erase old ERROR tiles in this
 				 * region and clip new ERRORs to it
 				 */
-    Rect checkbox;		/* apply rules across all edges in
-				 * this region
-				 */
     CellDef * celldef;		/* First CellDef on DRCPending list. */
     Rect redisplayArea;		/* Area to be redisplayed. */
     extern int drcXorFunc();	/* Forward declarations. */
@@ -647,12 +644,6 @@ drcCheckTile(tile, arg)
 	erasebox.r_xtop, erasebox.r_ytop);
     */
 
-    /* Compute area to recheck in order to recompute all errors in
-     * erasebox.
-     */
-
-    GEO_EXPAND(&erasebox, DRCTechHalo, &checkbox);
-
     /* Use drcDisplayPlane to save all the current errors in the
      * area we're about to recheck.
      */
@@ -668,7 +659,8 @@ drcCheckTile(tile, arg)
 
     /* May 4, 2008:  Moved DRCBasicCheck into DRCInteractionCheck
      * to avoid requiring DRC rules to be satisfied independently
-     * of subcells.
+     * of subcells (checkbox was [erasebox + DRCTechHalo], now
+     * computed within DRCInteractionCheck()).
      */
 
     /* DRCBasicCheck (celldef, &checkbox, &erasebox, drcPaintError,
@@ -683,8 +675,8 @@ drcCheckTile(tile, arg)
      */
 
     DRCErrorType = TT_ERROR_S;
-    (void) DRCInteractionCheck(celldef, &square, drcPaintError,
-	(ClientData) drcTempPlane);
+    (void) DRCInteractionCheck(celldef, &square, &erasebox,
+		drcPaintError, (ClientData) drcTempPlane);
     
     /* Check #3:  check for array formation errors in the area. */
 

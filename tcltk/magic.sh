@@ -13,12 +13,12 @@
 
 TKCON=true
 DNULL=
-MAGIC_WISH=/home/tim/cad/bin/wish8.5
+MAGIC_WISH=/usr/local/bin/wish8.5
 export MAGIC_WISH
 
 # Hacks for Cygwin
 if [ ${TERM:=""} = "cygwin" ]; then
-   export PATH="$PATH:/home/tim/cad/lib"
+   export PATH="$PATH:/usr/local/lib"
    export DISPLAY=${DISPLAY:=":0"}
 fi
 
@@ -32,12 +32,12 @@ done
 if [ $TKCON ]; then
 
    if [ $DNULL ]; then
-      exec /home/tim/cad/lib/magic/tcl/tkcon.tcl -eval "source /home/tim/cad/lib/magic/tcl/console.tcl" \
-	   -slave "set argc $#; set argv [list $*]; source /home/tim/cad/lib/magic/tcl/magic.tcl"
+      exec /usr/local/lib/magic/tcl/tkcon.tcl -eval "source /usr/local/lib/magic/tcl/console.tcl" \
+	   -slave "set argc $#; set argv [list $*]; source /usr/local/lib/magic/tcl/magic.tcl"
    else
-      exec /home/tim/cad/lib/magic/tcl/tkcon.tcl -eval "source /home/tim/cad/lib/magic/tcl/console.tcl" \
+      exec /usr/local/lib/magic/tcl/tkcon.tcl -eval "source /usr/local/lib/magic/tcl/console.tcl" \
 	   -slave "package require Tk; set argc $#; set argv [list $*]; \
-	   source /home/tim/cad/lib/magic/tcl/magic.tcl"
+	   source /usr/local/lib/magic/tcl/magic.tcl"
    fi
 
 else
@@ -52,8 +52,8 @@ else
 # only, efficient for running in batch mode).
 #
    if [ $DNULL ]; then
-      exec /home/tim/cad/lib/magic/tcl/magicdnull -nowrapper $@
+      exec /usr/local/lib/magic/tcl/magicdnull -nowrapper $@
    else
-      exec /home/tim/cad/lib/magic/tcl/magicexec -- $@
+      exec /usr/local/lib/magic/tcl/magicexec -- $@
    fi
 fi

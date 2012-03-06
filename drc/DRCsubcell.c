@@ -63,6 +63,8 @@ static DRCCookie drcSubcellCookie = {
     (DRCCookie *) NULL
 };
 
+extern int DRCErrorType;
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -525,14 +527,15 @@ drcExactOverlapTile(tile, cxp)
  */
 
 int
-DRCInteractionCheck(def, area, func, cdarg)
+DRCInteractionCheck(def, area, erasebox, func, cdarg)
     CellDef *def;		/* Definition in which to do check. */
     Rect *area;			/* Area in which all errors are to be found. */
+    Rect *erasebox;		/* Smaller area containing DRC check tiles */
     void (*func)();		/* Function to call for each error. */
     ClientData cdarg;		/* Extra info to be passed to func. */
 {
-    int oldTiles, count, x, y;
-    Rect intArea, square;
+    int oldTiles, count, x, y, errorSaveType;
+    Rect intArea, square, subArea;
     PaintResultType (*savedPaintTable)[NT][NT];
     void (*savedPaintPlane)();
     struct drcClientData arg;
@@ -567,11 +570,74 @@ DRCInteractionCheck(def, area, func, cdarg)
 		/* Added May 4, 2008---if there are no subcells, run the
 		 * basic check over the area of the square.
 		 */
-		GEO_EXPAND(&square, DRCTechHalo, &intArea);
-                DRCBasicCheck(def, &intArea, &square, func, cdarg); 
+		subArea = *erasebox;
+		GeoClip(&subArea, &square);
+		GEO_EXPAND(&subArea, DRCTechHalo, &intArea);
+
+		errorSaveType = DRCErrorType;
+		DRCErrorType = TT_ERROR_P;	// Basic check is always ERROR_P
+                DRCBasicCheck(def, &intArea, &subArea, func, cdarg); 
+		DRCErrorType = errorSaveType;
 		continue;
 	    }
-	    GeoClip(&intArea, area);
+	    else
+	    {
+		/* Added March 6, 2012:  Any area(s) outside the
+		 * interaction area are processed with the basic
+		 * check.  This avoids unnecessary copying, so it
+		 * speeds up the DRC without requiring that geometry
+		 * passes DRC rules independently of subcell geometry
+	         * around it.
+		 *
+		 * As intArea can be smaller than square, we may have
+		 * to process as many as four independent rectangles.
+		 * NOTE that the area of (intArea + halo) will be checked
+		 * in the subcell interaction check, so we can ignore
+		 * that.
+		 */
+		Rect eraseClip, eraseHalo, subArea;
+
+		errorSaveType = DRCErrorType;
+		DRCErrorType = TT_ERROR_P;	// Basic check is always ERROR_P
+		eraseClip = *erasebox;
+		GeoClip(&eraseClip, &square);
+		subArea = eraseClip;
+
+		/* check above */
+		if (intArea.r_ytop < eraseClip.r_ytop)
+		{
+		    subArea.r_ybot = intArea.r_ytop;
+		    GEO_EXPAND(&subArea, DRCTechHalo, &eraseHalo);
+                    DRCBasicCheck(def, &eraseHalo, &subArea, func, cdarg); 
+		} 
+		/* check below */
+		if (intArea.r_ybot > eraseClip.r_ybot)
+		{
+		    subArea.r_ybot = eraseClip.r_ybot;
+		    subArea.r_ytop = intArea.r_ybot;
+		    GEO_EXPAND(&subArea, DRCTechHalo, &eraseHalo);
+                    DRCBasicCheck(def, &eraseHalo, &subArea, func, cdarg); 
+		} 
+		subArea.r_ytop = intArea.r_ytop;
+		subArea.r_ybot = intArea.r_ybot;
+
+		/* check right */
+		if (intArea.r_xtop < eraseClip.r_xtop)
+		{
+		    subArea.r_xbot = intArea.r_xtop;
+		    GEO_EXPAND(&subArea, DRCTechHalo, &eraseHalo);
+                    DRCBasicCheck(def, &eraseHalo, &subArea, func, cdarg); 
+		}
+		/* check left */
+		if (intArea.r_xbot > eraseClip.r_xbot)
+		{
+		    subArea.r_xtop = intArea.r_xbot;
+		    subArea.r_xbot = eraseClip.r_xbot;
+		    GEO_EXPAND(&subArea, DRCTechHalo, &eraseHalo);
+                    DRCBasicCheck(def, &eraseHalo, &subArea, func, cdarg); 
+		}
+		DRCErrorType = errorSaveType;
+	    }
     
 	    /* Flatten the interaction area. */
 

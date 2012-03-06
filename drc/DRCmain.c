@@ -368,18 +368,16 @@ drcWhyFunc(scx, cdarg)
     SearchContext *scx;		/* Describes current state of search. */
     ClientData cdarg;		/* Not used. */
 {
-    Rect haloArea;
     CellDef *def = scx->scx_use->cu_def;
 
     /* Check paint and interactions in this subcell. */
     
-    GEO_EXPAND(&scx->scx_area, DRCTechHalo, &haloArea);
-    (void) DRCBasicCheck(def, &haloArea, &scx->scx_area,
-	drcPrintError, (ClientData) &scx->scx_area);
-    (void) DRCInteractionCheck(def, &scx->scx_area,
-	drcPrintError, (ClientData) &scx->scx_area);
+//  (void) DRCBasicCheck(def, &haloArea, &scx->scx_area,
+//		drcPrintError, (ClientData) &scx->scx_area);
+    (void) DRCInteractionCheck(def, &scx->scx_area, &scx->scx_area,
+		drcPrintError, (ClientData) &scx->scx_area);
     (void) DRCArrayCheck(def, &scx->scx_area,
-	drcPrintError, (ClientData) &scx->scx_area);
+		drcPrintError, (ClientData) &scx->scx_area);
     
     /* Also search children. */
 

@@ -1,7 +1,7 @@
 # Wishrc startup for ToolScript (magic)
 #
 # For installation:  Put this file and also magicwrap.so into
-# directory /home/tim/cad/lib/magic/tcl, and set the "load" line below
+# directory /usr/local/lib/magic/tcl, and set the "load" line below
 # to point to the location of magicwrap.so.  Also see comments
 # in shell script "magic.sh".
 
@@ -10,7 +10,7 @@ global Opts
 # If we called magic via the non-console script, then we want to reset
 # the environment variable HOME to its original value.
    
-load /home/tim/cad/lib/magic/tcl/tclmagic.so
+load /usr/local/lib/magic/tcl/tclmagic.so
 
 # It is important to make sure no magic commands overlap with Tcl built-in
 # commands, because otherwise the namespace import will fail.
