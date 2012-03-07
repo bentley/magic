@@ -68,7 +68,7 @@ keyTable[] =
     "adjust",		ADJUST,		4,
     "attr",		ATTR,		8,
     "cap",		CAP,		4,
-    "device",		DEVICE,		13,	/* effectively replaces "fet" */
+    "device",		DEVICE,		11,	/* effectively replaces "fet" */
     "distance",		DIST,		4,
     "equiv",		EQUIV,		3,
     "fet",		FET,		12,	/* for backwards compatibility */
