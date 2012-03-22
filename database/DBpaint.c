@@ -531,7 +531,8 @@ clipdone:
 	    for (tp = BL(tile); BOTTOM(tp) < TOP(tile); tp = RT(tp))
 		if (TiGetTypeExact(tp) == newType)
 		{
-		    tile = dbPaintMerge(tile, newType, plane, mergeFlags, undo, mark);
+		    tile = dbPaintMerge(tile, newType, area, plane, mergeFlags,
+					undo, mark);
 		    goto paintdone;
 		}
 	    mergeFlags &= ~MRG_LEFT;
@@ -541,7 +542,8 @@ clipdone:
 	    for (tp = TR(tile); TOP(tp) > BOTTOM(tile); tp = LB(tp))
 		if (TiGetTypeExact(tp) == newType)
 		{
-		    tile = dbPaintMerge(tile, newType, plane, mergeFlags, undo, mark);
+		    tile = dbPaintMerge(tile, newType, area, plane, mergeFlags,
+					undo, mark);
 		    goto paintdone;
 		}
 	    mergeFlags &= ~MRG_RIGHT;
@@ -1763,6 +1765,33 @@ dbNMEnumFunc(tile, arg)
     return 0;
 }
 
+/*
+ * ----------------------------------------------------------------------------
+ *
+ * dbMarkClient --
+ *
+ *	Mark a tile's client record for use in tracking if this tile has
+ *	been handled in this pass of dbPaintPlane.  If the tile's area
+ *	is outside of "clip", then we don't mark it, or else it will be
+ *	missed during cleanup.
+ *
+ * ----------------------------------------------------------------------------
+ */
+
+void
+dbMarkClient(tile, clip)
+    Tile *tile;
+    Rect *clip;
+{
+    if (LEFT(tile) < clip->r_xtop &&
+		RIGHT(tile) > clip->r_xbot &&
+		BOTTOM(tile) < clip->r_ytop &&
+		TOP(tile) > clip->r_ybot)
+	tile->ti_client = (ClientData)1;
+    else
+	tile->ti_client = (ClientData)CLIENTDEFAULT;
+}
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -1800,9 +1829,10 @@ dbNMEnumFunc(tile, arg)
  */
 
 Tile *
-dbPaintMerge(tile, newType, plane, mergeFlags, undo, mark)
+dbPaintMerge(tile, newType, area, plane, mergeFlags, undo, mark)
     Tile *tile;	/* Tile to be merged with its neighbors */
     TileType newType;	/* Type to which we will change 'tile' */
+    Rect *area;			/* Original area painted, needed for marking */
     Plane *plane;		/* Plane on which this resides */
     int mergeFlags;		/* Specify which directions to merge */
     PaintUndoInfo *undo;	/* See DBPaintPlane() above */
@@ -1891,7 +1921,7 @@ dbPaintMerge(tile, newType, plane, mergeFlags, undo, mark)
 	DBPAINTUNDO(tile, newType, undo);
 
     TiSetBody(tile, newType);
-    if (mark) tile->ti_client = (ClientData)1;
+    if (mark) dbMarkClient(tile, area);
 
 #ifdef	PAINTDEBUG
     if (dbPaintDebug)
@@ -1911,7 +1941,7 @@ dbPaintMerge(tile, newType, plane, mergeFlags, undo, mark)
 	{
 	    tpLast = TiSplitY(tp, TOP(tile));
 	    TiSetBody(tpLast, newType);
-	    if (mark) tile->ti_client = (ClientData)1;
+	    if (mark) dbMarkClient(tile, area);
 	}
 	if (BOTTOM(tp) < BOTTOM(tile)) tp = TiSplitY(tp, BOTTOM(tile));
 	TiJoinX(tile, tp, plane);
@@ -1927,7 +1957,7 @@ dbPaintMerge(tile, newType, plane, mergeFlags, undo, mark)
 	{
 	    tpLast = TiSplitY(tp, TOP(tile));
 	    TiSetBody(tpLast, newType);
-	    if (mark) tile->ti_client = (ClientData)1;
+	    if (mark) dbMarkClient(tile, area);
 	}
 	if (BOTTOM(tp) < BOTTOM(tile)) tp = TiSplitY(tp, BOTTOM(tile));
 	TiJoinX(tile, tp, plane);
