@@ -1806,6 +1806,7 @@ extTransTileFunc(tile, pNum, arg)
 {
     TileTypeBitMask mask;
     TileType loctype;
+    int perim;
 
     LabelList *ll;
     Label *lab;
@@ -1837,8 +1838,14 @@ extTransTileFunc(tile, pNum, arg)
 
     mask = ExtCurStyle->exts_transConn[loctype];
     TTMaskCom(&mask);
-    extTransRec.tr_perim += extEnumTilePerim(tile, mask, pNum,
+
+    /* NOTE:  DO NOT USE extTransRec.tr_perim += extEnumTilePerim(...)	*/
+    /* The AMD target gcc compile works and the Intel target gcc	*/
+    /* compile doesn't!  The following code works the same on both.	*/
+
+    perim = extEnumTilePerim(tile, mask, pNum,
 		extTransPerimFunc, (ClientData)NULL);
+    extTransRec.tr_perim += perim;
 
     if (extTransRec.tr_subsnode == (NodeRegion *)NULL)
 	extTransFindSubsFunc1(tile, arg->fra_def, &extTransRec.tr_subsnode);
