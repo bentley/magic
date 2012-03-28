@@ -194,7 +194,7 @@ typedef struct {
 
 #define	setDevMult(i,f) { esFMult[(i)] = (float)(f); }
 
-#define	getCurDevMult() ((esFMult) ? esFMult[esFMIndex-1] : (float)1.0)
+#define	getCurDevMult() ((esFMult && (esFMIndex > 0)) ? esFMult[esFMIndex-1] : (float)1.0)
 
 #ifdef MAGIC_WRAPPER
 #define 	atoCap(s)	((EFCapValue)atof(s))

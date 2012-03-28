@@ -682,6 +682,13 @@ runexttospice:
 	if ((esDoSubckt == TRUE) || (locDoSubckt == TRUE))
 	    topVisit(efFlatRootDef);
 
+	/* When generating subcircuits, remove the subcircuit	*/
+	/* flag from the top level cell.  Other than being	*/
+	/* used to generate the subcircuit wrapper, it should	*/
+	/* not prevent descending into its own hierarchy.	*/
+
+	efFlatRootDef->def_flags &= ~(DEF_SUBCIRCUIT);
+
 	/* If we don't want to write subcircuit calls, remove	*/
 	/* the subcircuit flag from all cells at this time.	*/
 
