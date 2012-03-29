@@ -1125,10 +1125,11 @@ subcktVisit(use, hierName, is_top)
     HierName *hierName;
     bool is_top;		/* TRUE if this is the top-level cell */
 {
-    EFNode *snode, *subsnode = NULL;
+    EFNode *snode;
     Def *def = use->use_def;
     EFNodeName *nodeName;
-    int portorder, portmax;
+    int portorder, portmax, imp_max;
+    char stmp[MAX_STR_SIZE];
 
     if (is_top == TRUE) return 0;	/* Ignore the top-level cell */
 
@@ -1141,7 +1142,7 @@ subcktVisit(use, hierName, is_top)
     /* Note that the ports of the subcircuit will not necessarily be	*/
     /* ALL the entries in the hash table, so we have to check.		*/
 
-    portmax = EFGetPortMax(def);
+    portmax = EFGetPortMax(def, &imp_max);
 
     if (portmax < 0)
     {
@@ -1153,19 +1154,35 @@ subcktVisit(use, hierName, is_top)
 		snode != &def->def_firstn;
 		snode = (EFNode *) snode->efnode_next)
 	{
-	    if (snode->efnode_flags & EF_SUBS_PORT)
-		subsnode = snode;
-
 	    if (snode->efnode_flags & EF_PORT)
 		for (nodeName = snode->efnode_name; nodeName != NULL;
 			nodeName = nodeName->efnn_next)
 		    if (nodeName->efnn_port >= 0)
+		    {
+			portmax++;
 			spcdevOutNode(hierName, nodeName->efnn_hier,
 					"subcircuit", esSpiceF); 
+		    }
 	}
-	if (subsnode != NULL)
-	    spcdevOutNode(hierName, subsnode->efnode_name->efnn_hier,
-			 "subcircuit", esSpiceF); 
+
+	/* Look for all implicit substrate connections that are	*/
+	/* declared as local node names, and put them last.	*/
+
+	for (snode = (EFNode *) def->def_firstn.efnode_next;
+		snode != &def->def_firstn;
+		snode = (EFNode *) snode->efnode_next)
+	{
+	    if (snode->efnode_flags & EF_SUBS_PORT)
+	    {
+		nodeName = snode->efnode_name;
+		if (nodeName->efnn_port < 0)
+	            nodeName->efnn_port = ++portmax;
+
+		/* This is not a hierarchical name or node! */
+		EFHNSprintf(stmp, nodeName->efnn_hier);
+		fprintf(esSpiceF, " %s", stmp);
+	    }
+	}
     }
     else
     {
@@ -1179,9 +1196,6 @@ subcktVisit(use, hierName, is_top)
 			snode != &def->def_firstn;
 			snode = (EFNode *) snode->efnode_next)
 	    {
-		if (snode->efnode_flags & EF_SUBS_PORT)
-		    subsnode = snode;
-
 		if (!(snode->efnode_flags & EF_PORT)) continue;
 		for (nodeName = snode->efnode_name; nodeName != NULL;
 			nodeName = nodeName->efnn_next)
@@ -1191,7 +1205,6 @@ subcktVisit(use, hierName, is_top)
 		    {
 			spcdevOutNode(hierName, nodeName->efnn_hier,
 					"subcircuit", esSpiceF); 
-
 			break;
 		    }
 		}
@@ -1199,13 +1212,27 @@ subcktVisit(use, hierName, is_top)
 	    }
 	    portorder++;
 	}
-	if (subsnode != NULL)
-	{
-	    char stmp[MAX_STR_SIZE];
 
-	    /* This is not a hierarchical name or node! */
-	    EFHNSprintf(stmp, subsnode->efnode_name->efnn_hier);
-	    fprintf(esSpiceF, " %s", stmp);
+	/* Look for all implicit substrate connections that are	*/
+	/* declared as local node names, and put them last.	*/
+
+	portorder = portmax;
+	while (portorder <= imp_max)
+	{
+	    for (snode = (EFNode *) def->def_firstn.efnode_next;
+			snode != &def->def_firstn;
+			snode = (EFNode *) snode->efnode_next)
+	    {
+		if (!(snode->efnode_flags & EF_SUBS_PORT)) continue;
+		nodeName = snode->efnode_name;
+		if (nodeName->efnn_port == portorder)
+		{
+		    /* This is not a hierarchical name or node! */
+		    EFHNSprintf(stmp, nodeName->efnn_hier);
+		    fprintf(esSpiceF, " %s", stmp);
+		}
+	    }
+	    portorder++;
 	}
     }
 
@@ -1270,7 +1297,7 @@ void
 topVisit(def)
     Def *def;
 {
-    EFNode *snode, *subsnode = NULL;
+    EFNode *snode;
     EFNodeName *sname, *nodeName;
     HashSearch hs;
     HashEntry *he;
@@ -1323,8 +1350,6 @@ topVisit(def)
 		    snode->efnode_name->efnn_port = portorder++;
 		}
 	    }
-	    else if (snode->efnode_flags & EF_SUBS_PORT)
-		subsnode = snode;
 	}
     }
     else
@@ -1343,7 +1368,6 @@ topVisit(def)
 		sname = (EFNodeName *) HashGetValue(he);
 		snode = sname->efnn_node;
 
-		if (snode->efnode_flags & EF_SUBS_PORT) subsnode = snode;
 		if (!(snode->efnode_flags & EF_PORT)) continue;
 
 		for (nodeName = sname; nodeName != NULL; nodeName = nodeName->efnn_next)
@@ -1364,14 +1388,30 @@ topVisit(def)
 	    portorder++;
 	}
     }
-    if (subsnode != NULL)
-    {
-	char stmp[MAX_STR_SIZE];
 
-	/* This is not a hierarchical name or node! */
-	EFHNSprintf(stmp, subsnode->efnode_name->efnn_hier);
-	fprintf(esSpiceF, " %s", stmp);
+    /* Add all implicitly-defined local substrate node names */
+
+    HashStartSearch(&hs);
+    while (he = HashNext(&def->def_nodes, &hs))
+    {
+	sname = (EFNodeName *) HashGetValue(he);
+	if (sname == NULL) continue;
+	snode = sname->efnn_node;
+
+	if (snode->efnode_flags & EF_SUBS_PORT)
+	{
+	    if (snode->efnode_name->efnn_port < 0)
+	    {
+		char stmp[MAX_STR_SIZE];
+
+		/* This is not a hierarchical name or node! */
+		EFHNSprintf(stmp, snode->efnode_name->efnn_hier);
+		fprintf(esSpiceF, " %s", stmp);
+		snode->efnode_name->efnn_port = portorder++;
+	    }
+	}
     }
+
     fprintf(esSpiceF, "\n");
 }
 

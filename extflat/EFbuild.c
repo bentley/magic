@@ -805,31 +805,43 @@ efBuildPortNode(def, name, idx, x, y, layername)
  *	Value of highest port number in the cell def's node list
  *
  * Side effects:
- *	None.
+ *	Larger value including the implicit ports is placed in the
+ *	location of the pointer imp_max.
  *
  * ----------------------------------------------------------------------------
  */
 
 int
-EFGetPortMax(def)
+EFGetPortMax(def, imp_max)
    Def *def;
+   int *imp_max;
 {
     EFNode *snode;
     EFNodeName *nodeName;
     int portmax, portorder;
 
     portmax = -1;
+    if (imp_max) *imp_max = -1;
+
     for (snode = (EFNode *) def->def_firstn.efnode_next;
                 snode != &def->def_firstn;
                 snode = (EFNode *) snode->efnode_next)
     {
-        if (!(snode->efnode_flags & EF_PORT)) continue;
-        for (nodeName = snode->efnode_name; nodeName != NULL; nodeName =
+        if (imp_max && (snode->efnode_flags & EF_SUBS_PORT))
+	{
+	    nodeName = snode->efnode_name;
+	    portorder = nodeName->efnn_port;
+	    if (portorder > (*imp_max)) (*imp_max) = portorder;
+	}
+        else if (snode->efnode_flags & EF_PORT)
+	{
+	    for (nodeName = snode->efnode_name; nodeName != NULL; nodeName =
                         nodeName->efnn_next)
-        {
-            portorder = nodeName->efnn_port;
-            if (portorder > portmax) portmax = portorder;
-        }
+	    {
+		portorder = nodeName->efnn_port;
+		if (portorder > portmax) portmax = portorder;
+	    }
+	}
     }
     return portmax;
 }
@@ -888,6 +900,8 @@ efBuildDevNode(def, name, isSubsNode)
 
 		/* This node is declared to be an implicit port */
 		nn->efnn_node->efnode_flags |= EF_SUBS_PORT;
+		nn->efnn_port = -1;
+		def->def_flags |= DEF_SUBSNODES;
 	    }
 	    nn->efnn_node->efnode_flags |= EF_DEVTERM;
 	}
