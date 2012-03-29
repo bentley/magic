@@ -1702,7 +1702,7 @@ spcdevVisit(dev, hierName, trans)
 			if (esScale < 0)
 			    fprintf(esSpiceF, "%d", dev->dev_area * scale * scale);
 			else
-			    fprintf(esSpiceF, "%gu", dev->dev_area * scale * scale
+			    fprintf(esSpiceF, "%gp", dev->dev_area * scale * scale
 					* esScale * esScale * sdM);
 			break;
 		    case 'p':
