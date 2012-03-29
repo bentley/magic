@@ -178,6 +178,13 @@ typedef struct efnhdr
      * multiple ports per node (for example, a thru route).
      */
 #define EF_PORT		0x08
+    /*
+     * This is used when a node is a substrate node with a local
+     * node name, making it an implicitly-defined port.  It differs
+     * from EF_DEVTERM in that EF_DEVTERM includes global substrate
+     * nodes, which are not declared ports.
+     */
+#define EF_SUBS_PORT	0x10
 
 extern int efNumResistClasses;	/* Number of resistance classes in efResists */
 
@@ -309,6 +316,7 @@ extern HashEntry *EFHNConcatLook();
 extern HierName *EFHNConcat();
 extern HierName *EFStrToHN();
 extern char *EFHNToStr();
+extern int EFGetPortMax();
 
 /* ------------------------- constants used by clients -------------- */
 /* This gives us a 32 or 64 dev types which should be ok */

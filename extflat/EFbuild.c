@@ -620,6 +620,7 @@ efBuildDevice(def, class, type, r, argc, argv)
 	    {
 		if (strncmp(argv[argstart], "None", 4) != 0)
 		    devtmp.dev_subsnode = efBuildDevNode(def, argv[argstart], TRUE);
+
 		argstart++;
 	    }
 	    break;
@@ -796,6 +797,46 @@ efBuildPortNode(def, name, idx, x, y, layername)
 /*
  * ----------------------------------------------------------------------------
  *
+ * EFGetPortMax --
+ *
+ * Find the highest port number in the cell def and return the value.
+ *
+ * Results:
+ *	Value of highest port number in the cell def's node list
+ *
+ * Side effects:
+ *	None.
+ *
+ * ----------------------------------------------------------------------------
+ */
+
+int
+EFGetPortMax(def)
+   Def *def;
+{
+    EFNode *snode;
+    EFNodeName *nodeName;
+    int portmax, portorder;
+
+    portmax = -1;
+    for (snode = (EFNode *) def->def_firstn.efnode_next;
+                snode != &def->def_firstn;
+                snode = (EFNode *) snode->efnode_next)
+    {
+        if (!(snode->efnode_flags & EF_PORT)) continue;
+        for (nodeName = snode->efnode_name; nodeName != NULL; nodeName =
+                        nodeName->efnn_next)
+        {
+            portorder = nodeName->efnn_port;
+            if (portorder > portmax) portmax = portorder;
+        }
+    }
+    return portmax;
+}
+
+/*
+ * ----------------------------------------------------------------------------
+ *
  * efBuildDevNode --
  *
  * Look for the node named 'name' in the local table for 'def', or
@@ -844,11 +885,13 @@ efBuildDevNode(def, name, isSubsNode)
 #endif
 		    efReadError("Default device substrate node"
 				" \"%s\" is not a global\n", name);
+
+		/* This node is declared to be an implicit port */
+		nn->efnn_node->efnode_flags |= EF_SUBS_PORT;
 	    }
 	    nn->efnn_node->efnode_flags |= EF_DEVTERM;
 	}
     }
-
     return nn->efnn_node;
 }
 

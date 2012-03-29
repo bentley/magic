@@ -173,15 +173,15 @@ esOutputHierResistor(hc, dev, trans, term1, term2, has_model, l, w, dscale)
 	if (esScale < 0) 
 	{
 	    fprintf(esSpiceF, " w=%d l=%d", w * scale, (l * scale) / dscale);
-	    if (sdM != 1.0)
-		fprintf(esSpiceF, " M=%g", sdM);
 	}
 	else
 	{
 	    fprintf(esSpiceF, " w=%gu l=%gu",
-		(float)w * scale * esScale * sdM,
+		(float)w * scale * esScale,
 		(float)((l * scale * esScale) / dscale));
 	}
+	if (sdM != 1.0)
+	    fprintf(esSpiceF, " M=%g", sdM);
     }
 }
 
@@ -210,7 +210,7 @@ subcktHierVisit(use, hierName, is_top)
     for (snode = (EFNode *) def->def_firstn.efnode_next;
 		snode != &def->def_firstn;
 		snode = (EFNode *) snode->efnode_next)
-	if (snode->efnode_flags & EF_PORT)
+	if (snode->efnode_flags & (EF_PORT | EF_SUBS_PORT))
 	{
 	    hasports = TRUE;
 	    break;
@@ -482,15 +482,15 @@ spcdevHierVisit(hc, dev, trans)
 			if (esScale < 0)
 			    fprintf(esSpiceF, "%d", dev->dev_area * scale * scale);
 			else
-			    fprintf(esSpiceF, "%gu", dev->dev_area * scale * scale
-					* esScale * esScale * sdM);
+			    fprintf(esSpiceF, "%gp", dev->dev_area * scale * scale
+					* esScale * esScale);
 			break;
 		    case 'p':
 			if (esScale < 0)
 			    fprintf(esSpiceF, "%d", dev->dev_perim * scale);
 			else
 			    fprintf(esSpiceF, "%gu", dev->dev_perim * scale
-					* esScale * sdM);
+					* esScale);
 			break;
 		    case 'l':
 			if (esScale < 0)
@@ -502,7 +502,7 @@ spcdevHierVisit(hc, dev, trans)
 			if (esScale < 0)
 			    fprintf(esSpiceF, "%d", w * scale);
 			else
-			    fprintf(esSpiceF, "%gu", w * scale * esScale * sdM);
+			    fprintf(esSpiceF, "%gu", w * scale * esScale);
 			break;
 		    case 's':
 			subnodeFlat = spcdevSubstrate(hc->hc_hierName,
@@ -524,17 +524,15 @@ spcdevHierVisit(hc, dev, trans)
 					* esScale);
 			break;
 		    case 'r':
-			fprintf(esSpiceF, "%f", (double)(dev->dev_res) /
-					(double)sdM);
+			fprintf(esSpiceF, "%f", (double)(dev->dev_res));
 			break;
 		    case 'c':
-			fprintf(esSpiceF, "%ff", (double)sdM *
-					(double)(dev->dev_cap));
+			fprintf(esSpiceF, "%ff", (double)(dev->dev_cap));
 			break;
 		}
 		plist = plist->parm_next;
 	    }
-	    if ((esScale < 0) && (sdM != 1.0))
+	    if (sdM != 1.0)
 		fprintf(esSpiceF, " M=%g", sdM);
 	    break;
 
@@ -622,16 +620,15 @@ spcdevHierVisit(hc, dev, trans)
 		if (esScale < 0)
 		{
 		    fprintf(esSpiceF, " w=%d l=%d", w*scale, l*scale);
-		    if (sdM != 1.0)
-			fprintf(esSpiceF, " M=%g", sdM);
 		}
 		else
 		{
 		    fprintf(esSpiceF, " w=%gu l=%gu",
-			(float)w * scale * esScale * sdM,
+			(float)w * scale * esScale,
 			(float)l * scale * esScale);
-		    sdM = 1.0;
 		}
+		if (sdM != 1.0)
+		    fprintf(esSpiceF, " M=%g", sdM);
 	    }
 	    break;
 
@@ -676,16 +673,15 @@ spcdevHierVisit(hc, dev, trans)
 	    if (esScale < 0)
 	    {
 		fprintf(esSpiceF, " w=%d l=%d", w*scale, l*scale);
-		if (sdM != 1.0)
-		    fprintf(esSpiceF, " M=%g", sdM);
 	    }
 	    else
 	    {
 		fprintf(esSpiceF, " w=%gu l=%gu",
-			(float)w * scale * esScale * sdM,
+			(float)w * scale * esScale,
 			(float)l * scale * esScale);
-		sdM = 1.0;
 	    }
+	    if (sdM != 1.0)
+		fprintf(esSpiceF, " M=%g", sdM);
 
 	    /*
 	     * Check controlling attributes and output area and perimeter. 
@@ -733,6 +729,95 @@ spcdevHierVisit(hc, dev, trans)
 	    break;
     }
     fprintf(esSpiceF, "\n");
+    return 0;
+}
+
+/*
+ * ----------------------------------------------------------------------------
+ *
+ * spcdevHierMergeVisit --
+ *
+ * First pass visit to devices to determine if they can be merged with
+ * any previously visited device.
+ *
+ * ----------------------------------------------------------------------------
+ */
+
+int
+spcdevHierMergeVisit(hc, dev, trans)
+    HierContext *hc;
+    Dev *dev;		/* Dev being output */
+    Transform *trans;	/* Coordinate transform for output */
+{
+    DevTerm *gate, *source, *drain;
+    EFNode *subnode, *snode, *dnode, *gnode;
+    Rect r;
+    int scale, pmode, l, w;
+    devMerge *fp, *cfp;
+    float m;
+
+    /* If no terminals, or only a gate, can't do much of anything */
+    if (dev->dev_nterm < 2) return 0;
+
+    gate = &dev->dev_terms[0];
+    source = drain = &dev->dev_terms[1];
+    if (dev->dev_nterm >= 3)
+	drain = &dev->dev_terms[2];
+
+    gnode = GetHierNode(hc, gate->dterm_node->efnode_name->efnn_hier);
+    snode = GetHierNode(hc, source->dterm_node->efnode_name->efnn_hier);
+    dnode = GetHierNode(hc, drain->dterm_node->efnode_name->efnn_hier);
+    subnode = dev->dev_subsnode;
+
+    GeoTransRect(trans, &dev->dev_rect, &r);
+    scale = GeoScale(trans);
+
+    EFGetLengthAndWidth(dev, &l, &w);
+
+    fp = mkDevMerge(l * scale, w * scale, gnode, snode, dnode, subnode,
+		hc->hc_hierName, dev);
+		
+    for (cfp = devMergeList; cfp != NULL; cfp = cfp->next)
+    {
+	if ((pmode = parallelDevs(fp, cfp)) != NOT_PARALLEL)
+	{
+	    /* To-do:  add back source, drain attribute check */
+
+	    switch(dev->dev_class)
+	    {
+		case DEV_MOSFET:
+		case DEV_ASYMMETRIC:
+		case DEV_FET:
+		    m = esFMult[cfp->esFMIndex] + ((float)fp->w / (float)cfp->w);
+		    break;
+		case DEV_RES:
+		    if (fp->dev->dev_type == esNoModelType)
+			m = esFMult[cfp->esFMIndex] + (fp->dev->dev_res
+				/ cfp->dev->dev_res);
+		    else
+			m = esFMult[cfp->esFMIndex] + ((float)fp->l / (float)cfp->l);
+		    break;
+		case DEV_CAP:
+		    if (fp->dev->dev_type == esNoModelType)
+			m = esFMult[cfp->esFMIndex] + (fp->dev->dev_cap
+				/ cfp->dev->dev_cap);
+		    else
+			m = esFMult[cfp->esFMIndex] +
+				(((float)fp->l * (float)fp->w)
+				/ ((float)cfp->l * (float)cfp->w));
+		    break;
+	    }
+	    setDevMult(fp->esFMIndex, DEV_KILLED);
+	    setDevMult(cfp->esFMIndex, m);
+	    esDevsMerged++;
+	    freeMagic(fp);
+	    return 0;
+	}
+    }
+
+    /* No devices are parallel to this one (yet) */
+    fp->next = devMergeList;
+    devMergeList = fp;
     return 0;
 }
 
@@ -1204,7 +1289,7 @@ esHierVisit(hc, cdata)
 	for (snode = (EFNode *) def->def_firstn.efnode_next;
 		snode != &def->def_firstn;
 		snode = (EFNode *) snode->efnode_next)
-	    snode->efnode_flags &= ~EF_PORT;
+	    snode->efnode_flags &= ~(EF_PORT | EF_SUBS_PORT);
 	return 0;
     } 
 
@@ -1228,6 +1313,19 @@ esHierVisit(hc, cdata)
 
     /* Output subcircuit calls */
     EFHierVisitSubcircuits(hcf, subcktHierVisit, (ClientData)NULL);
+
+    /* Merge devices */
+    if (esMergeDevsA || esMergeDevsC)
+    {
+	devMerge *p;
+
+	EFHierVisitDevs(hcf, spcdevHierMergeVisit, (ClientData)NULL);
+	TxPrintf("Devs merged: %d\n", esDevsMerged);
+	esFMIndex = 0;
+	for (p = devMergeList; p != NULL; p = p->next)
+	    freeMagic(p);
+	devMergeList = NULL;
+    }
 
     /* Output devices */
     EFHierVisitDevs(hcf, spcdevHierVisit, (ClientData)NULL);

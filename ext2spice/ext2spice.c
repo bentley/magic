@@ -100,21 +100,6 @@ int	 esFMIndex = 0;          /* current index to it */
 int	 esFMSize = FMULT_SIZE ; /* its current size (growable) */
 int	 esDevsMerged;
 
-/* macro to add a dev's multiplier to the table and grow it if necessary */
-#define addDevMult(f) \
-{  \
-	if ( esFMult == NULL ) { \
-	  esFMult = (float *) mallocMagic((unsigned) (esFMSize*sizeof(float)));  \
-	} else if ( esFMIndex >= esFMSize ) {  \
-	  int i;  \
-	  float *op = esFMult ;  \
-	  esFMult = (float *) mallocMagic((unsigned) ((esFMSize = esFMSize*2)*sizeof(float))); \
-	  for ( i = 0 ; i < esFMSize/2 ; i++ ) esFMult[i] = op[i]; \
-	  if (op) freeMagic(op); \
-	}  \
-	esFMult[esFMIndex++] = (float)(f); \
-}
-
 devMerge *devMergeList = NULL ;
 
 #ifdef MAGIC_WRAPPER
@@ -699,16 +684,14 @@ runexttospice:
 
 	if (esMergeDevsA || esMergeDevsC)
 	{
+	    devMerge *p;
+
 	    EFVisitDevs(devMergeVisit, (ClientData) NULL);
 	    TxPrintf("Devs merged: %d\n", esDevsMerged);
 	    esFMIndex = 0;
-	    {
-		devMerge *p;
-
-		for (p = devMergeList; p != NULL; p = p->next)
-		    freeMagic(p);
-		devMergeList = NULL;
-	    }
+	    for (p = devMergeList; p != NULL; p = p->next)
+		freeMagic(p);
+	    devMergeList = NULL;
 	}
 	else if (esDistrJunct)
      	    EFVisitDevs(devDistJunctVisit, (ClientData) NULL);
@@ -1142,7 +1125,7 @@ subcktVisit(use, hierName, is_top)
     HierName *hierName;
     bool is_top;		/* TRUE if this is the top-level cell */
 {
-    EFNode *snode;
+    EFNode *snode, *subsnode = NULL;
     Def *def = use->use_def;
     EFNodeName *nodeName;
     int portorder, portmax;
@@ -1158,19 +1141,7 @@ subcktVisit(use, hierName, is_top)
     /* Note that the ports of the subcircuit will not necessarily be	*/
     /* ALL the entries in the hash table, so we have to check.		*/
 
-    portmax = -1;
-    for (snode = (EFNode *) def->def_firstn.efnode_next;
-		snode != &def->def_firstn;
-		snode = (EFNode *) snode->efnode_next)
-    {
-	if (!(snode->efnode_flags & EF_PORT)) continue;
-	for (nodeName = snode->efnode_name; nodeName != NULL; nodeName =
-			nodeName->efnn_next)
-	{
-	    portorder = nodeName->efnn_port;
-	    if (portorder > portmax) portmax = portorder;
-	}
-    }
+    portmax = EFGetPortMax(def);
 
     if (portmax < 0)
     {
@@ -1181,12 +1152,20 @@ subcktVisit(use, hierName, is_top)
         for (snode = (EFNode *) def->def_firstn.efnode_next;
 		snode != &def->def_firstn;
 		snode = (EFNode *) snode->efnode_next)
+	{
+	    if (snode->efnode_flags & EF_SUBS_PORT)
+		subsnode = snode;
+
 	    if (snode->efnode_flags & EF_PORT)
 		for (nodeName = snode->efnode_name; nodeName != NULL;
 			nodeName = nodeName->efnn_next)
 		    if (nodeName->efnn_port >= 0)
 			spcdevOutNode(hierName, nodeName->efnn_hier,
 					"subcircuit", esSpiceF); 
+	}
+	if (subsnode != NULL)
+	    spcdevOutNode(hierName, subsnode->efnode_name->efnn_hier,
+			 "subcircuit", esSpiceF); 
     }
     else
     {
@@ -1200,6 +1179,9 @@ subcktVisit(use, hierName, is_top)
 			snode != &def->def_firstn;
 			snode = (EFNode *) snode->efnode_next)
 	    {
+		if (snode->efnode_flags & EF_SUBS_PORT)
+		    subsnode = snode;
+
 		if (!(snode->efnode_flags & EF_PORT)) continue;
 		for (nodeName = snode->efnode_name; nodeName != NULL;
 			nodeName = nodeName->efnn_next)
@@ -1216,6 +1198,14 @@ subcktVisit(use, hierName, is_top)
 		if (nodeName != NULL) break;
 	    }
 	    portorder++;
+	}
+	if (subsnode != NULL)
+	{
+	    char stmp[MAX_STR_SIZE];
+
+	    /* This is not a hierarchical name or node! */
+	    EFHNSprintf(stmp, subsnode->efnode_name->efnn_hier);
+	    fprintf(esSpiceF, " %s", stmp);
 	}
     }
 
@@ -1280,7 +1270,7 @@ void
 topVisit(def)
     Def *def;
 {
-    EFNode *snode;
+    EFNode *snode, *subsnode = NULL;
     EFNodeName *sname, *nodeName;
     HashSearch hs;
     HashEntry *he;
@@ -1306,7 +1296,7 @@ topVisit(def)
 	    if (portorder > portmax) portmax = portorder;
 	}
     }
-    
+
     if (portmax < 0)
     {
 	/* No port order declared; print them and number them	*/
@@ -1323,6 +1313,7 @@ topVisit(def)
 	    snode = sname->efnn_node;
 
 	    if (snode->efnode_flags & EF_PORT)
+	    {
 		if (snode->efnode_name->efnn_port < 0)
 		{
 		    // fprintf(esSpiceF, " %s", he->h_key.h_name);
@@ -1331,6 +1322,9 @@ topVisit(def)
 				nodeSpiceName(snode->efnode_name->efnn_hier));
 		    snode->efnode_name->efnn_port = portorder++;
 		}
+	    }
+	    else if (snode->efnode_flags & EF_SUBS_PORT)
+		subsnode = snode;
 	}
     }
     else
@@ -1349,7 +1343,9 @@ topVisit(def)
 		sname = (EFNodeName *) HashGetValue(he);
 		snode = sname->efnn_node;
 
+		if (snode->efnode_flags & EF_SUBS_PORT) subsnode = snode;
 		if (!(snode->efnode_flags & EF_PORT)) continue;
+
 		for (nodeName = sname; nodeName != NULL; nodeName = nodeName->efnn_next)
 		{
 		    portidx = nodeName->efnn_port;
@@ -1367,6 +1363,14 @@ topVisit(def)
 	    }
 	    portorder++;
 	}
+    }
+    if (subsnode != NULL)
+    {
+	char stmp[MAX_STR_SIZE];
+
+	/* This is not a hierarchical name or node! */
+	EFHNSprintf(stmp, subsnode->efnode_name->efnn_hier);
+	fprintf(esSpiceF, " %s", stmp);
     }
     fprintf(esSpiceF, "\n");
 }
@@ -1436,17 +1440,14 @@ esOutputResistor(dev, hierName, trans, term1, term2, has_model, l, w, dscale)
 	scale = GeoScale(trans);
 
 	if (esScale < 0) 
-	{
 	    fprintf(esSpiceF, " w=%d l=%d", w * scale, (l * scale) / dscale);
-	    if (sdM != 1.0)
-		fprintf(esSpiceF, " M=%g", sdM);
-	}
 	else
-	{
 	    fprintf(esSpiceF, " w=%gu l=%gu",
-		(float)w * scale * esScale * sdM,
+		(float)w * scale * esScale,
 		(float)((l * scale * esScale) / dscale));
-	}
+
+	if (sdM != 1.0)
+	    fprintf(esSpiceF, " M=%g", sdM);
     }
 }
 
@@ -1703,14 +1704,14 @@ spcdevVisit(dev, hierName, trans)
 			    fprintf(esSpiceF, "%d", dev->dev_area * scale * scale);
 			else
 			    fprintf(esSpiceF, "%gp", dev->dev_area * scale * scale
-					* esScale * esScale * sdM);
+					* esScale * esScale);
 			break;
 		    case 'p':
 			if (esScale < 0)
 			    fprintf(esSpiceF, "%d", dev->dev_perim * scale);
 			else
 			    fprintf(esSpiceF, "%gu", dev->dev_perim * scale
-					* esScale * sdM);
+					* esScale);
 			break;
 		    case 'l':
 			if (esScale < 0)
@@ -1722,7 +1723,7 @@ spcdevVisit(dev, hierName, trans)
 			if (esScale < 0)
 			    fprintf(esSpiceF, "%d", w * scale);
 			else
-			    fprintf(esSpiceF, "%gu", w * scale * esScale * sdM);
+			    fprintf(esSpiceF, "%gu", w * scale * esScale);
 			break;
 		    case 's':
 			subnodeFlat = spcdevSubstrate(hierName,
@@ -1744,17 +1745,15 @@ spcdevVisit(dev, hierName, trans)
 					* esScale);
 			break;
 		    case 'r':
-			fprintf(esSpiceF, "%f", (double)(dev->dev_res) /
-					(double)sdM);
+			fprintf(esSpiceF, "%f", (double)(dev->dev_res));
 			break;
 		    case 'c':
-			fprintf(esSpiceF, "%ff", (double)sdM *
-					(double)(dev->dev_cap));
+			fprintf(esSpiceF, "%ff", (double)(dev->dev_cap));
 			break;
 		}
 		plist = plist->parm_next;
 	    }
-	    if ((esScale < 0) && (sdM != 1.0))
+	    if (sdM != 1.0)
 		fprintf(esSpiceF, " M=%g", sdM);
 	    break;
 
@@ -1834,18 +1833,14 @@ spcdevVisit(dev, hierName, trans)
 		scale = GeoScale(trans);
 
 		if (esScale < 0)
-		{
 		    fprintf(esSpiceF, " w=%d l=%d", w*scale, l*scale);
-		    if (sdM != 1.0)
-			fprintf(esSpiceF, " M=%g", sdM);
-		}
 		else
-		{
 		    fprintf(esSpiceF, " w=%gu l=%gu",
-			(float)w * scale * esScale * sdM,
+			(float)w * scale * esScale,
 			(float)l * scale * esScale);
-		    sdM = 1.0;
-		}
+
+		if (sdM != 1.0)
+		    fprintf(esSpiceF, " M=%g", sdM);
 	    }
 	    break;
 
@@ -1884,18 +1879,14 @@ spcdevVisit(dev, hierName, trans)
 	    sdM = getCurDevMult();
 
 	    if (esScale < 0)
-	    {
 		fprintf(esSpiceF, " w=%d l=%d", w*scale, l*scale);
-		if (sdM != 1.0)
-		    fprintf(esSpiceF, " M=%g", sdM);
-	    }
 	    else
-	    {
 		fprintf(esSpiceF, " w=%gu l=%gu",
-			(float)w * scale * esScale * sdM,
+			(float)w * scale * esScale,
 			(float)l * scale * esScale);
-		sdM = 1.0;
-	    }
+
+	    if (sdM != 1.0)
+		fprintf(esSpiceF, " M=%g", sdM);
 
 	    /*
 	     * Check controlling attributes and output area and perimeter. 
@@ -2780,14 +2771,17 @@ devMergeVisit(dev, hierName, trans)
     }
 
     gate = &dev->dev_terms[0];
-    source = drain = &dev->dev_terms[1];
+    if (dev->dev_nterm >= 2)
+	source = drain = &dev->dev_terms[1];
     if (dev->dev_nterm >= 3)
 	drain = &dev->dev_terms[2];
 
-
     gnode = SpiceGetNode(hierName, gate->dterm_node->efnode_name->efnn_hier);
-    snode = SpiceGetNode(hierName, source->dterm_node->efnode_name->efnn_hier);
-    dnode = SpiceGetNode(hierName, drain->dterm_node->efnode_name->efnn_hier);
+    if (dev->dev_nterm >= 2)
+    {
+	snode = SpiceGetNode(hierName, source->dterm_node->efnode_name->efnn_hier);
+	dnode = SpiceGetNode(hierName, drain->dterm_node->efnode_name->efnn_hier);
+    }
     if (dev->dev_subsnode)
 	subnode = spcdevSubstrate(hierName,
 			dev->dev_subsnode->efnode_name->efnn_hier, 
