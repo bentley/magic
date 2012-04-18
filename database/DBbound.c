@@ -23,8 +23,8 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 #include <stdio.h>
 #include "utils/magic.h"
 #include "utils/geometry.h"
-#include "tiles/tile.h"
 #include "database/database.h"
+#include "tiles/tile.h"
 
 
 typedef struct dbcellboundstruct

@@ -38,6 +38,7 @@ extern void SelectCell();
 extern void SelRemoveArea();
 extern int  SelRemoveSel2();
 extern int  SelectRemoveCellUse();
+extern ExtRectList *SelectShort();
 
 /* Procedures to enumerate what's in the selection. */
 

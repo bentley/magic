@@ -303,6 +303,339 @@ SelectFlat()
 
 }
 
+/*
+ * ----------------------------------------------------------------------------
+ *
+ *  selShortFindPath --
+ *
+ *	Trace back through a path found by selShortFindNext from destination
+ *	to source, picking the lowest cost return path, and adding each tile
+ *	found to the linked list.
+ *
+ * ----------------------------------------------------------------------------
+ */
+
+int
+selShortFindPath(tile, pnum, rlist)
+   Tile *tile;
+   int pnum;
+   ExtRectList **rlist;
+{
+    Tile *tp, *mintp;
+    int mincost = (int)tile->ti_client;
+    ExtRectList *newrrec;
+    int p = pnum;
+    TileType ttype;
+
+    if (IsSplit(tile))
+    {
+	ttype = (SplitSide(tile)) ? SplitRightType(tile) : SplitLeftType(tile);
+    }
+    else
+	ttype = TiGetTypeExact(tile);
+
+    /* Add this tile (area and type) to the linked list */
+
+    newrrec = mallocMagic(sizeof(ExtRectList));
+    newrrec->r_type = TiGetTypeExact(tile);	// Use complete type, if split.
+    TiToRect(tile, &newrrec->r_r);
+    newrrec->r_next = *rlist;
+    *rlist = newrrec;
+
+    if (mincost == 0) return 0;		/* We're done */
+
+    /* Search top */
+    if (IsSplit(tile) && (SplitSide(tile) ^ SplitDirection(tile))) goto leftside;
+    for (tp = RT(tile); RIGHT(tp) > LEFT(tile); tp = BL(tp))
+    {
+	if (tp->ti_client == (ClientData)CLIENTDEFAULT) continue;
+	if ((int)tp->ti_client < mincost)
+	{
+	    mincost = (int)tp->ti_client;
+	    mintp = tp;
+	}
+    }
+
+    /* Search left */
+leftside:
+    if (IsSplit(tile) && SplitSide(tile)) goto bottomside;
+    for (tp = BL(tile); BOTTOM(tp) < TOP(tile); tp = RT(tp))
+    {
+	if (tp->ti_client == (ClientData)CLIENTDEFAULT) continue;
+	if ((int)tp->ti_client < mincost)
+	{
+	    mincost = (int)tp->ti_client;
+	    mintp = tp;
+	}
+    }
+
+    /* Search bottom */
+bottomside:
+    if (IsSplit(tile) && (!(SplitSide(tile) ^ SplitDirection(tile))))
+	goto rightside;
+    for (tp = LB(tile); LEFT(tp) < RIGHT(tile); tp = TR(tp))
+    {
+	if (tp->ti_client == (ClientData)CLIENTDEFAULT) continue;
+	if ((int)tp->ti_client < mincost)
+	{
+	    mincost = (int)tp->ti_client;
+	    mintp = tp;
+	}
+    }
+
+    /* Search right */
+rightside:
+    if (IsSplit(tile) && !SplitSide(tile)) goto donesides;
+    for (tp = TR(tile); TOP(tp) > BOTTOM(tile); tp = LB(tp))
+    {
+	if (tp->ti_client == (ClientData)CLIENTDEFAULT) continue;
+	if ((int)tp->ti_client < mincost)
+	{
+	    mincost = (int)tp->ti_client;
+	    mintp = tp;
+	}
+    }
+
+    /* Search other connecting planes */
+donesides:
+    if (DBIsContact(ttype))
+    {
+	PlaneMask pmask;
+
+	pmask = DBConnPlanes[ttype];
+	for (p = PL_TECHDEPBASE; p < DBNumPlanes; p++)
+	{
+	    if (PlaneMaskHasPlane(pmask, p) && (p != pnum))
+	    {
+		tp = SelectDef->cd_planes[p]->pl_hint;
+		GOTOPOINT(tp, &tile->ti_ll);
+		if (tp->ti_client == (ClientData)CLIENTDEFAULT) continue;
+		if ((int)tp->ti_client < mincost)
+		{
+		    mincost = (int)tp->ti_client;
+		    mintp = tp;
+		}
+	    }
+	}
+    }
+
+    /* If no tile had lower cost than this one, then we have an error */
+    if (mincost == (int)tile->ti_client) return 1;
+
+    /* Now we have the minimum cost neighboring tile;  recursively search it */
+
+    return selShortFindPath(mintp, p, rlist);
+}
+
+/*
+ * ----------------------------------------------------------------------------
+ *
+ * selShortFindNext --
+ *
+ *	Recursive function for finding shorts.  This routine makes strong
+ *	assumptions;  namely, that all non-space material in the cell being
+ *	searched belongs to the same net.  The cell searched is always
+ *	SelectDef.
+ *
+ * Results:
+ *	Return 0 to keep going;  return 1 to stop when the tile contains
+ *	the destination point.
+ *
+ * Side effects:
+ *	Each tile visited has its ClientData record set to the current
+ *	cost, in units equal to the steps from the source.
+ *
+ * ----------------------------------------------------------------------------
+ */
+
+int
+selShortFindNext(tile, pnum, ldest, cost, best)
+    Tile *tile;
+    int pnum;
+    Label *ldest;
+    int cost, *best;
+{
+    TileType ttype;
+    Tile *tp;
+
+    if (IsSplit(tile))
+    {
+	ttype = (SplitSide(tile)) ? SplitRightType(tile) : SplitLeftType(tile);
+    }
+    else
+	ttype = TiGetTypeExact(tile);
+
+    /* Ignore space tiles */
+    if (ttype == TT_SPACE) return 0;
+
+    /* If this tile is unvisited, or has a lower cost, then return and	*/
+    /* keep going.  Otherwise, return 1 to stop the search this direction */
+
+    if (tile->ti_client == (ClientData)CLIENTDEFAULT)
+	TiSetClient(tile, cost);
+    else if ((int)tile->ti_client > cost)
+	TiSetClient(tile, cost);
+    else
+	return 0;
+
+    /* If this tile contains the destination point, do not search further */
+
+    if ((ttype == ldest->lab_type) && EnclosePoint(tile, &ldest->lab_rect.r_ll))
+    {
+	if (*best >= cost) *best = (cost - 1);
+	return 0;
+    }
+
+    /* If we're more costly than the best known path to destination, do	*/
+    /* not search further.						*/
+
+    if (cost >= *best) return 0;
+
+    /* Search top */
+    if (IsSplit(tile) && (SplitSide(tile) ^ SplitDirection(tile))) goto leftside;
+    for (tp = RT(tile); RIGHT(tp) > LEFT(tile); tp = BL(tp))
+    {
+	selShortFindNext(tp, pnum, ldest, cost + 1, best);
+    }
+
+    /* Search left */
+leftside:
+    if (IsSplit(tile) && SplitSide(tile)) goto bottomside;
+    for (tp = BL(tile); BOTTOM(tp) < TOP(tile); tp = RT(tp))
+    {
+	selShortFindNext(tp, pnum, ldest, cost + 1, best);
+    }
+
+    /* Search bottom */
+bottomside:
+    if (IsSplit(tile) && (!(SplitSide(tile) ^ SplitDirection(tile))))
+	goto rightside;
+    for (tp = LB(tile); LEFT(tp) < RIGHT(tile); tp = TR(tp))
+    {
+	selShortFindNext(tp, pnum, ldest, cost + 1, best);
+    }
+
+    /* Search right */
+rightside:
+    if (IsSplit(tile) && !SplitSide(tile)) goto donesides;
+    for (tp = TR(tile); TOP(tp) > BOTTOM(tile); tp = LB(tp))
+    {
+	selShortFindNext(tp, pnum, ldest, cost + 1, best);
+    }
+
+    /* Search other connecting planes */
+donesides:
+    if (DBIsContact(ttype))
+    {
+	PlaneMask pmask;
+	int p;
+
+	pmask = DBConnPlanes[ttype];
+	for (p = PL_TECHDEPBASE; p < DBNumPlanes; p++)
+	{
+	    if (PlaneMaskHasPlane(pmask, p) && (p != pnum))
+	    {
+		tp = SelectDef->cd_planes[p]->pl_hint;
+		GOTOPOINT(tp, &tile->ti_ll);
+		selShortFindNext(tp, p, ldest, cost + 1, best);
+	    }
+	}
+    }
+    return 0;
+}
+    
+
+/*
+ * ----------------------------------------------------------------------------
+ *
+ * SelectShort --
+ *
+ *	This procedure, given two labels, finds the location of those
+ *	labels in SelectDef.  One is marked as source, the other as
+ *	destination.  Then the SelectDef paint (which is assumed to be
+ *	a net selection that is all local to SelectDef) is recursively
+ *	searched for connecting material.  Each tile ClientData is
+ *	given a cost which is the number of steps from the source.
+ *	At the end, the minimum cost path is traced from the destination
+ * 	back to the source, and the path is saved as a linked list and
+ *	passed back to the calling procedure.
+ *
+ * Results:
+ *	A linked list of tiles representing the connecting path with the
+ *	fewest steps between source and destination.
+ *
+ * Side effects:
+ *	Tile database left with non-default ClientData.  It may be necessary
+ *	to re-run the search routine to return all tiles to the default
+ *	ClientData value.
+ * ----------------------------------------------------------------------------
+ */
+
+ExtRectList *
+SelectShort(char *lab1, char *lab2)
+{
+    Label *selLabel, *srclab = NULL, *destlab = NULL;
+    Tile *tile;
+    Plane *plane;
+    int pnum, best;
+    PlaneMask pmask;
+    ExtRectList *rlist;
+
+    /* Step one: find the tiles containing the labels.  If not found,	*/
+    /* return NULL.							*/
+
+    for (selLabel = SelectDef->cd_labels; selLabel != NULL; selLabel =
+	selLabel->lab_next)
+    {
+	if ((srclab == NULL) && Match(lab1, selLabel->lab_text))
+	    srclab = selLabel;
+
+	if ((destlab == NULL) && Match(lab2, selLabel->lab_text))
+	    destlab = selLabel;
+    }
+
+    /* Must be able to find both labels */
+    if (srclab == NULL || destlab == NULL) return NULL;
+
+    /* Must be able to find tiles associated with each label */
+    
+    pmask = DBTypePlaneMaskTbl[srclab->lab_type];
+    for (pnum = PL_TECHDEPBASE; pnum < DBNumPlanes; pnum++)
+    {
+	if (PlaneMaskHasPlane(pmask, pnum))
+	{
+	    plane = SelectDef->cd_planes[pnum];
+	    tile = plane->pl_hint;
+	    GOTOPOINT(tile, &srclab->lab_rect.r_ll)
+	    if (TiGetType(tile) == srclab->lab_type) break;
+	}
+    }
+    best = MAXINT;
+    selShortFindNext(tile, pnum, &destlab->lab_rect.r_ll, 0, &best);
+
+    /* Now see if destination has been counted */
+
+    pmask = DBTypePlaneMaskTbl[destlab->lab_type];
+    for (pnum = PL_TECHDEPBASE; pnum < DBNumPlanes; pnum++)
+    {
+	if (PlaneMaskHasPlane(pmask, pnum))
+	{
+	    plane = SelectDef->cd_planes[pnum];
+	    tile = plane->pl_hint;
+	    GOTOPOINT(tile, &destlab->lab_rect.r_ll)
+	    if (TiGetType(tile) == destlab->lab_type) break;
+	}
+    }
+
+    if (tile->ti_client == (ClientData)CLIENTDEFAULT) return NULL;
+
+    /* Now find the shortest path between source and destination */
+    rlist = NULL;
+    selShortFindPath(tile, pnum, &rlist);
+
+    return rlist;
+}
+
 
 /*
  * ----------------------------------------------------------------------------

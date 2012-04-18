@@ -28,24 +28,15 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 
 #include "utils/magic.h"
 #include "utils/geometry.h"
+#include "database/database.h"
 #include "tiles/tile.h"
 #include "utils/hash.h"
-#include "database/database.h"
 #include "windows/windows.h"
 #include "utils/main.h"
 #include "select/select.h"
 #include "select/selInt.h"
 #include "utils/malloc.h"
 #include "textio/textio.h"
-
-/* Linked rectangle structure including tiletype information */
-
-typedef struct extRectList
-{
-    TileType r_type;
-    Rect r_r;
-    struct extRectList *r_next;
-} ExtRectList;
 
 /* Structure passed from top-level enumeration procedures to lower-level
  * ones:

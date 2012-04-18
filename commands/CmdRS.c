@@ -683,7 +683,8 @@ CmdSelect(w, cmd)
 #define SEL_CHUNK	11
 #define SEL_REGION	12
 #define SEL_NET		13
-#define SEL_DEFAULT	14
+#define SEL_SHORT	14
+#define SEL_DEFAULT	15
 
     static char *cmdSelectOption[] =
     {
@@ -701,6 +702,7 @@ CmdSelect(w, cmd)
 	"chunk",
 	"region",
 	"net",
+	"short",
 	NULL
     };
     static char *cmdSelectMsg[] =
@@ -722,6 +724,7 @@ CmdSelect(w, cmd)
 	"[more | less] box | chunk | region | net [layers]\n"
 	"				 [de]select chunk/region/net specified by\n"
 	"				 the lower left corner of the current box",
+	"short name1 name2		 find shorting path between two labels",
 	NULL
     };
 
@@ -761,6 +764,7 @@ CmdSelect(w, cmd)
     Transform trans, rootTrans, tmp1;
     Point p, rootPoint;
     Rect r, selarea;
+    ExtRectList *rlist;
     int option;
     bool layerspec;
     bool degenerate;
@@ -988,6 +992,36 @@ CmdSelect(w, cmd)
 	    DBUpdateStamps();
 	    cmdSaveCell(SelectDef, cmd->tx_argv[2], FALSE, FALSE);
 	    return;
+
+	/*--------------------------------------------------------------------
+	 * Given a net selection and two labels, determine the shortest
+	 * connecting path between the two labels.
+	 *--------------------------------------------------------------------
+	 */
+	case SEL_SHORT:
+	    if (cmd->tx_argc != 4) goto usageError;
+	    rlist = SelectShort(cmd->tx_argv[2], cmd->tx_argv[3]);
+
+	    /* Delete selection and replace with contents of rlist */
+
+	    /* (To do:  Alternately just return a list of the contents	*/
+	    /* of rlist)						*/
+	    SelectClear();
+
+	    while (rlist != NULL)
+	    {
+		/* Paint rlist back into SelectDef */
+		DBPaint(SelectDef, &rlist->r_r, rlist->r_type);
+
+		/* cleanup as we go */
+		freeMagic(rlist);
+		rlist = rlist->r_next;
+	    }
+
+	    /* Force erase and redraw of the selection */
+	    GeoTransRect(&SelectUse->cu_transform, &SelectDef->cd_bbox, &selarea);
+	    DBWHLRedraw(SelectRootDef, &selarea, FALSE);
+	    break;
 	
 	case SEL_BOX: case SEL_CHUNK: case SEL_REGION: case SEL_NET:
 	    if (cmd->tx_argc > 3) goto usageError;
