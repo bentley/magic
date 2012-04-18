@@ -1019,6 +1019,9 @@ CmdSelect(w, cmd)
 	    }
 
 	    /* Force erase and redraw of the selection */
+	    DBReComputeBbox(SelectDef);
+	    DBWAreaChanged(SelectDef, &SelectDef->cd_extended, DBW_ALLWINDOWS,
+			(TileTypeBitMask *)NULL);
 	    GeoTransRect(&SelectUse->cu_transform, &SelectDef->cd_bbox, &selarea);
 	    DBWHLRedraw(SelectRootDef, &selarea, FALSE);
 	    break;
