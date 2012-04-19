@@ -204,7 +204,8 @@ dbCellTileSrFunc(scx, fp)
 	    context.tc_plane = pNum;
 	    if (fp->tf_dinfo & TT_DIAGONAL)
 	    {
-		TileType dinfo = DBTransformDiagonal(fp->tf_dinfo, &scx->scx_trans);
+		// TileType dinfo = DBTransformDiagonal(fp->tf_dinfo, &scx->scx_trans);
+		TileType dinfo = DBInvTransformDiagonal(fp->tf_dinfo, &scx->scx_trans);
 		if (DBSrPaintNMArea((Tile *) NULL, def->cd_planes[pNum],
 			dinfo, &scx->scx_area, fp->tf_mask,
 			fp->tf_func, (ClientData) &context))

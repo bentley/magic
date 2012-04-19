@@ -1002,6 +1002,12 @@ CmdSelect(w, cmd)
 	    if (cmd->tx_argc != 4) goto usageError;
 	    rlist = SelectShort(cmd->tx_argv[2], cmd->tx_argv[3]);
 
+	    if (rlist == NULL)
+	    {
+		TxError("No shorting path found between source and destination!\n");
+		return;
+	    }
+
 	    /* Delete selection and replace with contents of rlist */
 
 	    /* (To do:  Alternately just return a list of the contents	*/

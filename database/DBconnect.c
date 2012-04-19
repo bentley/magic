@@ -131,6 +131,43 @@ DBTransformDiagonal(oldtype, trans)
     return dinfo;
 }
 
+/*
+ *-----------------------------------------------------------------
+ * DBInvTransformDiagonal --
+ *
+ *	This is equivalent to the routine above, but inverted, so
+ *	that the result is correct for the orientation of the
+ *	triangle in the coordinate system of the child cell,
+ *	rather than the parent cell (which comes down to merely
+ *	swapping transform positions b and d, since translation
+ *	isn't considered).
+ *-----------------------------------------------------------------
+ */
+
+TileType
+DBInvTransformDiagonal(oldtype, trans)
+    TileType oldtype;
+    Transform *trans;
+{
+    TileType dinfo;
+    int o1, o2, o3;
+    int dir, side;
+
+    o1 = ((trans->t_e > 0) || (trans->t_b > 0)) ? 1 : 0;
+    o2 = ((trans->t_a > 0) || (trans->t_d > 0)) ? 1 : 0;
+    o3 = (trans->t_a != 0) ? 1 : 0;
+
+    dir = (oldtype & TT_DIRECTION) ? 1 : 0;
+    side = ((oldtype & TT_SIDE) ? 1 : 0) ^ o2 ^ (dir | o3);
+    dir ^= o1 ^ o2;
+
+    dinfo = TT_DIAGONAL;
+    if (side) dinfo |= TT_SIDE;
+    if (dir) dinfo |= TT_DIRECTION;
+
+    return dinfo;
+}
+
 
 /*
  * ----------------------------------------------------------------------------

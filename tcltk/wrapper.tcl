@@ -1170,7 +1170,7 @@ proc magic::openwrapper {{cell ""} {framename ""}} {
 # Delete the wrapper and the layout window in it.
 
 proc magic::closewrapper { framename } {
-   globa tk_version
+   global tk_version
    global Opts
 
    # Remove this window from the target list in .winmenu

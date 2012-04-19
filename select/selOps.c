@@ -524,13 +524,15 @@ donesides:
  */
 
 int
-selShortFindNext(tile, pnum, ldest, cost, best, fdir)
+selShortFindNext(tile, pnum, ldest, cost, best, fdir, mask)
     Tile *tile;
     int pnum;
     Label *ldest;
     int cost, *best, fdir;
+    TileTypeBitMask *mask;
 {
     TileType ttype;
+    TileTypeBitMask *lmask;
     Tile *tp;
 
     if (IsSplit(tile))
@@ -561,6 +563,9 @@ selShortFindNext(tile, pnum, ldest, cost, best, fdir)
     /* Ignore space tiles */
     if (ttype == TT_SPACE) return 0;
 
+    /* Ignore non-connecting tiles */
+    if (!TTMaskHasType(mask, ttype)) return 0;
+
     /* If this tile is unvisited, or has a lower cost, then return and	*/
     /* keep going.  Otherwise, return 1 to stop the search this direction */
 
@@ -583,6 +588,7 @@ selShortFindNext(tile, pnum, ldest, cost, best, fdir)
     /* not search further.						*/
 
     if (cost >= *best) return 0;
+    lmask = &DBConnectTbl[ttype];
 
     /* Search top */
     if (IsSplit(tile))
@@ -594,7 +600,7 @@ selShortFindNext(tile, pnum, ldest, cost, best, fdir)
 
     for (tp = RT(tile); RIGHT(tp) > LEFT(tile); tp = BL(tp))
     {
-	selShortFindNext(tp, pnum, ldest, cost + 1, best, GEO_NORTH);
+	selShortFindNext(tp, pnum, ldest, cost + 1, best, GEO_NORTH, lmask);
     }
 
     /* Search left */
@@ -608,7 +614,7 @@ srchleft:
 
     for (tp = BL(tile); BOTTOM(tp) < TOP(tile); tp = RT(tp))
     {
-	selShortFindNext(tp, pnum, ldest, cost + 1, best, GEO_WEST);
+	selShortFindNext(tp, pnum, ldest, cost + 1, best, GEO_WEST, lmask);
     }
 
     /* Search bottom */
@@ -622,7 +628,7 @@ srchbot:
 
     for (tp = LB(tile); LEFT(tp) < RIGHT(tile); tp = TR(tp))
     {
-	selShortFindNext(tp, pnum, ldest, cost + 1, best, GEO_SOUTH);
+	selShortFindNext(tp, pnum, ldest, cost + 1, best, GEO_SOUTH, lmask);
     }
 
     /* Search right */
@@ -636,7 +642,7 @@ srchright:
 
     for (tp = TR(tile); TOP(tp) > BOTTOM(tile); tp = LB(tp))
     {
-	selShortFindNext(tp, pnum, ldest, cost + 1, best, GEO_EAST);
+	selShortFindNext(tp, pnum, ldest, cost + 1, best, GEO_EAST, lmask);
     }
 
     /* Search other connecting planes */
@@ -653,7 +659,7 @@ donesrch:
 	    {
 		tp = SelectDef->cd_planes[p]->pl_hint;
 		GOTOPOINT(tp, &tile->ti_ll);
-		selShortFindNext(tp, p, ldest, cost + 1, best, GEO_CENTER);
+		selShortFindNext(tp, p, ldest, cost + 1, best, GEO_CENTER, lmask);
 	    }
 	}
     }
@@ -727,7 +733,8 @@ SelectShort(char *lab1, char *lab2)
 	}
     }
     best = MAXINT;
-    selShortFindNext(tile, pnum, &destlab->lab_rect.r_ll, 0, &best, GEO_CENTER);
+    selShortFindNext(tile, pnum, &destlab->lab_rect.r_ll, 0, &best, GEO_CENTER,
+		&DBConnectTbl[srclab->lab_type]);
 
     /* Now see if destination has been counted */
 
