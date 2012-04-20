@@ -1242,6 +1242,7 @@ Okay:
 		    /* Sanity check */
 		    if (type == DBNumTypes) return;
 
+		    TxPrintf("Select chunk\n");
 		    SelectChunk(&scx, type, crec->dbw_bitmask, &chunkSelection, less);
 		    if (!less)
 		      DBWSetBox(scx.scx_use->cu_def, &chunkSelection);
@@ -1255,12 +1256,16 @@ Okay:
 
 		    Rect area;
 
+		    TxPrintf("Select region\n");
 		    SelectRegion(&scx, type, crec->dbw_bitmask, &area, less);
 		    if (GEO_SURROUND(&chunkSelection, &area))
 			level = SEL_NET;
 		}
 		if (level == SEL_NET)
+		{
+		    TxPrintf("Select net\n");
 		    SelectNet(&scx, type, crec->dbw_bitmask, (Rect *) NULL, less);
+		}
 
 		return;
 	    }

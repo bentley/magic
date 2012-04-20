@@ -660,6 +660,10 @@ dbcConnectFunc(tile, cx)
     TiToRect(tile, &tileArea);
     srArea = &scx->scx_area;
 
+    TxPrintf("dbcConnect:  Test %d %d %d %d\n",
+	tileArea.r_ll.p_x, tileArea.r_ll.p_y,
+	tileArea.r_ur.p_x, tileArea.r_ur.p_y);
+
     if (((tileArea.r_xbot >= srArea->r_xtop-1) ||
 	(tileArea.r_xtop <= srArea->r_xbot+1)) &&
 	((tileArea.r_ybot >= srArea->r_ytop-1) ||
@@ -748,6 +752,11 @@ dbcConnectFunc(tile, cx)
      * marks its area has having been processed.  Then recycle
      * the storage for the current list element.
      */
+
+    TxPrintf("Paint %d %d %d %d type %s\n",
+	newarea.r_ll.p_x, newarea.r_ll.p_y,
+	newarea.r_ur.p_x, newarea.r_ur.p_y,
+	DBTypeLongNameTbl[loctype]);
 
     DBNMPaintPlane(def->cd_planes[pNum], dinfo,
 		&newarea, DBStdPaintTbl(loctype, pNum),
