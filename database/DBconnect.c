@@ -660,10 +660,6 @@ dbcConnectFunc(tile, cx)
     TiToRect(tile, &tileArea);
     srArea = &scx->scx_area;
 
-    TxPrintf("dbcConnect:  Test %d %d %d %d\n",
-	tileArea.r_ll.p_x, tileArea.r_ll.p_y,
-	tileArea.r_ur.p_x, tileArea.r_ur.p_y);
-
     if (((tileArea.r_xbot >= srArea->r_xtop-1) ||
 	(tileArea.r_xtop <= srArea->r_xbot+1)) &&
 	((tileArea.r_ybot >= srArea->r_ytop-1) ||
@@ -753,11 +749,6 @@ dbcConnectFunc(tile, cx)
      * the storage for the current list element.
      */
 
-    TxPrintf("Paint %d %d %d %d type %s\n",
-	newarea.r_ll.p_x, newarea.r_ll.p_y,
-	newarea.r_ur.p_x, newarea.r_ur.p_y,
-	DBTypeLongNameTbl[loctype]);
-
     DBNMPaintPlane(def->cd_planes[pNum], dinfo,
 		&newarea, DBStdPaintTbl(loctype, pNum),
 		(PaintUndoInfo *) NULL);
@@ -817,12 +808,14 @@ dbcConnectFunc(tile, cx)
 	csa2->csa2_size *= 2;
 
 	newlist = (conSrArea *)mallocMagic(csa2->csa2_size * sizeof(conSrArea));
-	for (i = 0; i < lastsize; i++)
-	{
-	    newlist[i].area = csa2->csa2_list[i].area;
-	    newlist[i].connectMask = csa2->csa2_list[i].connectMask;
-	    newlist[i].dinfo = csa2->csa2_list[i].dinfo;
-	}
+	memcpy((void *)newlist, (void *)csa2->csa2_list,
+			(size_t)lastsize * sizeof(conSrArea));
+	// for (i = 0; i < lastsize; i++)
+	// {
+	//     newlist[i].area = csa2->csa2_list[i].area;
+	//     newlist[i].connectMask = csa2->csa2_list[i].connectMask;
+	//     newlist[i].dinfo = csa2->csa2_list[i].dinfo;
+	// }
 	freeMagic((char *)csa2->csa2_list);
 	csa2->csa2_list = newlist;
     }

@@ -381,7 +381,8 @@ drcTile (tile, arg)
     Rect errRect;		/* Area checked for an individual rule */
     MaxRectsData *mrd;		/* Used by widespacing rule */
     TileTypeBitMask tmpMask, *rMask;
-    bool trigpending;	/* Hack for widespacing rule */
+    bool trigpending;		/* Hack for widespacing rule */
+    bool firsttile;
     int triggered;
     int cdist, dist, ccdist, result;
 
@@ -481,6 +482,7 @@ drcTile (tile, arg)
         int bottom = MAX(BOTTOM(tile), rect->r_ybot);
 	int edgeX = LEFT(tile);
 
+	firsttile = TRUE;
         for (tpleft = BL(tile); BOTTOM(tpleft) < top; tpleft = RT(tpleft))
         {
 	    /* Get the tile types to the left and right of the edge */
@@ -529,7 +531,7 @@ drcTile (tile, arg)
 
 		DRCstatRules++;
 
-		if (cptr->drcc_flags & DRC_AREA)
+		if (firsttile && (cptr->drcc_flags & DRC_AREA))
 		{
 		    drcCheckArea(tile, arg, cptr);
 		    continue;
@@ -546,8 +548,10 @@ drcTile (tile, arg)
 
 		    if (cptr->drcc_flags & DRC_REVERSE)
 			mrd = drcCanonicalMaxwidth(tpleft, GEO_WEST, arg, cptr);
-		    else
+		    else if (firsttile)
 			mrd = drcCanonicalMaxwidth(tile, GEO_EAST, arg, cptr);
+		    else
+			mrd = NULL;
 		    if (!trigpending) cptr->drcc_dist--;
 		    if (trigpending)
 		    {
@@ -572,7 +576,7 @@ drcTile (tile, arg)
 		    }
 		    continue;
 		}
-		else if (cptr->drcc_flags & DRC_MAXWIDTH)
+		else if (firsttile && (cptr->drcc_flags & DRC_MAXWIDTH))
 		{
 		    /* bends_illegal option only */
 		    drcCheckMaxwidth(tile, arg, cptr);
@@ -580,7 +584,7 @@ drcTile (tile, arg)
 		}
 		else if (!triggered) mrd = NULL;
 
-		if (cptr->drcc_flags & DRC_RECTSIZE)
+		if (firsttile && (cptr->drcc_flags & DRC_RECTSIZE))
 		{
 		    /* only checked for bottom-left tile in a rect area */
 		    if (!TTMaskHasType(&cptr->drcc_mask,
@@ -788,6 +792,7 @@ drcTile (tile, arg)
 		    triggered = arg->dCD_entries;
 	    }
 	    DRCstatEdges++;
+	    firsttile = FALSE;
         }
     }
 
@@ -835,6 +840,7 @@ checkbottom:
 	int edgeY = BOTTOM(tile);
 
 	/* Go right across bottom of tile */
+	firsttile = TRUE;
         for (tpbot = LB(tile); LEFT(tpbot) < right; tpbot = TR(tpbot))
         {
 	    /* Get the tile types to the top and bottom of the edge */
@@ -897,8 +903,10 @@ checkbottom:
 
 		    if (cptr->drcc_flags & DRC_REVERSE)
 			mrd = drcCanonicalMaxwidth(tpbot, GEO_SOUTH, arg, cptr);
-		    else
+		    else if (firsttile)
 			mrd = drcCanonicalMaxwidth(tile, GEO_NORTH, arg, cptr);
+		    else
+			mrd = NULL;
 		    if (!trigpending) cptr->drcc_dist--;
 		    if (trigpending)
 		    {
@@ -1088,6 +1096,7 @@ checkbottom:
 		    triggered = arg->dCD_entries;
 	    }
 	    DRCstatEdges++;
+	    firsttile = FALSE;
         }
     }
     return (0);
