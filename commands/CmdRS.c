@@ -818,6 +818,14 @@ CmdSelect(w, cmd)
 	    optionArgs = &cmd->tx_argv[2];
 	    cmd->tx_argc--;
 	}
+	else if (!strncmp(cmd->tx_argv[1], "same", arg1len))
+	{
+	    /* Force this to be the same as the last selection command,	*/
+	    /* even if there were other commands in between.		*/
+	    lastCommand = TxCommandNumber - 1;
+	    optionArgs = &cmd->tx_argv[2];
+	    cmd->tx_argc--;
+	}
 
 	else if (!strncmp(cmd->tx_argv[1], "top", arg1len)) 
 	{

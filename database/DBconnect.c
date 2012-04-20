@@ -498,6 +498,7 @@ donesides:
 	GEO_EXPAND(&newArea, 1, &newArea);
 	for (i = PL_TECHDEPBASE; i < DBNumPlanes; i++)
 	{
+	    if (!PlaneMaskHasPlane(planes, i)) continue;
 	    newcsa.csa_plane = i;
 	    if (IsSplit(tile))
 	    {
@@ -715,9 +716,12 @@ dbcConnectFunc(tile, cx)
 
 	for (ctype = TT_TECHDEPBASE; ctype < DBNumUserLayers; ctype++)
 	{
-	    cMask = DBResidueMask(ctype);
-	    if (TTMaskIntersect(rMask, cMask))
-		TTMaskSetType(&notConnectMask, ctype);
+	    if (DBIsContact(ctype))
+	    {
+		cMask = DBResidueMask(ctype);
+		if (TTMaskIntersect(rMask, cMask))
+		    TTMaskSetType(&notConnectMask, ctype);
+	    }
 	}
 
 	/* The mask of contact types must include all stacked contacts */
@@ -727,7 +731,6 @@ dbcConnectFunc(tile, cx)
 	    if (TTMaskHasType(cMask, loctype))
 		TTMaskSetType(&notConnectMask, ctype);
 	}
-
 	TTMaskCom(&notConnectMask);
     }
     else

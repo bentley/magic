@@ -150,6 +150,7 @@ FindMaxRects(tile, mrd)
 		    rlist[entries].r_xbot = area.r_xtop;
 		    entries++;
 		}
+
 	}
 	else
 	{
@@ -337,22 +338,3 @@ FindMaxRectangle2(bbox, starttile, plane)
     return &(mrd->rlist[sidx]);
 }
 
-/*
- *-------------------------------------------------------------------------
- *  AddRectToList ---
- *
- *	Use the MaxRectsData structure to maintain a list of rectangles.
- *  This method is used by the DRC surround and extend rules when the
- *  edge types and allowed types are in different planes.  For each edge
- *  in the plane of the check, the areaCheck routine breaks out areas
- *  where the two planes interact according to the rule.  These areas
- *  are then used as the basis for the trigger rule.
- *-------------------------------------------------------------------------
- */
-
-void
-AddRectToList(area, mrd)
-    Rect *area;
-    MaxRectsData *mrd;
-{
-}

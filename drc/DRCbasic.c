@@ -531,9 +531,10 @@ drcTile (tile, arg)
 
 		DRCstatRules++;
 
-		if (firsttile && (cptr->drcc_flags & DRC_AREA))
+		if (cptr->drcc_flags & DRC_AREA)
 		{
-		    drcCheckArea(tile, arg, cptr);
+		    if (firsttile)
+			drcCheckArea(tile, arg, cptr);
 		    continue;
 		}
 
@@ -576,18 +577,19 @@ drcTile (tile, arg)
 		    }
 		    continue;
 		}
-		else if (firsttile && (cptr->drcc_flags & DRC_MAXWIDTH))
+		else if (cptr->drcc_flags & DRC_MAXWIDTH)
 		{
 		    /* bends_illegal option only */
-		    drcCheckMaxwidth(tile, arg, cptr);
+		    if (firsttile)
+			drcCheckMaxwidth(tile, arg, cptr);
 		    continue;
 		}
 		else if (!triggered) mrd = NULL;
 
-		if (firsttile && (cptr->drcc_flags & DRC_RECTSIZE))
+		if (cptr->drcc_flags & DRC_RECTSIZE)
 		{
 		    /* only checked for bottom-left tile in a rect area */
-		    if (!TTMaskHasType(&cptr->drcc_mask,
+		    if (firsttile && !TTMaskHasType(&cptr->drcc_mask,
 				TiGetRightType(BL(tile))) &&
 				!TTMaskHasType(&cptr->drcc_mask,
 				TiGetTopType(LB(tile))))
