@@ -450,12 +450,12 @@ drcCanonicalMaxwidth(starttile, dir, arg, cptr)
     static MaxRectsData *mrd = (MaxRectsData *)NULL;
     Rect	    *boundrect, boundorig;
 
-    /* Generate an initial array size of 4 for rlist and swap. */
+    /* Generate an initial array size of 8 for rlist and swap. */
     if (mrd == (MaxRectsData *)NULL)
     {
 	mrd = (MaxRectsData *)mallocMagic(sizeof(MaxRectsData));
-	mrd->rlist = (Rect *)mallocMagic(4 * sizeof(Rect));
-	mrd->swap = (Rect *)mallocMagic(4 * sizeof(Rect));
+	mrd->rlist = (Rect *)mallocMagic(8 * sizeof(Rect));
+	mrd->swap = (Rect *)mallocMagic(8 * sizeof(Rect));
 	mrd->listdepth = 8;
     }
     if (starttile == NULL) return mrd;

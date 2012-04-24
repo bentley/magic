@@ -1562,6 +1562,23 @@ spcdevVisit(dev, hierName, trans)
 	drain = &dev->dev_terms[2];
     subnode = dev->dev_subsnode;
 
+    /* Check for minimum number of terminals. */
+
+    switch(dev->dev_class)
+    {
+	case DEV_SUBCKT:
+	case DEV_RSUBCKT:
+	    break;
+	default:
+	    if (dev->dev_nterm < 2)
+	    {
+		TxError("Device other than subcircuit has only "
+			"one terminal\n");
+		return 0;
+	    }
+	    break;
+    }
+
     /* Original hack for BiCMOS, Tim 10/4/97, is deprecated.	*/
     /* Use of "device bjt" preferred to "fet" with model="npn".	*/
 
@@ -1575,6 +1592,8 @@ spcdevVisit(dev, hierName, trans)
     {
 	case DEV_RES:
 	case DEV_CAP:
+	    if (dev->dev_nterm < 1) 
+		return 0;
 	    if (dev->dev_type == esNoModelType)
 		has_model = FALSE;
 	    break;

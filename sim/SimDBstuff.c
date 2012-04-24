@@ -225,9 +225,12 @@ SimConnectFunc(tile, cx)
 	/* Differenct contact types may share residues (6/18/04) */     
 	for (ctype = TT_TECHDEPBASE; ctype < DBNumUserLayers; ctype++)
 	{
-	    cMask = DBResidueMask(ctype);
-	    if (TTMaskIntersect(rMask, cMask))
-		TTMaskSetType(&notConnectMask, ctype);
+	    if (DBIsContact(ctype))
+	    {
+		cMask = DBResidueMask(ctype);
+		if (TTMaskIntersect(rMask, cMask))
+		    TTMaskSetType(&notConnectMask, ctype);
+	    }
 	}
 
 	/* The mask of contact types must include all stacked contacts */

@@ -704,34 +704,37 @@ dbcConnectFunc(tile, cx)
 
     if (DBIsContact(loctype))
     {
-	TileType ctype;
-	TileTypeBitMask *cMask, *rMask = DBResidueMask(loctype);
+//	TileType ctype;
+//	TileTypeBitMask *cMask, *rMask = DBResidueMask(loctype);
 
-	TTMaskSetOnlyType(&notConnectMask, loctype);
+//	TTMaskSetOnlyType(&notConnectMask, loctype);
 
 	/* Different contact types may share residues (6/18/04) */
 	/* Use TTMaskIntersect(), not TTMaskEqual()---types	*/
 	/* which otherwise stack may be in separate cells	*/
 	/* (12/1/05)						*/
 
-	for (ctype = TT_TECHDEPBASE; ctype < DBNumUserLayers; ctype++)
-	{
-	    if (DBIsContact(ctype))
-	    {
-		cMask = DBResidueMask(ctype);
-		if (TTMaskIntersect(rMask, cMask))
-		    TTMaskSetType(&notConnectMask, ctype);
-	    }
-	}
+//	for (ctype = TT_TECHDEPBASE; ctype < DBNumUserLayers; ctype++)
+//	{
+//	    if (DBIsContact(ctype))
+//	    {
+//		cMask = DBResidueMask(ctype);
+//		if (TTMaskIntersect(rMask, cMask))
+//		    TTMaskSetType(&notConnectMask, ctype);
+//	    }
+//	}
 
 	/* The mask of contact types must include all stacked contacts */
-	for (ctype = DBNumUserLayers; ctype < DBNumTypes; ctype++)
-	{
-	    cMask = DBResidueMask(ctype);
-	    if (TTMaskHasType(cMask, loctype))
-		TTMaskSetType(&notConnectMask, ctype);
-	}
-	TTMaskCom(&notConnectMask);
+//	for (ctype = DBNumUserLayers; ctype < DBNumTypes; ctype++)
+//	{
+//	    cMask = DBResidueMask(ctype);
+//	    if (TTMaskHasType(cMask, loctype))
+//		TTMaskSetType(&notConnectMask, ctype);
+//	}
+//	TTMaskCom(&notConnectMask);
+
+	TTMaskZero(&notConnectMask);
+	TTMaskSetMask(&notConnectMask, &DBNotConnectTbl[loctype]);
     }
     else
     {

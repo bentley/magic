@@ -324,8 +324,9 @@ void
 DBTechFinalConnect()
 {
     /* TileTypeBitMask saveConnect[TT_MAXTYPES]; */
+    TileTypeBitMask *cMask, *rMask;
     TileType base, s;
-    LayerInfo *lp;
+    LayerInfo *lp, *ls;
     int n;
 
     for (s = 0; s < DBNumTypes; s++)
@@ -363,9 +364,49 @@ DBTechFinalConnect()
 	    if (TTMaskHasType(&DBConnectTbl[base], s))
 		TTMaskSetType(&DBConnectTbl[s], base);
 
-    /* Construct DBNotConnectTbl[] to be the complement of DBConnectTbl[] */
+    /* Construct DBNotConnectTbl[] */
+    /* For purposes of connectivity searching, this is not exactly the	*/
+    /* complement of DBConnectTbl[].  For non-contact layers, it is.	*/
+    /* For contact images, we compute differently to account for	*/
+    /* contacts being stacked by having different parts in different	*/
+    /* cells, which requires a different mask.				*/
+
     for (base = 0; base < TT_MAXTYPES; base++)
 	TTMaskCom2(&DBNotConnectTbl[base], &DBConnectTbl[base]);
+
+    for (n = 0; n < dbNumContacts; n++)
+    {
+	lp = dbContactInfo[n];
+	TTMaskSetOnlyType(&DBNotConnectTbl[lp->l_type], lp->l_type);
+	rMask = DBResidueMask(lp->l_type);
+
+	/* Different contact types may share residues.		*/
+	/* Use TTMaskIntersect(), not TTMaskEqual()---types	*/
+	/* which otherwise stack may be in separate cells.	*/
+
+	for (s = 0; s < dbNumContacts; s++)
+	{
+	    ls = dbContactInfo[s];
+	    cMask = DBResidueMask(ls->l_type);
+	    if (TTMaskIntersect(rMask, cMask))
+		TTMaskSetType(&DBNotConnectTbl[lp->l_type], ls->l_type);
+	}
+
+	/* The mask of contact types must include all stacked contacts */
+
+	for (base = DBNumUserLayers; base < DBNumTypes; base++)
+	{
+	    cMask = DBResidueMask(base);
+	    if (TTMaskHasType(cMask, lp->l_type))
+		TTMaskSetType(&DBNotConnectTbl[lp->l_type], base);
+	}
+
+	/* Note that everything above counted for all the	*/
+	/* connecting types.  Invert this to get non-connecting	*/
+	/* types.						*/
+
+	TTMaskCom(&DBNotConnectTbl[lp->l_type]);
+    }
 
     /*
      * DBConnPlanes[] is nonzero only for contact images, for which
