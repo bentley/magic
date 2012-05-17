@@ -968,7 +968,7 @@ calmaLayerError(mesg, layer, dt)
     clt.clt_layer = layer;
     clt.clt_type = dt;
     he = HashFind(&calmaLayerHash, (char *) &clt);
-    if (HashGetValue(he) == (ClientData) NULL)
+    if (HashGetValue(he) == NULL)
     {
 	HashSetValue(he, (ClientData) 1);
 	calmaReadError("%s, layer=%d type=%d\n", mesg, layer, dt);

@@ -82,7 +82,8 @@ RunStats(flags, lastt, deltat)
 {
     struct tms buffer;
     static char string[100];
-    int umins, usecs, size, smins, ssecs, udsecs, sdsecs;
+    int umins, usecs, smins, ssecs, udsecs, sdsecs;
+    pointertype size;
     char *sp = string;
 
     *sp = '\0';
@@ -131,10 +132,10 @@ RunStats(flags, lastt, deltat)
 
     if (flags & RS_MEM)
     {
-	size = (((long) sbrk(0) - (int) &end) + 512)/1024;
+	size = (((pointertype)sbrk(0) - (pointertype) &end) + 512)/1024;
 	if (sp != string)
 	    *sp++ = ' ';
-	sprintf(sp, "%dk", size);
+	sprintf(sp, "%dk", (int)size);
     }
 
     return (string);

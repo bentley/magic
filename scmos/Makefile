@@ -60,16 +60,24 @@ install: all
 		${CP} $$i $(DESTDIR)${SYSDIR}; done
 
 scmos.tech: $(OBJS)
-	$(SC_CPP) -DV5 -DSTANDARD scmos.tech.in > scmos.tech
+	sed -e 's/\\/\\\\/' scmos.tech.in > scmos.tech.out
+	$(SC_CPP) -DV5 -DSTANDARD scmos.tech.out > scmos.tech
+	$(RM) scmos.tech.out
 
 scmos-tm.tech: $(OBJS)
-	$(SC_CPP) -DV5 -DHPTECH -DTIGHTMETAL scmos.tech.in > scmos-tm.tech
+	sed -e 's/\\/\\\\/' scmos.tech.in > scmos.tech.out
+	$(SC_CPP) -DV5 -DHPTECH -DTIGHTMETAL scmos.tech.out > scmos-tm.tech
+	$(RM) scmos.tech.out
 
 scmos-sub.tech: $(OBJS)
-	$(SC_CPP) -DV5 -DSUBMICRON scmos.tech.in > scmos-sub.tech
+	sed -e 's/\\/\\\\/' scmos.tech.in > scmos.tech.out
+	$(SC_CPP) -DV5 -DSUBMICRON scmos.tech.out > scmos-sub.tech
+	$(RM) scmos.tech.out
 
 scmosWR.tech: $(OBJS)
-	$(SC_CPP) -DV5 -DSTANDARD -DWELL_ROUTE_CHECK scmos.tech.in > scmosWR.tech
+	sed -e 's/\\/\\\\/' scmos.tech.in > scmos.tech.out
+	$(SC_CPP) -DV5 -DSTANDARD -DWELL_ROUTE_CHECK scmos.tech.out > scmosWR.tech
+	$(RM) scmos.tech.out
 
 minimum.tech: minimum.tech.m4
 	$(SC_M4) minimum.tech.m4 > minimum.tech
