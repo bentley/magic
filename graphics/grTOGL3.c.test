@@ -235,29 +235,32 @@ GrTOGLTextSize(text, size, r)
 }
 
 /* OpenGL backing store functions (now removed from the X11-based ones) */
-/* Since we always paint into the front buffer, the back buffer is	*/
-/* always available for backing store.  We need not create or destroy	*/
-/* it.	We just use the w_backingStore location to store whether the	*/
-/* backing store contains valid data or not.				*/
 
 void
 grtoglFreeBackingStore(MagWindow *window)
 {
-   window->w_backingStore = (ClientData)0;
+    if (window->w_backingStore == (ClientData)NULL) return;
+    freeMagic(window->w_backingStore);
+    window->w_backingStore = (ClientData)NULL;
 }
 
 void
 grtoglCreateBackingStore(MagWindow *w)
 {
-   Tk_Window tkwind = (Tk_Window)w->w_grdata;
+    unsigned int width, height;
 
-   /* ignore all windows other than layout */
-   if (w->w_client != DBWclientID) return;
+    /* ignore all windows other than layout */
+    if (w->w_client != DBWclientID) return;
 
-   /* Deferred */
-   if (tkwind == NULL) return;
+    /* deferred */
+    if (w->w_grdata == NULL) return;
 
-   w->w_backingStore = (ClientData)1;
+    width = w->w_screenArea.r_xtop - w->w_screenArea.r_xbot;
+    height = w->w_screenArea.r_ytop - w->w_screenArea.r_ybot;
+
+    if (w->w_backingStore != (ClientData)NULL) freeMagic(w->w_backingStore);
+
+    w->w_backingStore = (ClientData)mallocMagic(width * height * 3);
 }
 
 bool
@@ -265,12 +268,8 @@ grtoglGetBackingStore(MagWindow *w, Rect *area)
 {
     unsigned int width, height;
     int xbot, ybot;
+    int xoff, yoff;
     Rect r;
-
-    // GLboolean result;
-    // GLint rasterpos[4];
-
-    if (w->w_backingStore == (ClientData)0) return FALSE;
 
     GEO_EXPAND(area, 1, &r);
     GeoClip(&r, &(w->w_screenArea));
@@ -281,20 +280,12 @@ grtoglGetBackingStore(MagWindow *w, Rect *area)
     xbot = r.r_xbot;
     ybot = r.r_ybot;
 
+    xoff = w->w_screenArea.r_xbot - w->w_allArea.r_xbot;
+    yoff = w->w_allArea.r_ytop - w->w_screenArea.r_ytop;
+
     glDrawBuffer(GL_FRONT);
     glReadBuffer(GL_BACK);
-    glRasterPos2i((GLint)xbot, (GLint)ybot);
-
-    /* Check for valid raster position */
-    // glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, (GLboolean *)(&result));
-    // glGetIntegerv(GL_CURRENT_RASTER_POSITION, (GLint *)(&rasterpos[0]));
-
-    // TxPrintf("Raster valid = %d, position = %d %d %d %d\n",
-    //		(int)result, (int)rasterpos[0], (int)rasterpos[1],
-    //		(int)rasterpos[2], (int)rasterpos[3]);
-    // if (result == 0)
-    //    TxPrintf("Intended position = %d %d\n", xbot, ybot);
-
+    glRasterPos2i((GLint)(xbot - xoff), (GLint)(ybot - yoff));
     glCopyPixels(xbot, ybot, width, height, GL_COLOR);
 
     return TRUE;
@@ -302,49 +293,123 @@ grtoglGetBackingStore(MagWindow *w, Rect *area)
 
 
 bool
-grtoglScrollBackingStore(MagWindow *w, Point *shift)
+grtoglxGetBackingStore(MagWindow *w, Rect *area)
 {
     unsigned int width, height;
-    int xorigin, yorigin, xshift, yshift;
+    int ybot, y;
+    int xoff, yoff;
+    int swidth, sheight, srow;
+    int bpos;
+    Rect r;
 
-    if (w->w_backingStore == (ClientData)0)
-    {
-	TxPrintf("grtoglScrollBackingStore %d %d failure\n",
-		shift->p_x, shift->p_y);
+    if ((GLvoid *)w->w_backingStore == NULL) 
 	return FALSE;
+
+    // Get width and height of the backing store
+    sheight = w->w_screenArea.r_ytop - w->w_screenArea.r_ybot;
+    swidth = w->w_screenArea.r_xtop - w->w_screenArea.r_xbot;
+    srow = swidth * 3;
+
+    GEO_EXPAND(area, 1, &r);
+    GeoClip(&r, &(w->w_screenArea));
+
+    width = r.r_xtop - r.r_xbot;
+    height = r.r_ytop - r.r_ybot;
+    // ybot = grXtransY(w, r.r_ytop);
+    ybot = r.r_ybot;
+
+    xoff = w->w_screenArea.r_xbot - w->w_allArea.r_xbot;
+    yoff = w->w_allArea.r_ytop - w->w_screenArea.r_ytop;
+
+    bpos = ybot * srow + (3 * r.r_xbot);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glDrawBuffer(GL_FRONT);
+    for (y = ybot; y < ybot + height; y++)
+    {
+	// Remove next line once all math is correct. . .
+	if ((bpos + srow) > (srow * sheight)) break;
+
+	glRasterPos2i((GLint)(r.r_xbot - xoff), (GLint)(y - yoff));
+	glDrawPixels(width, 1, GL_RGB, GL_UNSIGNED_BYTE,
+		(const GLvoid *)(w->w_backingStore + bpos));
+	bpos += srow;
     }
 
-    width = w->w_screenArea.r_xtop - w->w_screenArea.r_xbot;
-    height = w->w_screenArea.r_ytop - w->w_screenArea.r_ybot;
+    return TRUE;
+}
+
+bool
+grtoglScrollBackingStore(MagWindow *w, Point *shift)
+{
+    return TRUE;
+}
+
+bool
+grtoglxScrollBackingStore(MagWindow *w, Point *shift)
+{
+    unsigned int width, height;
+    int xorigin, yorigin, xshift, yshift, y, bpos, tpos, srow;
+    int swidth, sheight;
+    int memmax;
+
+    if (w->w_backingStore == (ClientData)NULL)
+	return FALSE;
+
+    swidth = width = w->w_screenArea.r_xtop - w->w_screenArea.r_xbot;
+    sheight = height = w->w_screenArea.r_ytop - w->w_screenArea.r_ybot;
+    srow = swidth * 3;
     xorigin = 0;
     yorigin = 0;
     xshift = shift->p_x;
+    // yshift = -shift->p_y;
     yshift = shift->p_y;
 
     if (xshift > 0)
-        width -= xshift;
+	width -= xshift;
     else if (xshift < 0)
     {
-        width += xshift;
-        xorigin = -xshift;
-        xshift = 0;
+	width += xshift;
+	xorigin = -xshift;
+	xshift = 0;
     }
     if (yshift > 0)
-        height -= yshift;
+	height -= yshift;
     else if (yshift < 0)
     {
-        height += yshift;
-        yorigin = -yshift;
-        yshift = 0;
+	height += yshift;
+	yorigin = -yshift;
+	yshift = 0;
     }
 
-    glDrawBuffer(GL_BACK);
-    glReadBuffer(GL_BACK);
-    glRasterPos2i((GLint)xshift, (GLint)yshift);
-    glCopyPixels(xorigin, yorigin, width, height, GL_COLOR);
+    /* To do:  shift data within the stream itself. . . */
 
-    glDrawBuffer(GL_FRONT);
+    /* Source stream position */
+    bpos = yorigin * srow + 3 * xorigin;
+    /* Target stream position */
+    tpos = yshift * srow + 3 * xshift;
 
+    /* It's easier to do the whole memmove as a single block.	*/
+    memmax = (width * height * 3) - ((tpos > bpos) ? tpos : bpos);
+
+
+    memmove((void *)(w->w_backingStore + tpos),
+		(void *)(w->w_backingStore + bpos),
+		memmax);
+
+//  for (y = yorigin; y < yorigin + height; y++)
+//  {
+	// Remove next lines once all math is correct. . .
+// 	if ((bpos + srow) > (srow * height)) break;
+// 	if ((tpos + srow) > (srow * height)) break;
+
+// 	memmove((void *)(w->w_backingStore + tpos),
+// 		(void *)(w->w_backingStore + bpos), width * 3);
+
+// 	if (y >= height) break;
+// 	bpos += srow;
+// 	tpos += srow;
+//     }
     return TRUE;
 }
 
@@ -352,12 +417,7 @@ void
 grtoglPutBackingStore(MagWindow *w, Rect *area)
 {
     unsigned int width, height;
-    int ybot, xbot;
-
-    // GLboolean result;
-    // GLint rasterpos[4];
-
-    if (w->w_backingStore == (ClientData)0) return;
+    int ybot, xbot, xoff, yoff;
 
     width = area->r_xtop - area->r_xbot;
     height = area->r_ytop - area->r_ybot;
@@ -365,33 +425,83 @@ grtoglPutBackingStore(MagWindow *w, Rect *area)
     ybot = area->r_ybot;
     xbot = area->r_xbot;
 
-    if (xbot < 0) {
-	width -= xbot;
+    xoff = w->w_screenArea.r_xbot - w->w_allArea.r_xbot;
+    yoff = w->w_screenArea.r_ytop - w->w_allArea.r_ytop;
+
+    glDrawBuffer(GL_BACK);
+    glReadBuffer(GL_FRONT);
+    glRasterPos2i((GLint)(xbot - xoff), (GLint)(ybot - yoff));
+    glCopyPixels(xbot, ybot, width, height, GL_COLOR);
+}
+
+void
+grtoglxPutBackingStore(MagWindow *w, Rect *area)
+{
+    unsigned int width, height;
+    int y, ybot, xbot, xoff, yoff;
+    int swidth, sheight, srow;
+    int bpos;
+
+    if ((GLvoid *)w->w_backingStore == NULL) return;
+
+    if (w->w_flags & WIND_OBSCURED)
+    {
+	grtoglFreeBackingStore(w);
+	w->w_backingStore = (ClientData)NULL;
+	return;
+    }
+
+    // Get width and height of the backing store area
+
+    swidth = w->w_screenArea.r_xtop - w->w_screenArea.r_xbot;
+    sheight = w->w_screenArea.r_ytop - w->w_screenArea.r_ybot;
+    srow = swidth * 3;
+
+    width = area->r_xtop - area->r_xbot;
+    height = area->r_ytop - area->r_ybot;
+    // ybot = grXtransY(w, area->r_ytop);
+    ybot = area->r_ybot;
+    xbot = area->r_xbot;
+    xoff = w->w_screenArea.r_xbot - w->w_allArea.r_xbot;
+    yoff = w->w_allArea.r_ytop - w->w_screenArea.r_ytop;
+
+    if (GrPixelCorrect == 0)
+    {
+	height--;
+	width--;
+	xbot++;
+    }
+
+    // OpenGL has no concept of a 2-dimensional arrangement to the
+    // data returned, or boundaries, so we have to enforce them.
+
+    if (xbot < 0)
+    {
+	width += xbot;
 	xbot = 0;
     }
-
-    if (ybot < 0) {
-	height -= ybot;
+    if (ybot < 0)
+    {
+	height += ybot;
 	ybot = 0;
     }
+    if (width > swidth) width = swidth;
 
+    bpos = (ybot - yoff) * srow + 3 * (xbot - xoff);
+
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
     glReadBuffer(GL_FRONT);
-    glDrawBuffer(GL_BACK);
-    glRasterPos2i((GLint)xbot, (GLint)ybot);
+    for (y = ybot; y < ybot + height; y++)
+    {
+	// Remove next line once all math is correct. . .
+	if ((bpos + srow) > (srow * sheight)) break;
 
-    /* Check for valid raster position */
-    // glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, (GLboolean *)(&result));
-    // glGetIntegerv(GL_CURRENT_RASTER_POSITION, (GLint *)(&rasterpos[0]));
-
-    // TxPrintf("Raster valid = %d, position = %d %d %d %d\n",
-    //		(int)result, (int)rasterpos[0], (int)rasterpos[1],
-    //		(int)rasterpos[2], (int)rasterpos[3]);
-    // if (result == 0)
-    //    TxPrintf("Intended position = %d %d\n", xbot, ybot);
-
-    glCopyPixels(xbot, ybot, width, height, GL_COLOR);
-
-    glDrawBuffer(GL_FRONT);	/* Return to normal front rendering */
+	glReadPixels(xbot, y, width, 1,
+		GL_RGB, GL_UNSIGNED_BYTE,
+		(GLvoid *)(w->w_backingStore + bpos));
+	if (y >= sheight) break;
+	bpos += srow;
+    }
 }
 
 

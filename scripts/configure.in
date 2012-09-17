@@ -883,6 +883,10 @@ AC_ARG_ENABLE(client-render,
 [  --disable-client-render        disable OpenGL client-side rendering], [ 
   AC_DEFINE(OGL_SERVER_SIDE_ONLY) ], )
 
+AC_ARG_ENABLE(framebuffer-backing-store,
+[  --disable-framebuffer-backing-store     disable OpenGL framebuffer backing store], [ 
+  AC_DEFINE(X11_BACKING_STORE) ], )
+
 AC_ARG_ENABLE(plot,
 [  --disable-plot	disable plot package], [
   unused="$unused plot"

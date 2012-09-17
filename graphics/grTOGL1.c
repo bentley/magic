@@ -804,7 +804,7 @@ keys_and_buttons:
 			mw->w_flags &= ~WIND_OBSCURED;
 			if (mw->w_backingStore == (ClientData)NULL)
 			{
-			    grtkCreateBackingStore(mw);
+			    grtoglCreateBackingStore(mw);
 			    if (mw->w_backingStore != (ClientData)NULL)
 			    {
 				WindAreaChanged(mw, &mw->w_allArea);
@@ -946,11 +946,19 @@ oglSetDisplay (dispType, outFileName, mouseFileName)
     grSetCharSizePtr = grtoglSetCharSize;
     grFillPolygonPtr = grtoglFillPolygon;
 
+#ifdef X11_BACKING_STORE
     GrFreeBackingStorePtr = grtkFreeBackingStore;
     GrCreateBackingStorePtr = grtkCreateBackingStore;
     GrGetBackingStorePtr = grtkGetBackingStore;
     GrPutBackingStorePtr = grtkPutBackingStore;
     GrScrollBackingStorePtr = grtkScrollBackingStore;
+#else
+    GrFreeBackingStorePtr = grtoglFreeBackingStore;
+    GrCreateBackingStorePtr = grtoglCreateBackingStore;
+    GrGetBackingStorePtr = grtoglGetBackingStore;
+    GrPutBackingStorePtr = grtoglPutBackingStore;
+    GrScrollBackingStorePtr = grtoglScrollBackingStore;
+#endif
     
     if (execFailed) {
 	TxError("Execution failed!\n");

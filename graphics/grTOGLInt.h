@@ -65,6 +65,12 @@ extern void grtoglSetWMandC();
 extern void grtoglRectConvert();
 extern void grtoglFillPolygon();
 
+extern void grtoglFreeBackingStore();
+extern void grtoglCreateBackingStore();
+extern bool grtoglGetBackingStore();
+extern bool grtoglScrollBackingStore();
+extern void grtoglPutBackingStore();
+
 extern void grtoglDrawLine();
 extern void grtoglDrawLines();
 extern void grtoglFillRect();
