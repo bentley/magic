@@ -3794,7 +3794,7 @@ if test x$M4 = xno; then
 fi
 
 
-if test "$CPP" = "gcc -E" ; then
+if test "$CPP" = "$CC -E" ; then
    CPP="$CPP -x c"
 fi
 
