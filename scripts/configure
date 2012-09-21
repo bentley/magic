@@ -6437,41 +6437,50 @@ fi
 # Check whether --enable-memdebug was given.
 if test "${enable_memdebug+set}" = set; then :
   enableval=$enable_memdebug;
+else
+  enable_memdebug=no
+fi
+
+
+if test "x$enable_memdebug" = "xyes" ; then
    if test "x$magic_with_tcl" = "x" ; then
       LIBS="${LIBS} -lefence"
    else
       $as_echo "#define TCL_MEM_DEBUG 1" >>confdefs.h
 
    fi
-
 fi
-
 
 # Check whether --enable-modular was given.
 if test "${enable_modular+set}" = set; then :
   enableval=$enable_modular;
+else
+  enable_modular=no
+fi
+
+
+if test "x$enable_modular" = "xyes" ; then
   programs="$programs ext2sim ext2spice"
   $as_echo "#define EXT2SPICE_AUTO 1" >>confdefs.h
 
   $as_echo "#define EXT2SIM_AUTO 1" >>confdefs.h
 
-
 else
-
   modules="$modules ext2sim ext2spice"
   extra_libs="$extra_libs \${MAGICDIR}/ext2sim/libext2sim.o"
   extra_libs="$extra_libs \${MAGICDIR}/ext2spice/libext2spice.o"
-
 fi
-
 
 
 # Check whether --enable-locking was given.
 if test "${enable_locking+set}" = set; then :
   enableval=$enable_locking;
-
 else
+  enable_locking=yes
+fi
 
+
+if test "x$enable_locking" = "xyes" ; then
   case $target in
      *cygwin*)
 	;;
@@ -6480,94 +6489,119 @@ else
 
         ;;
   esac
-
 fi
-
 
 # Check whether --enable-calma was given.
 if test "${enable_calma+set}" = set; then :
   enableval=$enable_calma;
-  unused="$unused calma"
-
 else
+  enable_calma=yes
+fi
 
+
+if test "x$enable_calma" = "xyes" ; then
   $as_echo "#define CALMA_MODULE 1" >>confdefs.h
 
   modules="$modules calma"
   extra_libs="$extra_libs \${MAGICDIR}/calma/libcalma.o"
-
+else
+  unused="$unused calma"
 fi
-
 
 # Check whether --enable-cif was given.
 if test "${enable_cif+set}" = set; then :
   enableval=$enable_cif;
-  unused="$unused cif"
-
 else
+  enable_cif=yes
+fi
 
+
+if test "x$enable_cif" = "xyes" ; then
   $as_echo "#define CIF_MODULE 1" >>confdefs.h
 
   modules="$modules cif"
   extra_libs="$extra_libs \${MAGICDIR}/cif/libcif.o"
-
+else
+  unused="$unused cif"
 fi
-
 
 # Check whether --enable-client-render was given.
 if test "${enable_client_render+set}" = set; then :
   enableval=$enable_client_render;
+else
+  enable_client_render=yes
+fi
+
+
+if test "x$enable_client_render" = "xno" ; then
   $as_echo "#define OGL_SERVER_SIDE_ONLY 1" >>confdefs.h
 
 fi
 
-
 # Check whether --enable-framebuffer-backing-store was given.
 if test "${enable_framebuffer_backing_store+set}" = set; then :
   enableval=$enable_framebuffer_backing_store;
+else
+  enable_framebuffer_backing_store=yes
+fi
+
+
+if test "x$enable_framebuffer_backing_store" = "xno" ; then
   $as_echo "#define X11_BACKING_STORE 1" >>confdefs.h
 
 fi
 
-
 # Check whether --enable-plot was given.
 if test "${enable_plot+set}" = set; then :
   enableval=$enable_plot;
-  unused="$unused plot"
-
 else
+  enable_plot=yes
+fi
 
+
+if test "x$enable_plot" = "xyes" ; then
   $as_echo "#define PLOT_MODULE 1" >>confdefs.h
 
   modules="$modules plot"
   extra_libs="$extra_libs \${MAGICDIR}/plot/libplot.o"
-
+else
+  unused="$unused plot"
 fi
-
 
 # Check whether --enable-lef was given.
 if test "${enable_lef+set}" = set; then :
   enableval=$enable_lef;
-  unused="$unused lef"
-
 else
+  enable_lef=yes
+fi
 
+
+if test "x$enable_lef" = "xyes" ; then
   $as_echo "#define LEF_MODULE 1" >>confdefs.h
 
   modules="$modules lef"
   extra_libs="$extra_libs \${MAGICDIR}/lef/liblef.o \${MAGICDIR}/extflat/libextflat.o"
+else
+  unused="$unused lef"
+fi
+
+# Check whether --enable-readline was given.
+if test "${enable_readline+set}" = set; then :
+  enableval=$enable_readline;  if test $usingTcl ; then
+     enable_readline=no
+  fi
+
+else
+   if test $usingTcl ; then
+     enable_readline=no
+  else
+     enable_readline=yes
+  fi
 
 fi
 
 
-# Check whether --enable-readline was given.
-if test "${enable_readline+set}" = set; then :
-  enableval=$enable_readline;
-  unused="$unused readline"
-
-else
-
-  if ! test $usingTcl ; then
+if test "x$enable_readline" = "xyes" ; then
     $as_echo "#define USE_READLINE 1" >>confdefs.h
 
     use_system_readline=yes
@@ -6855,19 +6889,27 @@ fi
 fi
 
     modules="$modules readline"
+else
+  unused="$unused readline"
+fi
+
+# Check whether --enable-threads was given.
+if test "${enable_threads+set}" = set; then :
+  enableval=$enable_threads;  if test $usingTcl ; then
+     enable_threads=no
+  fi
+
+else
+   if test $usingTcl ; then
+     enable_threads=no
   else
-    unused="$unused readline"
+     enable_threads=yes
   fi
 
 fi
 
 
-# Check whether --enable-threads was given.
-if test "${enable_threads+set}" = set; then :
-  enableval=$enable_threads;
-else
-
-  if ! test $usingTcl ; then
+if test "x$enable_threads" = "xyes" ; then
     usingThreads=1
     $as_echo "#define HAVE_PTHREADS 1" >>confdefs.h
 
@@ -6875,18 +6917,17 @@ else
     gr_srcs="$gr_srcs \${X11THREAD_SRCS}"
     gr_hsrcs=""
     gr_hprog=""
-  fi
-
 fi
-
 
 # Check whether --enable-route was given.
 if test "${enable_route+set}" = set; then :
   enableval=$enable_route;
-  unused="$unused garouter grouter irouter mzrouter router gcr"
-
 else
+  enable_route=yes
+fi
 
+
+if test "x$enable_route" = "xyes" ; then
   $as_echo "#define ROUTE_MODULE 1" >>confdefs.h
 
   modules="$modules garouter grouter irouter mzrouter router gcr"
@@ -6895,33 +6936,43 @@ else
 	\${MAGICDIR}/mzrouter/libmzrouter.o \${MAGICDIR}/router/librouter.o \
 	\${MAGICDIR}/irouter/libirouter.o \${MAGICDIR}/grouter/libgrouter.o \
 	\${MAGICDIR}/gcr/libgcr.o"
-
+else
+  unused="$unused garouter grouter irouter mzrouter router gcr"
 fi
-
 
 # Check whether --enable-rsim was given.
 if test "${enable_rsim+set}" = set; then :
-  enableval=$enable_rsim;
+  enableval=$enable_rsim;  if test $usingTcl ; then
+      enable_rsim=no
+  fi
+
 else
-
-  if ! test $usingTcl ; then
-    $as_echo "#define RSIM_MODULE 1" >>confdefs.h
-
+   if test $usingTcl ; then
+      enable_rsim=no
+  else
+      enable_rsim=yes
   fi
 
 fi
 
 
+if test "x$enable_rsim" = "xyes" ; then
+   $as_echo "#define RSIM_MODULE 1" >>confdefs.h
+
+fi
+
 # Check whether --enable-new-macros was given.
 if test "${enable_new_macros+set}" = set; then :
   enableval=$enable_new_macros;
 else
-
-  $as_echo "#define USE_NEW_MACROS 1" >>confdefs.h
-
-
+  enable_new_macros=yes
 fi
 
+
+if test "x$enable_new_macros" = "xyes" ; then
+  $as_echo "#define USE_NEW_MACROS 1" >>confdefs.h
+
+fi
 
 
 # Check whether --with-opengl was given.
