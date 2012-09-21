@@ -46,7 +46,7 @@ extern bool esNoAttrs;
 extern bool esHierAP;
 extern char spcesDefaultOut[FNSIZE];
 extern int  esCapAccuracy;
-extern char esCapFormat[FNSIZE];
+extern char esSpiceCapFormat[FNSIZE];
 extern char *spcesOutName;
 extern FILE *esSpiceF;
 extern float esScale;	/* negative if hspice the EFScale/100 otherwise */
@@ -87,7 +87,7 @@ typedef struct {
    char  *defSubs ;    /* the default substrate node */
 } fetInfoList;
 
-extern fetInfoList fetInfo[MAXDEVTYPES];
+extern fetInfoList esFetInfo[MAXDEVTYPES];
 
 #define MAX_STR_SIZE (1<<11) /* 2K should be enough for keeping temp
                                 names even of the most complicated design */

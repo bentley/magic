@@ -55,7 +55,7 @@ bool esNoAttrs = FALSE;
 bool esHierAP = FALSE;
 char spcesDefaultOut[FNSIZE];
 int  esCapAccuracy = 1;
-char esCapFormat[FNSIZE];
+char esSpiceCapFormat[FNSIZE];
 char *spcesOutName = spcesDefaultOut;
 FILE *esSpiceF = NULL;
 float esScale = -1.0 ; /* negative if hspice the EFScale/100 otherwise */
@@ -76,7 +76,7 @@ int esNoModelType;  /* index for device type "None" (model-less device) */
 HashTable subcktNameTable ; /* the hash table itself */
 DQueue    subcktNameQueue ; /* q used to print it sorted at the end*/
 
-fetInfoList fetInfo[MAXDEVTYPES];
+fetInfoList esFetInfo[MAXDEVTYPES];
 
 
 unsigned long	initMask = 0;
@@ -587,12 +587,12 @@ runexttospice:
        the command line arguments */
 
     for ( i = 0 ; i < MAXDEVTYPES ; i++ ) {
-	fetInfo[i].resClassSD = NO_RESCLASS;
-	fetInfo[i].resClassSub = NO_RESCLASS;
-	fetInfo[i].defSubs = NULL;
+	esFetInfo[i].resClassSD = NO_RESCLASS;
+	esFetInfo[i].resClassSub = NO_RESCLASS;
+	esFetInfo[i].defSubs = NULL;
     }
 
-    /* Get fetInfo information from the current extraction style 	 */
+    /* Get esFetInfo information from the current extraction style 	 */
     /* (this works only for the Tcl version with the embedded exttospice */
     /* command)								 */
 
@@ -609,9 +609,9 @@ runexttospice:
 	    esNoModelType = i;
 	if (EFStyle != NULL)
 	{
-	    fetInfo[i].resClassSD = sd_rclass;
-	    fetInfo[i].resClassSub = sub_rclass;
-	    fetInfo[i].defSubs = subname;
+	    esFetInfo[i].resClassSD = sd_rclass;
+	    esFetInfo[i].resClassSub = sub_rclass;
+	    esFetInfo[i].defSubs = subname;
 	}
 
 	/* Tcl variable substitution for substrate node names */
@@ -619,7 +619,7 @@ runexttospice:
 	{
 	    resstr = (char *)Tcl_GetVar(magicinterp, &subname[1],
 			TCL_GLOBAL_ONLY);
-	    if (resstr != NULL) fetInfo[i].defSubs = resstr;
+	    if (resstr != NULL) esFetInfo[i].defSubs = resstr;
 	}
     }
 
@@ -699,12 +699,14 @@ runexttospice:
 	initMask = (unsigned long) 0;
 	if (flatFlags & EF_FLATCAPS)
 	{
-	    (void) sprintf( esCapFormat,  "C%%d %%s %%s %%.%dlffF\n", esCapAccuracy);
+	    (void) sprintf( esSpiceCapFormat,  "C%%d %%s %%s %%.%dlffF\n",
+				esCapAccuracy);
 	    EFVisitCaps(spccapVisit, (ClientData) NULL);
 	}
 	EFVisitResists(spcresistVisit, (ClientData) NULL);
 	EFVisitSubcircuits(subcktVisit, (ClientData) NULL);
-	(void) sprintf( esCapFormat, "C%%d %%s %s %%.%dlffF%%s", resstr, esCapAccuracy);
+	(void) sprintf( esSpiceCapFormat, "C%%d %%s %s %%.%dlffF%%s",
+			resstr, esCapAccuracy);
 	EFVisitNodes(spcnodeVisit, (ClientData) NULL);
 
 	if ((esDoSubckt == TRUE) || (locDoSubckt == TRUE))
@@ -753,26 +755,26 @@ main(argc, argv)
     /* create default devinfo entries (MOSIS) which can be overriden by
        the command line arguments */
     for ( i = 0 ; i < MAXDEVTYPES ; i++ ) {
-	fetInfo[i].resClassSD = NO_RESCLASS;
-	fetInfo[i].resClassSub = NO_RESCLASS;
-	fetInfo[i].defSubs = NULL;
+	esFetInfo[i].resClassSD = NO_RESCLASS;
+	esFetInfo[i].resClassSub = NO_RESCLASS;
+	esFetInfo[i].defSubs = NULL;
     }
     i = efBuildAddStr(EFDevTypes, &EFDevNumTypes, MAXDEVTYPES, "ndev");
-    fetInfo[i].resClassSD = 0 ;
-    fetInfo[i].resClassSub = NO_RESCLASS ;
-    fetInfo[i].defSubs = "Gnd!";
+    esFetInfo[i].resClassSD = 0 ;
+    esFetInfo[i].resClassSub = NO_RESCLASS ;
+    esFetInfo[i].defSubs = "Gnd!";
     i = efBuildAddStr(EFDevTypes, &EFDevNumTypes, MAXDEVTYPES, "pdev");
-    fetInfo[i].resClassSD = 1 ;
-    fetInfo[i].resClassSub = 8 ;
-    fetInfo[i].defSubs = "Vdd!";
+    esFetInfo[i].resClassSD = 1 ;
+    esFetInfo[i].resClassSub = 8 ;
+    esFetInfo[i].defSubs = "Vdd!";
     i = efBuildAddStr(EFDevTypes, &EFDevNumTypes, MAXDEVTYPES, "nmos");
-    fetInfo[i].resClassSD = 0 ;
-    fetInfo[i].resClassSub = NO_RESCLASS ;
-    fetInfo[i].defSubs = "Gnd!";
+    esFetInfo[i].resClassSD = 0 ;
+    esFetInfo[i].resClassSub = NO_RESCLASS ;
+    esFetInfo[i].defSubs = "Gnd!";
     i = efBuildAddStr(EFDevTypes, &EFDevNumTypes, MAXDEVTYPES, "pmos");
-    fetInfo[i].resClassSD = 1 ;
-    fetInfo[i].resClassSub = 8 ;
-    fetInfo[i].defSubs = "Vdd!";
+    esFetInfo[i].resClassSD = 1 ;
+    esFetInfo[i].resClassSub = 8 ;
+    esFetInfo[i].defSubs = "Vdd!";
     /* Process command line arguments */
 
     inName = EFArgs(argc, argv, NULL, spcmainArgs, (ClientData) NULL);
@@ -853,12 +855,12 @@ main(argc, argv)
     EFVisitDevs(spcdevVisit, (ClientData) NULL);
     initMask = (unsigned long) 0;
     if (flatFlags & EF_FLATCAPS) {
-	(void) sprintf( esCapFormat,  "C%%d %%s %%s %%.%dlffF\n",esCapAccuracy);
+	(void) sprintf( esSpiceCapFormat,  "C%%d %%s %%s %%.%dlffF\n",esCapAccuracy);
 	EFVisitCaps(spccapVisit, (ClientData) NULL);
     }
     EFVisitResists(spcresistVisit, (ClientData) NULL);
     EFVisitSubcircuits(subcktVisit, (ClientData) NULL);
-    (void) sprintf( esCapFormat, "C%%d %%s GND %%.%dlffF%%s", esCapAccuracy);
+    (void) sprintf( esSpiceCapFormat, "C%%d %%s GND %%.%dlffF%%s", esCapAccuracy);
     EFVisitNodes(spcnodeVisit, (ClientData) NULL);
 
     if ((esDoSubckt == TRUE) || (locDoSubckt == TRUE))
@@ -987,8 +989,8 @@ spcmainArgs(pargc, pargv)
 	    	if ( sscanf(rp, "%d/%s",  &rClass, subsNode) != 2 ) goto usage;
 	    }
 	    ndx = efBuildAddStr(EFDevTypes, &EFDevNumTypes, MAXDEVTYPES, cp);
-	    fetInfo[ndx].resClassSD = rClass;
-	    fetInfo[ndx].resClassSub = rClassSub;
+	    esFetInfo[ndx].resClassSD = rClass;
+	    esFetInfo[ndx].resClassSub = rClassSub;
 	    if ( ((1<<rClass) & DEV_CONNECT_MASK) ||
 	         ((1<<rClass) & DEV_CONNECT_MASK)   ) {
 	        TxError("Oops it seems that you have 31\n");
@@ -997,11 +999,11 @@ spcmainArgs(pargc, pargv)
 	        TxError("DEV_CONNECT_MASK and or nodeClient\n");
 		exit (1);
 	    }
-	    fetInfo[ndx].defSubs = (char *) mallocMagic((unsigned) (strlen(subsNode)+1));
-	    strcpy(fetInfo[ndx].defSubs,subsNode);
+	    esFetInfo[ndx].defSubs = (char *)mallocMagic((unsigned)(strlen(subsNode)+1));
+	    strcpy(esFetInfo[ndx].defSubs,subsNode);
 	    TxError("info: dev %s(%d) sdRclass=%d subRclass=%d dSub=%s\n", 
-	    cp, ndx, fetInfo[ndx].resClassSD, fetInfo[ndx].resClassSub, 
-            fetInfo[ndx].defSubs);
+	    cp, ndx, esFetInfo[ndx].resClassSD, esFetInfo[ndx].resClassSub, 
+            esFetInfo[ndx].defSubs);
 	    break;
 	    }
 #endif			/* MAGIC_WRAPPER */
@@ -1957,33 +1959,33 @@ spcdevVisit(dev, hierName, trans)
 
 	    fprintf(esSpiceF, "\n+ ");
 	    if (hierD) 
-        	spcnAPHier(drain, hierName, fetInfo[dev->dev_type].resClassSD,
+        	spcnAPHier(drain, hierName, esFetInfo[dev->dev_type].resClassSD,
 			scale, "d", sdM, esSpiceF);
 	    else
 	    {
 		dnode = SpiceGetNode(hierName, drain->dterm_node->efnode_name->efnn_hier);
-        	spcnAP(dnode, fetInfo[dev->dev_type].resClassSD, scale,
+        	spcnAP(dnode, esFetInfo[dev->dev_type].resClassSD, scale,
 			"d", sdM, esSpiceF, w);
 	    }
 	    if (hierS)
-		spcnAPHier(source, hierName, fetInfo[dev->dev_type].resClassSD,
+		spcnAPHier(source, hierName, esFetInfo[dev->dev_type].resClassSD,
 			scale, "s", sdM, esSpiceF);
 	    else {
 		snode= SpiceGetNode(hierName, source->dterm_node->efnode_name->efnn_hier);
-		spcnAP(snode, fetInfo[dev->dev_type].resClassSD, scale,
+		spcnAP(snode, esFetInfo[dev->dev_type].resClassSD, scale,
 			"s", sdM, esSpiceF, w);
 	    }
 	    if (subAP)
 	    {
 		fprintf(esSpiceF, " * ");
-		if (fetInfo[dev->dev_type].resClassSub < 0)
+		if (esFetInfo[dev->dev_type].resClassSub < 0)
 		{
 		    TxError("error: subap for devtype %d unspecified\n",
 				dev->dev_type);
 		    fprintf(esSpiceF, "asub=0 psub=0");
 		}
 		else if (subnodeFlat) 
-		    spcnAP(subnodeFlat, fetInfo[dev->dev_type].resClassSub, scale, 
+		    spcnAP(subnodeFlat, esFetInfo[dev->dev_type].resClassSub, scale, 
 	       			"sub", sdM, esSpiceF, -1);
 		else
 		    fprintf(esSpiceF, "asub=0 psub=0");
@@ -2037,7 +2039,7 @@ FILE *outf;
     int  l ;
 
     suf = EFHNToStr(suffix);
-    if (fetInfo[type].defSubs && strcasecmp(suf,fetInfo[type].defSubs) == 0) {
+    if (esFetInfo[type].defSubs && strcasecmp(suf,esFetInfo[type].defSubs) == 0) {
 	if ( outf ) {
     	   l = strlen(suf) - 1;
 	   if (  ( EFTrimFlags & EF_TRIMGLOB ) && suf[l] =='!' ||
@@ -2243,7 +2245,7 @@ spccapVisit(hierName1, hierName2, cap)
     if (cap <= EFCapThreshold)
 	return 0;
 
-    fprintf(esSpiceF, esCapFormat ,esCapNum++,nodeSpiceName(hierName1),
+    fprintf(esSpiceF, esSpiceCapFormat ,esCapNum++,nodeSpiceName(hierName1),
                                           nodeSpiceName(hierName2), cap);
     return 0;
 }
@@ -2341,7 +2343,7 @@ spcnodeVisit(node, res, cap)
     cap = cap  / 1000;
     if (cap > EFCapThreshold)
     {
-	fprintf(esSpiceF, esCapFormat, esCapNum++, nsn, cap,
+	fprintf(esSpiceF, esSpiceCapFormat, esCapNum++, nsn, cap,
 			  (isConnected) ?  "\n" : " **FLOATING\n");
     }
     if (node->efnode_attrs && !esNoAttrs)
@@ -3030,7 +3032,7 @@ devDistJunctVisit(dev, hierName, trans)
     {
 	n = SpiceGetNode(hierName,
 		dev->dev_terms[i].dterm_node->efnode_name->efnn_hier);
-	update_w(fetInfo[dev->dev_type].resClassSD, w, n);
+	update_w(esFetInfo[dev->dev_type].resClassSD, w, n);
     }
     return 0;
 }

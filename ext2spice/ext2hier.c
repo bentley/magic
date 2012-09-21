@@ -693,22 +693,22 @@ spcdevHierVisit(hc, dev, trans)
 
 	    fprintf(esSpiceF, "\n+ ");
 	    dnode = GetHierNode(hc, drain->dterm_node->efnode_name->efnn_hier);
-            spcnAP(dnode, fetInfo[dev->dev_type].resClassSD, scale,
+            spcnAP(dnode, esFetInfo[dev->dev_type].resClassSD, scale,
 			"d", sdM, esSpiceF, w);
 	    snode= GetHierNode(hc, source->dterm_node->efnode_name->efnn_hier);
-	    spcnAP(snode, fetInfo[dev->dev_type].resClassSD, scale,
+	    spcnAP(snode, esFetInfo[dev->dev_type].resClassSD, scale,
 			"s", sdM, esSpiceF, w);
 	    if (subAP)
 	    {
 		fprintf(esSpiceF, " * ");
-		if (fetInfo[dev->dev_type].resClassSub < 0)
+		if (esFetInfo[dev->dev_type].resClassSub < 0)
 		{
 		    TxError("error: subap for devtype %d unspecified\n",
 				dev->dev_type);
 		    fprintf(esSpiceF, "asub=0 psub=0");
 		}
 		else if (subnodeFlat) 
-		    spcnAP(subnodeFlat, fetInfo[dev->dev_type].resClassSub, scale, 
+		    spcnAP(subnodeFlat, esFetInfo[dev->dev_type].resClassSub, scale, 
 	       			"sub", sdM, esSpiceF, -1);
 		else
 		    fprintf(esSpiceF, "asub=0 psub=0");
@@ -858,7 +858,7 @@ spccapHierVisit(hc, hierName1, hierName2, cap)
     if (cap <= EFCapThreshold)
 	return 0;
 
-    fprintf(esSpiceF, esCapFormat, esCapNum++,
+    fprintf(esSpiceF, esSpiceCapFormat, esCapNum++,
 		nodeSpiceHierName(hc, hierName1),
                 nodeSpiceHierName(hc, hierName2), cap);
     return 0;
@@ -1151,7 +1151,7 @@ devDistJunctHierVisit(hc, dev, trans)
     for (i = 1; i<dev->dev_nterm; i++)
     {
 	n = GetHierNode(hc, dev->dev_terms[i].dterm_node->efnode_name->efnn_hier);
-	update_w(fetInfo[dev->dev_type].resClassSD, w, n);
+	update_w(esFetInfo[dev->dev_type].resClassSD, w, n);
     }
     return 0;
 }
