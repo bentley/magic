@@ -143,7 +143,7 @@ ParseEvent (event)
 	keymod = (LockMask | ControlMask | ShiftMask)
 				& KeyPressedEvent->state;
 
-#ifdef macosx
+#ifdef __APPLE__
 	if (KeyPressedEvent->state & (Mod1Mask | Mod2Mask | Mod3Mask
 				| Mod4Mask | Mod5Mask))
 	    keymod |= Mod1Mask;

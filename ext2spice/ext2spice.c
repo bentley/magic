@@ -2076,6 +2076,9 @@ FILE *outf;
  * The spcnAPHier version outputs the area and perimeter only within the
  * local subcell with hierarchical name hierName.
  *
+ * Return:
+ *	0 on success, 1 on error
+ *
  * Side effects:
  *     Set the visited flags so that the node A/P will not be output multiple
  *     times
@@ -2096,7 +2099,7 @@ int spcnAP(node, resClass, scale, sterm, m, outf, w)
 	if ((node == NULL) || (node->efnode_client == (ClientData)NULL))
 	{
 	    TxError("spcnAP: major internal inconsistency\n");
-	    return;
+	    return 1;
 	}
 
 	if ( esScale < 0 )
@@ -2115,7 +2118,7 @@ int spcnAP(node, resClass, scale, sterm, m, outf, w)
 	    ((float)node->efnode_pa[resClass].pa_area*scale*scale)
 	    *esScale*esScale*dsc,
 	    ((float)node->efnode_pa[resClass].pa_perim*scale)*esScale*dsc);
-	return;
+	return 0;
 
 oldFmt:
 	if ( resClass == NO_RESCLASS ||
@@ -2130,6 +2133,8 @@ oldFmt:
 	   fprintf(outf,fmt,
 	    ((float)node->efnode_pa[resClass].pa_area*scale*scale)*esScale*esScale,
 	    ((float)node->efnode_pa[resClass].pa_perim*scale)*esScale);
+
+	return 0;
 }
 
 int spcnAPHier(dterm, hierName, resClass, scale, sterm, m, outf)
@@ -2180,7 +2185,7 @@ int spcnAPHier(dterm, hierName, resClass, scale, sterm, m, outf)
  *
  *
  * Results:
- *	None.
+ *	Return 0 on success, 1 on error.
  *
  * Side effects:
  *	Writes to the file 'outf'.
@@ -2203,10 +2208,11 @@ spcdevOutNode(prefix, suffix, name, outf)
     if (he == NULL)
     {
 	fprintf(outf, " errGnd!");
-	return;
+	return 1;
     }
     nn = (EFNodeName *) HashGetValue(he);
     fprintf(outf, " %s", nodeSpiceName(nn->efnn_node->efnode_name->efnn_hier));
+    return 0;
 }
 
 

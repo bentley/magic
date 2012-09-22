@@ -77,7 +77,7 @@ extern int WaitPid();
 #define FORK_f(pid) do { pid = fork(); if (pid > 0) ForkChildAdd (pid); } while (0)
 #define FORK_vf(pid) do { pid = vfork(); if (pid > 0) ForkChildAdd (pid); } while (0)
 
-#if  defined(SYSV) || defined(CYGWIN) || defined(macosx)
+#if  defined(SYSV) || defined(CYGWIN) || defined(__APPLE__)
 
 #define FORK(pid) FORK_f(pid)
 

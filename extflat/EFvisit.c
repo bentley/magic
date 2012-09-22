@@ -576,7 +576,7 @@ efVisitSingleResist(hc, name1, name2, res, ca)
 	return 0;
 
     if ((he = EFHNLook(hc->hc_hierName, name2, "resist(2)")) == NULL)
-	return;
+	return 0; 
     n2 = ((EFNodeName *) HashGetValue(he))->efnn_node;
     if (n2->efnode_flags & EF_KILLED)
 	return 0;

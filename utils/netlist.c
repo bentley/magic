@@ -365,7 +365,7 @@ NLNetName(net)
     static char tempId[100];
 #if defined(linux) || defined(CYGWIN)
     extern int etext asm("etext");
-#elif defined(macosx)
+#elif defined(__APPLE__)
  int etext;
 #else
     extern int etext;

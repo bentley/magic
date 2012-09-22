@@ -76,7 +76,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 extern bool DBWriteBackup();
 
 /* macs support BSD4.2 signals, so turn off the SYSV flag for this module */
-#ifdef macosx
+#ifdef __APPLE__
 #undef SYSV
 #endif
 

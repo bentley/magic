@@ -601,7 +601,7 @@ DefReadLocation(use, f, oscale, tptr)
     if (keyword < 0)
     {
 	LefError("Unknown macro orientation \"%s\".\n", token);
-	return;
+	return -1;
     }
 
     /* The standard transformations are all defined to rotate	*/

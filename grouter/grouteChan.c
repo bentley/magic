@@ -66,6 +66,8 @@ void glChanFreeMap();
 void glChanCheckCover();
 void glChanBlockDens();
 void glChanFlood();
+void glChanShowTiles();
+int glChanShowFunc();
 
 typedef struct pa
 {
@@ -435,11 +437,10 @@ glChanSetClient(tile, cdata)
     return 0;
 }
 
-int
+void
 glChanShowTiles(mesg)
     char *mesg;
 {
-    int glChanShowFunc();
     char answer[100], m[1024];
 
     DBWAreaChanged(glChanDef, &TiPlaneRect, DBW_ALLWINDOWS, 0);
@@ -467,12 +468,13 @@ glChanShowFunc(tile)
     TxMore(mesg);
     ShowRect(EditCellUse->cu_def, &r, STYLE_ERASEHIGHLIGHTS);
     if (tile->ti_client == (ClientData) CLIENTDEFAULT)
-	return;
+	return 0;
     ch = (GCRChannel *) tile->ti_client;
     ShowRect(EditCellUse->cu_def, &ch->gcr_area, STYLE_MEDIUMHIGHLIGHTS);
     (void) sprintf(mesg, "chan %x type=%d", ch, ch->gcr_type);
     TxMore(mesg);
     ShowRect(EditCellUse->cu_def, &ch->gcr_area, STYLE_ERASEHIGHLIGHTS);
+    return 0;
 }
 
 /*

@@ -1222,7 +1222,6 @@ case $target in
     AC_DEFINE(WIN32)
     ;;
   *darwin*)
-    AC_DEFINE(macosx)
     if test "$CPP" = "cc -E" ; then
        CPPFLAGS="$CPPFLAGS -no-cpp-precomp"
     fi

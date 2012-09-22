@@ -32,7 +32,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 
 /* Library imports: */
 
-#ifndef macosx
+#ifndef __APPLE__
 extern char *sbrk();
 extern int end;
 #else

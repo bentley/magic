@@ -65,7 +65,7 @@ typedef unsigned char STDIOCHAR;
 #define	FILE_PTR(fin)	((char *) fin->_IO_read_ptr)
 #define FILE_DEC_CNT(fin, n)	
 #define	FILE_SET_PTR(fin, cp) ((fin)->_IO_read_ptr = (cp))
-#elif defined(__FreeBSD__) || defined (__NetBSD__) || defined(CYGWIN) || defined(macosx)
+#elif defined(__FreeBSD__) || defined (__NetBSD__) || defined(CYGWIN) || defined(__APPLE__)
 #define FILE_CNT(fin)   ((fin)->_r)
 #define FILE_PTR(fin)   ((char *)(fin)->_p)
 #define FILE_DEC_CNT(fin, n)  ((fin)->_r -= (n))

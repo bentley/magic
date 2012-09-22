@@ -230,7 +230,7 @@ NMreposition(window, newScreenArea, final)
  *	window lock.
  *
  * Results:
- *	None.
+ *	Return 0 always.
  *
  * Side effects:
  *	The given area of the window is redisplayed.
@@ -256,7 +256,7 @@ NMredisplay(w, rootArea, clipArea)
      * can be called before the window exists).
      */
     
-    if (NMWindow == (MagWindow *) NULL) return;
+    if (NMWindow == (MagWindow *) NULL) return 0;
 
     GrLock(w, TRUE);
 
@@ -335,6 +335,7 @@ NMredisplay(w, rootArea, clipArea)
     }
 
     GrUnlock(w);
+    return 0;
 }
 
 /*
@@ -346,7 +347,7 @@ NMredisplay(w, rootArea, clipArea)
  *	button is pressed with the cursor inside the netlist menu.
  *
  * Results:
- *	None.
+ *	Return 0 always.
  *
  * Side effects:
  *	If the cursor is over one of the buttons, the corresponding
@@ -372,7 +373,7 @@ NMcommand(w, cmd)
 	goto done;
     }
 
-    if (w == NULL) return;
+    if (w == NULL) return 0;
 
     WindPointToSurface(w, &cmd->tx_p, &surfacePoint, (Rect *) NULL);
 
@@ -432,7 +433,7 @@ NMcommand(w, cmd)
 
     done:
     UndoNext();
-    return;
+    return 0;
 }
 	    
 

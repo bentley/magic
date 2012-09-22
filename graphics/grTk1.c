@@ -75,7 +75,7 @@ static LineStyle LineStyleTab[256];
 extern bool GrTkInstalledCMap;
 
 /* machine-dependent constants - see below */
-#ifdef macosx
+#ifdef __APPLE__
 #define X_COLORMAP_BASE		128
 #define X_COLORMAP_RESERVED	4
 #else
@@ -807,7 +807,7 @@ keys_and_buttons:
 		keymod = (LockMask | ControlMask | ShiftMask)
 				& KeyPressedEvent->state;
 
-#ifdef macosx
+#ifdef __APPLE__
 		if (KeyPressedEvent->state & (Mod1Mask | Mod2Mask |
 				Mod3Mask | Mod4Mask | Mod5Mask))
 		    keymod |= Mod1Mask;

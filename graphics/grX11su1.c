@@ -65,7 +65,7 @@ HashTable     grX11WindowTable;
 
 /* machine-dependent constants - see below */
 
-#ifdef macosx
+#ifdef __APPLE__
 #define X_COLORMAP_BASE		128
 #define X_COLORMAP_RESERVED	4
 #else

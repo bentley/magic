@@ -46,6 +46,7 @@ extern void mzPrintRL();
 extern void mzPrintRT();
 extern void mzPrintRC();
 extern void mzPrintRP();
+extern void mzPrintPathHead();
  
 
 /*
@@ -412,7 +413,7 @@ mzPrintRP(path)
 }
 
 /* mzPrintPathHead -- */
-int 
+void 
 mzPrintPathHead(path)
     RoutePath *path;
 {

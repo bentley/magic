@@ -76,12 +76,13 @@ bool windSomeSeparateRedisplay = FALSE;
  * ----------------------------------------------------------------------------
  */
 
-int windCheckOnlyWindow(MagWindow **w, WindClient client)
+int
+windCheckOnlyWindow(MagWindow **w, WindClient client)
 {
     MagWindow *sw, *tw;
     int wct = 0;
 
-    if (*w != NULL) return;
+    if (*w != NULL) return 0;
 
     if (windTopWindow != NULL)
     {
@@ -95,6 +96,7 @@ int windCheckOnlyWindow(MagWindow **w, WindClient client)
 	}
 	if (wct == 1) *w = tw;
     }
+    return 0;
 }
 
 

@@ -34,6 +34,8 @@ extern bool Plow();
 /* Debugging command procedure */
 extern int PlowTest();
 
+extern void PlowExtendJogHorizon();
+
 /* Exported tile type masks */
 extern TileTypeBitMask PlowFixedTypes;		/* Non-stretchable types */
 extern TileTypeBitMask PlowContactTypes;	/* Contact types */

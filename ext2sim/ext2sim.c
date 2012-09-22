@@ -1210,7 +1210,7 @@ FILE *outf;
     	if (he == NULL)
     	{
 		fprintf(outf, "errGnd!");
-		return;
+		return 0;
     	}
     	/* Canonical name */
     	nn = (EFNodeName *) HashGetValue(he);
@@ -1231,6 +1231,7 @@ FILE *outf;
 	}
     	EFHNOut(nn->efnn_node->efnode_name->efnn_hier, outf);
    }
+   return 0;
 }
 
 /*
@@ -1339,7 +1340,7 @@ simdevOutNode(prefix, suffix, name, outf)
     if (he == NULL)
     {
 	fprintf(outf, " GND");
-	return;
+	return 0;
     }
 
     /* Canonical name */
@@ -1348,6 +1349,7 @@ simdevOutNode(prefix, suffix, name, outf)
     EFHNOut(nn->efnn_node->efnode_name->efnn_hier, outf);
     if ( nn->efnn_node->efnode_client == (ClientData) NULL )
 	initNodeClient(nn->efnn_node);
+    return 0;
 }
 
 /*

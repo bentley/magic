@@ -12,7 +12,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 /* It is hard to get the value of MAXFLOAT in a portable manner. */
 #if defined(ibm032)
 #define MAXFLOAT        ((float)3.40282346638528860e+38)
-#elif !defined(__NetBSD__) && !defined(__FreeBSD__) && !defined(CYGWIN) && !defined(macosx) && !defined(__DragonFly__)
+#elif !defined(__NetBSD__) && !defined(__FreeBSD__) && !defined(CYGWIN) && !defined(__APPLE__) && !defined(__DragonFly__)
 #include <values.h>
 #endif
 

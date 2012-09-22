@@ -626,7 +626,7 @@ SimFillBuffer(buffHead, pLastChar, charCount)
     int 	charsRead = 0;
     char 	*temp;
     int		n, nfd;
-#if defined(SYSV) || defined(CYGWIN) || defined(__FreeBSD__) || defined(macosx)
+#if defined(SYSV) || defined(CYGWIN) || defined(__FreeBSD__) || defined(__APPLE__)
     fd_set readfds, writefds, exceptfds;
 #else
     int		nr, nex;
@@ -642,7 +642,7 @@ SimFillBuffer(buffHead, pLastChar, charCount)
 
     /* read reply from Rsim */
 
-#if defined(SYSV) || defined(CYGWIN) || defined(__FreeBSD__) || defined(macosx)
+#if defined(SYSV) || defined(CYGWIN) || defined(__FreeBSD__) || defined(__APPLE__)
     FD_ZERO(&readfds);
     FD_ZERO(&exceptfds);
 #endif  /* SYSV */
@@ -651,7 +651,7 @@ SimFillBuffer(buffHead, pLastChar, charCount)
 
 try_again:
 
-#if defined(SYSV) || defined(CYGWIN) || defined(__FreeBSD__) || defined(macosx)
+#if defined(SYSV) || defined(CYGWIN) || defined(__FreeBSD__) || defined(__APPLE__)
     FD_SET(pipeIn, &readfds);
     FD_ZERO(&writefds);
     FD_SET(pipeIn, &exceptfds);

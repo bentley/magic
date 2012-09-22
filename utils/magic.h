@@ -280,10 +280,10 @@ extern char AbortMessage[];
 #ifdef CYGWIN
 #include <errno.h>
 #define sys_errlist _sys_errlist
-#elif !defined(__FreeBSD__) && !defined(__NetBSD__) && !defined(__DragonFly__) && !defined(macosx)
+#elif !defined(__FreeBSD__) && !defined(__NetBSD__) && !defined(__DragonFly__) && !defined(__APPLE__)
 extern int errno;
 /* extern char *sys_errlist[]; */
-#elif defined(macosx)
+#elif defined(__APPLE__)
 extern int errno;
 #endif
 
@@ -293,7 +293,7 @@ extern int errno;
 
 #ifndef  __STDC__
 #ifndef	SYSV
-#if !defined(ALPHA) && !defined(macosx)
+#if !defined(ALPHA) && !defined(__APPLE__)
     extern char* sprintf();
 #endif
 #endif

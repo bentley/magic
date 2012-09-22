@@ -47,7 +47,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 #include "select/select.h"
 #include "graphics/graphics.h"
 
-#if defined(SYSV) || defined(macosx)
+#if defined(SYSV) || defined(__APPLE__)
 # define	NO_RUSAGE
 #endif
 
@@ -1172,7 +1172,7 @@ plowFindSelCell(yankUse, editUse)
  * ----------------------------------------------------------------------------
  */
 
-int
+void
 PlowExtendJogHorizon(edge)
     Edge *edge;			/* Edge being moved */
 {
