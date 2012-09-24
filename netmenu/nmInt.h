@@ -123,7 +123,7 @@ extern int NMExtract();
 extern void NMSelectNet();
 
 extern bool NMCheckWritten();
-extern int NMWriteAll();
+extern void NMWriteAll();
 
 extern void NMUndo();
 extern void NMUndoInit();

@@ -32,12 +32,12 @@
 
 extern void NMinit();
 extern void NMUnsetCell();
-extern int NMNewNetlist();
-extern int NMWriteNetlist();
+extern void NMNewNetlist();
+extern void NMWriteNetlist();
 extern char *NMAddTerm();
-extern int NMDeleteTerm();
-extern int NMJoinNets();
-extern int NMDeleteNet();
+extern void NMDeleteTerm();
+extern void NMJoinNets();
+extern void NMDeleteNet();
 extern int NMEnumNets();
 extern int NMEnumTerms();
 extern char *NMNthNet();

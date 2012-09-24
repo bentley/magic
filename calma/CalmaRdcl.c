@@ -53,7 +53,7 @@ extern void CIFPaintCurrent();
 extern HashTable calmaDefInitHash;
 
 /* forward declarations */
-bool calmaElementSref();
+void calmaElementSref();
 bool calmaParseElement();
 
 /* Structure used when flattening the GDS hierarchy on read-in */
@@ -513,7 +513,7 @@ calmaParseElement(pnsrefs, pnpaths)
  * ----------------------------------------------------------------------------
  */
 
-bool
+void
 calmaElementSref()
 {
     int nbytes, rtype, cols, rows, nref, n, i, savescale;

@@ -216,7 +216,7 @@ NMAddTerm(new, other)
  * ----------------------------------------------------------------------------
  */
 
-int
+void
 NMDeleteTerm(name)
     char *name;			/* Name of a terminal. */
 {
@@ -256,7 +256,7 @@ NMDeleteTerm(name)
  * ----------------------------------------------------------------------------
  */
 
-int
+void
 NMJoinNets(termA, termB)
     char *termA;		/* Name of a terminal in first net. */
     char *termB;		/* Name of a terminal in second net. */
@@ -327,7 +327,7 @@ NMJoinNets(termA, termB)
  * ----------------------------------------------------------------------------
  */
 
-int
+void
 NMDeleteNet(net)
     char *net;			/* Name of one of the terminals in the net
 				 * to be deleted.
@@ -377,7 +377,7 @@ NMDeleteNet(net)
  * ----------------------------------------------------------------------------
  */
 
-int
+void
 NMNewNetlist(name)
     char *name;			/* Name of the netlist file.  If NULL,
 				 * then the netlist file association
@@ -741,7 +741,7 @@ NMTermInList(name)
  * ----------------------------------------------------------------------------
  */
 
-int
+void
 NMWriteNetlist(fileName)
     char *fileName;		/* If non-NULL, gives name of file in
 				 * which to write current netlist.  If NULL,
@@ -876,7 +876,7 @@ NMCheckWritten()
  * ----------------------------------------------------------------------------
  */
 
-int
+void
 NMWriteAll()
 {
     Netlist *nl, *saveCurrent;

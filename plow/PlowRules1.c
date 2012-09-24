@@ -468,7 +468,7 @@ plowPenumbraRule(impactedEdge, ar)
  * The second pass actually queues the edges to be moved.
  *
  * Results:
- *	None.
+ *	Return 0 always
  *
  * Side effects:
  *	May add an edge to the queue of edges to be processed.
@@ -476,7 +476,7 @@ plowPenumbraRule(impactedEdge, ar)
  * ----------------------------------------------------------------------------
  */
 
-void
+int
 prSliverTop(edge, rules)
     Edge *edge;
     PlowRule *rules;
@@ -493,7 +493,7 @@ prSliverTop(edge, rules)
      * we play conservative and just use the maximum halo size.
      */
     if (plowMaxDist[edge->e_ltype] == 0)
-	return;
+	return 0;
     ar.ar_clip.p_x = edge->e_newx;
     ar.ar_clip.p_y = edge->e_ytop + plowMaxDist[edge->e_ltype];
     startPoint.p_x = edge->e_x;
@@ -527,6 +527,7 @@ prSliverTop(edge, rules)
 		    GMASK_SOUTH|GMASK_NORTH,
 		    plowSliverTopMove, (ClientData) &ar);
     }
+    return 0;
 }
 
 int
@@ -547,7 +548,7 @@ prSliverBot(edge, rules)
      * we play conservative and just use the maximum halo size.
      */
     if (plowMaxDist[edge->e_ltype] == 0)
-	return;
+	return 0;
     ar.ar_clip.p_x = edge->e_newx;
     ar.ar_clip.p_y = edge->e_ybot - plowMaxDist[edge->e_ltype];
     startPoint.p_x = edge->e_x;
@@ -582,6 +583,7 @@ prSliverBot(edge, rules)
 		    GMASK_SOUTH|GMASK_NORTH,
 		    plowSliverBotMove, (ClientData) &ar);
     }
+    return 0;
 }
 
 /*
