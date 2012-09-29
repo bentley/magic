@@ -1333,6 +1333,9 @@ LefAddViaGeometry(f, lefl, curlayer, oscale)
     currect = LefReadRect(f, curlayer, (oscale / 2));
     if (currect == NULL) return;
 
+    /* Don't create any geometry for unknown layers! */
+    if (curlayer < 0) return;
+
     /* For LEF contact types matching magic contact types,	*/
     /* size the LEF contact cut to cover the minimum		*/
     /* rectangle in the other layers that satisfies the		*/
