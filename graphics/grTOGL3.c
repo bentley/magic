@@ -295,6 +295,7 @@ grtoglGetBackingStore(MagWindow *w, Rect *area)
     // if (result == 0)
     //    TxPrintf("Intended position = %d %d\n", xbot, ybot);
 
+    glDisable(GL_BLEND);
     glCopyPixels(xbot, ybot, width, height, GL_COLOR);
 
     return TRUE;
@@ -341,6 +342,7 @@ grtoglScrollBackingStore(MagWindow *w, Point *shift)
     glDrawBuffer(GL_BACK);
     glReadBuffer(GL_BACK);
     glRasterPos2i((GLint)xshift, (GLint)yshift);
+    glDisable(GL_BLEND);
     glCopyPixels(xorigin, yorigin, width, height, GL_COLOR);
 
     glDrawBuffer(GL_FRONT);
@@ -389,6 +391,7 @@ grtoglPutBackingStore(MagWindow *w, Rect *area)
     // if (result == 0)
     //    TxPrintf("Intended position = %d %d\n", xbot, ybot);
 
+    glDisable(GL_BLEND);
     glCopyPixels(xbot, ybot, width, height, GL_COLOR);
 
     glDrawBuffer(GL_FRONT);	/* Return to normal front rendering */

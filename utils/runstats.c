@@ -36,8 +36,10 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 extern char *sbrk();
 extern int end;
 #else
+#ifndef CYGWIN
 extern void *sbrk();
 int end;
+#endif
 #endif
 
 /*
@@ -130,6 +132,8 @@ RunStats(flags, lastt, deltat)
 	while (*sp) sp++;
     }
 
+#ifndef CYGWIN
+    // Ignoring this under cygwin instead of trying to find a workaround
     if (flags & RS_MEM)
     {
 	size = (((pointertype)sbrk(0) - (pointertype) &end) + 512)/1024;
@@ -137,6 +141,7 @@ RunStats(flags, lastt, deltat)
 	    *sp++ = ' ';
 	sprintf(sp, "%dk", (int)size);
     }
+#endif
 
     return (string);
 }

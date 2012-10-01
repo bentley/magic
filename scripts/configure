@@ -6327,21 +6327,26 @@ $as_echo "${TCLSH_EXE}" >&6; }
   case $target in
      *-hpux*)
         SHDLIB_EXT=".sl"
+        SHDLIB_EXT_ALT=".sl"
         ;;
      *cygwin*)
         SHDLIB_EXT=".dll"
+        SHDLIB_EXT_ALT=".dll.a"
 	;;
      *darwin*)
         SHDLIB_EXT=".dylib"
+        SHDLIB_EXT_ALT=".dylib"
         ;;
      *)
         SHDLIB_EXT=".so"
+        SHDLIB_EXT_ALT=".so"
         ;;
   esac
 
   if test "x${magic_with_tcl_libraries}" != "x" ; then
     for libname in \
-     "${magic_with_tcl_libraries}/lib${TCL_LIB_NAME}${SHDLIB_EXT}"
+     "${magic_with_tcl_libraries}/lib${TCL_LIB_NAME}${SHDLIB_EXT}" \
+     "${magic_with_tcl_libraries}/lib${TCL_LIB_NAME}${SHDLIB_EXT_ALT}"
     do
       if test -r "$libname" ; then
         TCL_LIB_DIR="${magic_with_tcl_libraries}"
@@ -6356,7 +6361,8 @@ $as_echo "${TCLSH_EXE}" >&6; }
     fi
   else
     for libname in \
-     "${loclib:=${TCL_EXEC_PREFIX}/lib}/lib${TCL_LIB_NAME}${SHDLIB_EXT}"
+     "${loclib:=${TCL_EXEC_PREFIX}/lib}/lib${TCL_LIB_NAME}${SHDLIB_EXT}" \
+     "${loclib:=${TCL_EXEC_PREFIX}/lib}/lib${TCL_LIB_NAME}${SHDLIB_EXT_ALT}"
     do
       if test -r "$libname" ; then
         TCL_LIB_DIR="${TCL_EXEC_PREFIX}/lib"
@@ -6374,7 +6380,8 @@ fi
 if test $usingTcl ; then
   if test "x${magic_with_tk_libraries}" != "x" ; then
     for libname in \
-     "${magic_with_tk_libraries}/lib${TK_LIB_NAME}${SHDLIB_EXT}"
+     "${magic_with_tk_libraries}/lib${TK_LIB_NAME}${SHDLIB_EXT}" \
+     "${magic_with_tk_libraries}/lib${TK_LIB_NAME}${SHDLIB_EXT_ALT}"
     do
       if test -r "$libname" ; then
         TK_LIB_DIR="${magic_with_tk_libraries}"
@@ -6388,7 +6395,8 @@ if test $usingTcl ; then
     fi
   else
     for libname in \
-     "${loclib:=${TK_EXEC_PREFIX}/lib}/lib${TK_LIB_NAME}${SHDLIB_EXT}"
+     "${loclib:=${TK_EXEC_PREFIX}/lib}/lib${TK_LIB_NAME}${SHDLIB_EXT}" \
+     "${loclib:=${TK_EXEC_PREFIX}/lib}/lib${TK_LIB_NAME}${SHDLIB_EXT_ALT}"
     do
       if test -r "$libname" ; then
         TK_LIB_DIR="${TK_EXEC_PREFIX}/lib"
@@ -7240,8 +7248,6 @@ case $target in
     $as_echo "#define CYGWIN 1" >>confdefs.h
 
     $as_echo "#define i386 1" >>confdefs.h
-
-    $as_echo "#define WIN32 1" >>confdefs.h
 
     ;;
   *darwin*)
