@@ -67,6 +67,9 @@ extern bool GrTOGLInit();
 extern bool GrTOGLEventPending(), GrTOGLCreate(), grtoglGetCursorPos();
 extern int  GrTOGLWindowId();
 extern char *GrTkWindowName();
+
+extern void toglSetProjection();
+
 
 /*---------------------------------------------------------
  * grtoglSetWMandC:
@@ -376,7 +379,7 @@ static GLXPixmap glpmap;
  *---------------------------------------------------------
  */
 
-int
+void
 toglSetProjection(llx, lly, width, height)
     int llx, lly, width, height;
 {

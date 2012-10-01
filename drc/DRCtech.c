@@ -2236,6 +2236,8 @@ drcSpacing(argc, argv)
     else
 	return drcMaskSpacing(&set1, &set2, pmask1, pmask2, wwidth,
 		distance, adjacency, why, widerule, multiplane);
+
+    return 0;
 }
 
 /*

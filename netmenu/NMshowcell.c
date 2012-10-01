@@ -92,7 +92,7 @@ NMRedrawCell(window, plane)
      * this window.
      */
 
-    if (((CellUse *)(window->w_surfaceID))->cu_def != nmscRootDef) return;
+    if (((CellUse *)(window->w_surfaceID))->cu_def != nmscRootDef) return 0;
 
     /* If this window is zoomed way out (less than 1 pixel per lambda)
      * use solid highlighting to maximize visibility.  It the window
@@ -109,7 +109,7 @@ NMRedrawCell(window, plane)
      * redraw.
      */
 
-    if (!DBBoundPlane(plane, &area)) return;
+    if (!DBBoundPlane(plane, &area)) return 0;
     nmscPlane = plane;
     for (i = PL_TECHDEPBASE; i < DBNumPlanes; i += 1)
     {
@@ -117,6 +117,7 @@ NMRedrawCell(window, plane)
 	    &area, &DBAllButSpaceAndDRCBits,
 	    nmscRedrawFunc, (ClientData) window);
     }
+    return 0;
 }
 
 int
@@ -330,7 +331,7 @@ NMShowRoutedNet(netName)
 	if (NMCurNetName == NULL)
 	{
 	    TxError("You must select a net before you can trace it.\n");
-	    return;
+	    return 0;
 	}
 	else netName = NMCurNetName;
     }
@@ -344,13 +345,14 @@ NMShowRoutedNet(netName)
     {
 	TxError("The net list has no net containing the terminal \"%s\"\n",
 	    netName);
-	return;
+	return 0;
     }
     (void) NMEnumTerms(NMCurNetName, nmShowRoutedNetFunc,
 	    (ClientData) EditCellUse);
     DBWAreaChanged(nmscShowDef, &nmscShowDef->cd_bbox, DBW_ALLWINDOWS,
 	&DBAllButSpaceBits);
     NMShowCell(nmscShowUse, EditCellUse->cu_def);
+    return 0;
 }
 
 /*

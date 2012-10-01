@@ -809,7 +809,7 @@ spcdevHierMergeVisit(hc, dev, trans)
 	    }
 	    setDevMult(fp->esFMIndex, DEV_KILLED);
 	    setDevMult(cfp->esFMIndex, m);
-	    esDevsMerged++;
+	    esSpiceDevsMerged++;
 	    freeMagic(fp);
 	    return 0;
 	}
@@ -1098,7 +1098,7 @@ mergeThem:
 	    }
 	    setDevMult(fp->esFMIndex, DEV_KILLED); 
 	    setDevMult(cfp->esFMIndex, m);
-	    esDevsMerged++;
+	    esSpiceDevsMerged++;
 	    /* Need to do attribute stuff here */
 	    freeMagic(fp);
 	    return 0;
@@ -1320,7 +1320,7 @@ esHierVisit(hc, cdata)
 	devMerge *p;
 
 	EFHierVisitDevs(hcf, spcdevHierMergeVisit, (ClientData)NULL);
-	TxPrintf("Devs merged: %d\n", esDevsMerged);
+	TxPrintf("Devs merged: %d\n", esSpiceDevsMerged);
 	esFMIndex = 0;
 	for (p = devMergeList; p != NULL; p = p->next)
 	    freeMagic(p);

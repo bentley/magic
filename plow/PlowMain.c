@@ -1708,6 +1708,7 @@ plowApplySearchRules(edge)
 	    (*rte->rte_proc)(edge, rules);
 	}
     }
+    return 0;
 }
 
 /*

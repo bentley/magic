@@ -98,7 +98,7 @@ bool esDistrJunct = FALSE;
 float	*esFMult = NULL;         /* the array itself */
 int	 esFMIndex = 0;          /* current index to it */
 int	 esFMSize = FMULT_SIZE ; /* its current size (growable) */
-int	 esDevsMerged;
+int	 esSpiceDevsMerged;
 
 devMerge *devMergeList = NULL ;
 
@@ -514,7 +514,7 @@ runexttospice:
     esSbckNum = 0;
     esNodeNum = 10; /* just in case we're extracting spice2 */
     esFMIndex = 0;
-    esDevsMerged = 0;
+    esSpiceDevsMerged = 0;
 
     EFInit();
 
@@ -687,7 +687,7 @@ runexttospice:
 	    devMerge *p;
 
 	    EFVisitDevs(devMergeVisit, (ClientData) NULL);
-	    TxPrintf("Devs merged: %d\n", esDevsMerged);
+	    TxPrintf("Devs merged: %d\n", esSpiceDevsMerged);
 	    esFMIndex = 0;
 	    for (p = devMergeList; p != NULL; p = p->next)
 		freeMagic(p);
@@ -748,7 +748,7 @@ main(argc, argv)
     FILE *f;
     bool locDoSubckt;
 
-    esDevsMerged = 0;
+    esSpiceDevsMerged = 0;
 
     EFInit();
     EFResistThreshold = INFINITE_THRESHOLD ;
@@ -843,7 +843,7 @@ main(argc, argv)
 
     if ( esMergeDevsA || esMergeDevsC ) {
      	EFVisitDevs(devMergeVisit, (ClientData) NULL);
-	TxPrintf("Devs merged: %d\n", esDevsMerged);
+	TxPrintf("Devs merged: %d\n", esSpiceDevsMerged);
 	esFMIndex = 0 ;
 	{
 	  devMerge *p;
@@ -2172,6 +2172,7 @@ int spcnAPHier(dterm, hierName, resClass, scale, sterm, m, outf)
 	   fprintf(outf,fmt,
 	    ((float)node->efnode_pa[resClass].pa_area*scale)*esScale*esScale,
 	    ((float)node->efnode_pa[resClass].pa_perim*scale)*esScale);
+	return 0;
 }
 
 /*
@@ -2491,6 +2492,7 @@ EFHNSprintf(str, hierName)
 	*str++ = '\0';
     }
     else strcpy(str, hierName->hn_name);
+    return 0;
 }
 
 char *efHNSprintfPrefix(hierName, str)
@@ -2587,6 +2589,7 @@ topLevel:
 #endif
 	}
     }
+    return 0;
 }
 
 /*
@@ -2621,6 +2624,7 @@ int printSubcktDict()
     while ((he = HashNext(&subcktNameTable, &hs)) != NULL) 
 #endif
 	fprintf(esSpiceF,"* x%d\t%s\n", HashGetValue(he), he->h_key.h_name);
+    return 0;
 }
 
 /*
@@ -2947,7 +2951,7 @@ mergeThem:
 	    }
 	    setDevMult(fp->esFMIndex, DEV_KILLED); 
 	    setDevMult(cfp->esFMIndex, m);
-	    esDevsMerged++;
+	    esSpiceDevsMerged++;
 	    /* Need to do attribute stuff here */
 	    freeMagic(fp);
 	    return 0;
@@ -2995,6 +2999,7 @@ update_w(resClass, w,  n)
 	    nc->m_w.widths[i] = 0.0;
     }
     nc->m_w.widths[resClass] += (float)w;
+    return 0;
 }
 
 /*

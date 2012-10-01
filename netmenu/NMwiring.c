@@ -162,7 +162,7 @@ NMRipup()
     /* Collect all the connected areas together into a list. */
 
     list = NULL;
-    if (!ToolGetEditBox(&area)) return;
+    if (!ToolGetEditBox(&area)) return 0;
 
     /* Expand the box to get everything touching it. */
 
@@ -190,6 +190,7 @@ NMRipup()
 	list = list->nmwa_next;
     }
     DBReComputeBbox(EditCellUse->cu_def);
+    return 0;
 }
 
 /*
@@ -317,6 +318,7 @@ NMRipupList()
     DBWAreaChanged(EditCellUse->cu_def, &area, DBW_ALLWINDOWS,
 	&DBAllButSpaceBits);
     DRCCheckThis(EditCellUse->cu_def, TT_CHECKPAINT, &area);
+    return 0;
 }
 
 /*
@@ -537,7 +539,7 @@ NMExtract()
     Rect area;
     char *net = NULL;
 
-    if (!ToolGetEditBox(&area)) return;
+    if (!ToolGetEditBox(&area)) return 0;
 
     /* Expand the box area so we'll pick up everything touching it. */
 
@@ -553,6 +555,7 @@ NMExtract()
 	TxError("(except those, if any, already in other nets).\n");
     }
     NMSelectNet(net);
+    return 0;
 }
 
 /*
@@ -1047,6 +1050,7 @@ NMVerify()
 	TxPrintf("One feedback area generated (you're getting close!).\n");
     else
 	TxPrintf("%d feedback areas generated.\n", nmwVerifyErrors);
+    return 0;
 }
 
 /*
@@ -1085,6 +1089,7 @@ NMCull()
     else
 	TxPrintf("%d fully-wired nets deleted from the netlist.\n",
 		nmwCullDone);
+    return 0;
 }
 
 /*

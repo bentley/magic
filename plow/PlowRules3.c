@@ -251,6 +251,7 @@ scanDown(inarg, type, canMoveInargEdge)
 		DBZeroTypeBits, plowApplyRule, (ClientData) &ar);
     }
 #endif	/* notdef */
+    return 0;
 }
 
 int
@@ -345,6 +346,7 @@ scanUp(inarg, type, canMoveInargEdge)
 		DBZeroTypeBits, plowApplyRule, (ClientData) &ar);
     }
 #endif	/* notdef */
+    return 0;
 }
 
 int

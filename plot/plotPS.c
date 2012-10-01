@@ -816,6 +816,7 @@ plotPSLabelPosition(scx, label, x, y, p)
 	    break;
     }
     *p = psPosition[pos];
+    return 0;
 }
 
 

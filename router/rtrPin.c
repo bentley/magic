@@ -187,6 +187,7 @@ rtrPinArrayInit(ch, side, pins, nPins)
 	    }
 	}
     }
+    return 0;
 }
 
 /*
@@ -390,6 +391,7 @@ rtrPinArrayLink(pins, nPins)
 	if (DebugIsSet(glDebugID, glDebShowPins))
 	    rtrPinShow(pin);
     }
+    return 0;
 }
 
 void rtrPinShow(pin)
@@ -483,4 +485,5 @@ rtrPinArrayFixStems(pins, nPins)
 	{
 	    pin->gcr_pId = (GCRNet *) NULL;
 	}
+    return 0;
 }

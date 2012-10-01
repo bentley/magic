@@ -217,6 +217,7 @@ NMreposition(window, newScreenArea, final)
 					 */
 {
     if (final) WindMove(window, &nmSurfaceArea);
+    return 0;
 }
 
 /*

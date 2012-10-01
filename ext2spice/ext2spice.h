@@ -68,7 +68,7 @@ extern float	*esFMult;       /* the array itself */
 extern int	 esFMIndex;     /* current index to it */
 extern int	 esFMSize; 	/* its current size (growable) */
 
-extern int	 esDevsMerged;
+extern int	 esSpiceDevsMerged;
 extern devMerge *devMergeList;
 
 /*

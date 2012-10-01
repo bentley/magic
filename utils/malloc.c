@@ -114,6 +114,7 @@ mallocMagic(nbytes)
     {
 	ASSERT(FALSE, "Can't allocate any more memory.\n");
     }
+    return NULL;
 }
 
 /*

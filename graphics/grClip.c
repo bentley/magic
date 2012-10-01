@@ -179,6 +179,8 @@ bool grClipAddFunc(box, cd)
     lr->r_next = **lllr;
     **lllr = lr;
     *lllr = &lr->r_next;
+
+    return TRUE;
 }
 
 

@@ -273,6 +273,7 @@ int SimInitConnTables()
 	}
     }
     simExtStyle = ExtCurStyle;
+    return 0;
 }
 
 #define	IsTransGate( T )	( TTMaskHasType( &SimTransMask, T ) )

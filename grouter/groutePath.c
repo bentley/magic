@@ -190,6 +190,7 @@ glPathFreePerm(list)
 
     for (p = list; p; p = p->gl_path)
 	freeMagic((char *) p);
+    return 0;
 }
 
 /*

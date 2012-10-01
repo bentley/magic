@@ -106,6 +106,7 @@ glPenClearPerChan(net)
 	    freeMagic((char *) czChan);
 	gc->gc_penList = (CZone *) NULL;
     }
+    return 0;
 }
 
 /*
@@ -708,6 +709,7 @@ glPenRouteCost(rootUse, bestPath, pNetId, pCost)
     int *pCost;		/* Add bestPath->gl_cost to this */
 {
     *pCost += bestPath->gl_cost;
+    return 0;
 }
 
 /*

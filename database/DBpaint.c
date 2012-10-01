@@ -1287,6 +1287,7 @@ nmenum:
 
 nmdone:
     plane->pl_hint = tile;
+    return 0;
 }
 
 /*

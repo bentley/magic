@@ -168,6 +168,7 @@ restart:
 	    }
 	}
     }
+    return 0;
 }
 
 /*
@@ -250,7 +251,7 @@ prFixedPenumbraBot(edge)
     tp = TiSrPointNoHint(plowYankDef->cd_planes[edge->e_pNum], &p);
     pr = plowSpacingRulesTbl[edge->e_ltype][TiGetTypeExact(tp)];
     if (pr == (PlowRule *) NULL)
-	return;
+	return 0;
 
     searchRect.r_xbot = edge->e_x - 1;
     searchRect.r_ytop = edge->e_ybot;
@@ -263,6 +264,7 @@ prFixedPenumbraBot(edge)
 	(void) plowSrShadow(pr->pr_pNum, &searchRect, pr->pr_oktypes,
 		plowApplyRule, (ClientData) &ar);
     }
+    return 0;
 }
 
 /*
@@ -439,6 +441,7 @@ prContactRHS(edge)
 	if (PlaneMaskHasPlane(connPlanes, pNum))
 	    (void) plowAtomize(pNum, &edge->e_rect,
 				plowPropagateProcPtr, (ClientData) NULL);
+    return 0;
 }
 
 /*
@@ -514,7 +517,7 @@ prCoverBot(edge)
     startPoint.p_y = edge->e_ybot - 1;
     tp = TiSrPointNoHint(plowYankDef->cd_planes[edge->e_pNum], &startPoint);
     if (TiGetTypeExact(tp) == TT_SPACE)
-	return;
+	return 0;
 
     ltype = edge->e_ltype;
     rtype = TiGetTypeExact(tp);
@@ -535,6 +538,7 @@ prCoverBot(edge)
 	(void) plowSrShadow(edge->e_pNum, &searchArea, pr->pr_oktypes,
 		plowApplyRule, (ClientData) &ar);
     }
+    return 0;
 }
 
 /*
@@ -604,13 +608,14 @@ prIllegalBot(edge)
 		GMASK_EAST|GMASK_WEST|GMASK_NORTH|GMASK_SOUTH,
 		plowIllegalBotProc, (ClientData) &ar);
     if (ar.ar_slivtype == (TileType) -1)
-	return;
+	return 0;
 
     startPoint.p_x = ar.ar_mustmove;
     TTMaskSetOnlyType(&insideTypes, ar.ar_slivtype);
     plowSrOutline(edge->e_pNum, &startPoint, insideTypes, GEO_SOUTH,
 		GMASK_WEST|GMASK_NORTH|GMASK_SOUTH,
 		plowCoverBotProc, (ClientData) &ar);
+    return 0;
 }
 
 /*

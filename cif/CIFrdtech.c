@@ -1276,7 +1276,7 @@ CIFTechInputScale(n, d, opt)
 
     lgcf = FindGCF(istyle->crs_scaleFactor, istyle->crs_multiplier);
     if (lgcf < lmult) lmult = lgcf;
-    if (lmult == 0) return;
+    if (lmult == 0) return 0;
 
     /* fprintf(stderr, "Multiplier goes from %d to %d\n", istyle->crs_multiplier,
 		istyle->crs_multiplier / lmult); */

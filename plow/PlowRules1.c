@@ -260,6 +260,7 @@ prPenumbraBot(edge, rules)
 		GMASK_WEST|GMASK_NORTH|GMASK_SOUTH,
 		plowPenumbraBotProc, (ClientData) &ar);
     }
+    return 0;
 }
 
 /*

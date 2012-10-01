@@ -1212,6 +1212,7 @@ rtrStemTypes(startMask, finalMask, startType, finalType)
 	    *startType = *finalType = RtrMetalType;
 	else *startType = *finalType = RtrPolyType;
     }
+    return 0;
 }
 
 /*

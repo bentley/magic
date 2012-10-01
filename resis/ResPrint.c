@@ -724,5 +724,6 @@ ResCreateCenterlines(reslist, nidx, def)
 	    DBWElementAddLine(w, name, &rcanon, def, STYLE_YELLOW1);
 	}
     }
+    return 0;
 }
 

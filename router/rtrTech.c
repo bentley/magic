@@ -440,5 +440,6 @@ RtrTechScale(scaled, scalen)
 	RtrMetalSeps[i] /= scaled;
 	RtrPolySeps[i] /= scaled;
     }
+    return 0;
 }
 
