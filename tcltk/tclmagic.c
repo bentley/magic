@@ -544,8 +544,10 @@ _magic_initialize(ClientData clientData,
 
     /* Extra commands provided by the Tk graphics routines	*/
     /* (See graphics/grTkCommon.c)				*/
+    /* (Unless "-dnull" option has been given)			*/
 
-    RegisterTkCommands(interp);
+    if (strcmp(MainDisplayType, "NULL"))
+	RegisterTkCommands(interp);
     return TCL_OK;
 
 magicfatal:

@@ -17,7 +17,7 @@ MAGIC_WISH=WISH_EXE
 export MAGIC_WISH
 
 # Hacks for Cygwin
-if [ `uname -o` == "Cywgin" ]; then
+if [ `uname | cut -d_ -f1` = "CYGWIN" ]; then
    export PATH="$PATH:TCLLIB_DIR"
    export DISPLAY=${DISPLAY:=":0"}
 fi
