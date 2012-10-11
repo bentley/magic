@@ -900,7 +900,7 @@ cifParseUser94()
     Rect rectangle;
     char *name = NULL;
     TileType type;
-    int layer;
+    int layer, flags, i;
     int savescale;
 
     (void) StrDup(&name, cifParseName());
@@ -931,21 +931,30 @@ cifParseUser94()
     CIFSkipBlanks();
     if (PEEK() != ';')
     {
-	char *name = cifParseName();
-	layer = CIFReadNameToType(name, FALSE);
+	char *lname = cifParseName();
+	layer = CIFReadNameToType(lname, FALSE);
 	if (layer < 0)
 	{
 	    CIFReadError("label attached to unknown layer %s.\n",
-		    name);
+		    lname);
 	    type = TT_SPACE;
 	}
-	else type = cifCurReadStyle->crs_labelLayer[layer];
+	else {
+	    type = cifCurReadStyle->crs_labelLayer[layer];
+	}
     } else {
 	type = cifCurLabelType;
+
+	/* Should do this better, by defining cifCurLabelFlags. . . */
+	layer = -1;
+	for (i = 0; i < cifCurReadStyle->crs_nLayers; i++)
+	    if (cifCurReadStyle->crs_labelLayer[i] == type) {
+		layer = i;
+		break;
+	    }
     }
     if (type >=0 )
     {
-	int flags;
 	if (layer >= 0 && (cifCurReadStyle->crs_layers[layer]->crl_flags
 		& CIFR_TEXTLABELS))
 	    flags = LABEL_STICKY;
@@ -983,7 +992,7 @@ cifParseUser95()
     Point size, center;
     char *name = NULL;
     TileType type;
-    int layer;
+    int layer, i;
     int savescale;
 
     (void) StrDup(&name, cifParseName());
@@ -1049,7 +1058,15 @@ cifParseUser95()
 	}
 	else type = cifCurReadStyle->crs_labelLayer[layer];
     }
-    else type = TT_SPACE;
+    else {
+	type = TT_SPACE;
+	layer = -1;
+	for (i = 0; i < cifCurReadStyle->crs_nLayers; i++)
+	    if (cifCurReadStyle->crs_labelLayer[i] == type) {
+		layer = i;
+		break;
+	    }
+    }
     if (type >=0 )
     {
 	int flags;
