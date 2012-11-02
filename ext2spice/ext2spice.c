@@ -48,6 +48,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 bool esDoExtResis = FALSE;
 bool esDoPorts = TRUE;
 bool esDoHierarchy = FALSE;
+bool esDoRenumber = FALSE;
 bool esDoResistorTee = FALSE;
 int  esDoSubckt = AUTO;
 bool esDevNodesOnly = FALSE;
@@ -160,7 +161,8 @@ Exttospice_Init(interp)
 #define EXTTOSPC_SCALE		8
 #define EXTTOSPC_SUBCIRCUITS	9
 #define EXTTOSPC_HIERARCHY	10
-#define EXTTOSPC_HELP		11
+#define EXTTOSPC_RENUMBER	11
+#define EXTTOSPC_HELP		12
 
 void
 CmdExtToSpice(w, cmd)
@@ -201,6 +203,8 @@ CmdExtToSpice(w, cmd)
 	"scale [on|off]		use .option card for scaling",
 	"subcircuits [on|off]	standard cells become subcircuit calls",
 	"hierarchy [on|off]	output hierarchical spice for LVS",
+	"renumber [on|off]	on = number instances X1, X2, etc.\n"
+	"			off = keep instance ID names",
 	"help			print help information",
 	NULL
     };
@@ -312,6 +316,20 @@ CmdExtToSpice(w, cmd)
 		esDoHierarchy = TRUE;
 	    else	 /* no */
 		esDoHierarchy = FALSE;
+	    break;
+
+	case EXTTOSPC_RENUMBER:
+	    if (cmd->tx_argc == 2)
+	    {
+		Tcl_SetResult(magicinterp, (esDoRenumber) ? "on" : "off", NULL);
+		return;
+	    }
+	    idx = Lookup(cmd->tx_argv[2], yesno);
+	    if (idx < 0) goto usage;
+	    else if (idx < 3)	/* yes */
+		esDoRenumber = TRUE;
+	    else	 /* no */
+		esDoRenumber = FALSE;
 	    break;
 
 	case EXTTOSPC_SUBCIRCUITS:
@@ -1132,10 +1150,15 @@ subcktVisit(use, hierName, is_top)
     EFNodeName *nodeName;
     int portorder, portmax, imp_max;
     char stmp[MAX_STR_SIZE];
+    char *instname;
 
     if (is_top == TRUE) return 0;	/* Ignore the top-level cell */
 
-    fprintf(esSpiceF, "X%d", esSbckNum++);
+    /* Retain instance name unless esDoRenumber is set, or format is Spice2 */
+    if (use->use_id == NULL || esDoRenumber == TRUE || esFormat == SPICE2)
+	fprintf(esSpiceF, "X%d", esSbckNum++);
+    else
+	fprintf(esSpiceF, "X%s", use->use_id);
 
     /* This is not a DEV, but "spcdevOutNode" is a general-purpose routine that */
     /* turns a local name in the use's def to a hierarchical name in the     */
