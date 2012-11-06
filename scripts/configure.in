@@ -649,8 +649,12 @@ if test $usingTcl ; then
 
   loclib=`echo ${TCL_LIB_SPEC} | sed -e 's/.*-L//' -e 's/ .*//'`
 
-  TCL_LIB_SPEC="-l${TCL_LIB_NAME}"
-  TK_LIB_SPEC="-l${TK_LIB_NAME}"
+  if test "x${TCL_LIB_SPEC}" = "x" ; then
+     TCL_LIB_SPEC="-l${TCL_LIB_NAME}"
+  fi
+  if test "x${TK_LIB_SPEC}" = "x" ; then
+     TK_LIB_SPEC="-l${TK_LIB_NAME}"
+  fi
 
 # Find the version of "wish" that corresponds to TCL_EXEC_PREFIX
 # We really ought to run "ldd" to confirm that the linked libraries match.
@@ -735,6 +739,7 @@ if test $usingTcl ; then
 
   if test "x${magic_with_tcl_libraries}" != "x" ; then
     for libname in \
+     "${magic_with_tcl_libraries}/${TCL_LIB_FILE}" \
      "${magic_with_tcl_libraries}/lib${TCL_LIB_NAME}${SHDLIB_EXT}" \
      "${magic_with_tcl_libraries}/lib${TCL_LIB_NAME}${SHDLIB_EXT_ALT}"
     do
@@ -770,6 +775,7 @@ fi
 if test $usingTcl ; then
   if test "x${magic_with_tk_libraries}" != "x" ; then
     for libname in \
+     "${magic_with_tk_libraries}/${TCL_LIB_FILE}" \
      "${magic_with_tk_libraries}/lib${TK_LIB_NAME}${SHDLIB_EXT}" \
      "${magic_with_tk_libraries}/lib${TK_LIB_NAME}${SHDLIB_EXT_ALT}"
     do
