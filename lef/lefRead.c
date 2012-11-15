@@ -1341,7 +1341,7 @@ LefAddViaGeometry(f, lefl, curlayer, oscale)
     /* rectangle in the other layers that satisfies the		*/
     /* CIF/GDS contact generation.				*/
 
-    if (DBIsContact(curlayer))
+    if (DBIsContact(curlayer) && CIFCurStyle != NULL)
     {
 	int edgeSize = 0, contSize, halfSize;
 	float fcontSize;
