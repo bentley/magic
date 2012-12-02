@@ -674,6 +674,7 @@ enum2:
 	    for (tile = LB(tile); RIGHT(tile) <= area->r_xbot; tile = TR(tile))
 	        tile->ti_client = (ClientData)CLIENTDEFAULT;
 	}
+	tile->ti_client = (ClientData)CLIENTDEFAULT;
     }
 
 done2:
