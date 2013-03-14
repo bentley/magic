@@ -394,9 +394,24 @@ extOutputNodes(nodeList, outFile)
 	fprintf(outFile, "node \"%s\" %d %lg", text, intR, finC);
 
 	/* Output its location (lower-leftmost point and type name) */
-	fprintf(outFile, " %d %d %s",
+
+	if (reg->nreg_type & TT_DIAGONAL) {
+	    /* Node may be recorded as a diagonal tile if no other	*/
+	    /* non-diagonal tiles are adjoining it.			*/
+
+	    TileType loctype = (reg->nreg_type & TT_SIDE) ? ((reg->nreg_type &
+			TT_RIGHTMASK) >> 14) : (reg->nreg_type & TT_LEFTMASK);
+
+	    fprintf(outFile, " %d %d %s",
+		    reg->nreg_ll.p_x, reg->nreg_ll.p_y,
+		    DBTypeShortName(loctype));
+	}
+	else
+	{
+	    fprintf(outFile, " %d %d %s",
 		    reg->nreg_ll.p_x, reg->nreg_ll.p_y,
 		    DBTypeShortName(reg->nreg_type));
+	}
 
 	/* Output its area and perimeter for each resistivity class */
 	for (n = 0; n < ExtCurStyle->exts_numResistClasses; n++)
