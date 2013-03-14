@@ -1158,7 +1158,12 @@ subcktVisit(use, hierName, is_top)
     if (use->use_id == NULL || esDoRenumber == TRUE || esFormat == SPICE2)
 	fprintf(esSpiceF, "X%d", esSbckNum++);
     else
-	fprintf(esSpiceF, "X%s", use->use_id);
+    {
+	/* Use full hierarchical decomposition for name */
+	/* (not just use->use_id.  hierName already has use->use_id at end) */
+	EFHNSprintf(stmp, hierName);
+	fprintf(esSpiceF, "X%s", stmp);
+    }
 
     /* This is not a DEV, but "spcdevOutNode" is a general-purpose routine that */
     /* turns a local name in the use's def to a hierarchical name in the     */
