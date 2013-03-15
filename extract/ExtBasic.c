@@ -1152,7 +1152,13 @@ extOutputParameters(def, transList, outFile)
 	    {
 		fprintf(outFile, "parameters %s", ExtCurStyle->exts_transName[t]);
 		for (; plist != NULL; plist = plist->pl_next)
-		    fprintf(outFile, " %c=%s", plist->pl_param, plist->pl_name);
+		{
+		    if (plist->pl_scale != 1.0)
+			fprintf(outFile, " %c=%s*%g", plist->pl_param,
+					plist->pl_name, plist->pl_scale);
+		    else
+			fprintf(outFile, " %c=%s", plist->pl_param, plist->pl_name);
+		}
 		fprintf(outFile, "\n");
 	    }
 	}

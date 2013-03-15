@@ -494,7 +494,7 @@ CmdExtToSpice(w, cmd)
 	case EXTTOSPC_DEFAULT:
 	    LocCapThreshold = 2;
 	    LocResistThreshold = INFINITE_THRESHOLD;
-	    EFTrimFlags = 0;
+	    EFTrimFlags = EF_CONVERTCOMMAS;
 	    EFScale = 0.0;
 	    if (EFArgTech)
 	    {
@@ -1791,6 +1791,10 @@ spcdevVisit(dev, hierName, trans)
 		    case 'a':
 			if (esScale < 0)
 			    fprintf(esSpiceF, "%d", dev->dev_area * scale * scale);
+			else if (plist->parm_scale != 1.0)
+			    fprintf(esSpiceF, "%g", dev->dev_area * scale * scale
+					* esScale * esScale * plist->parm_scale
+					* 1E-12);
 			else
 			    fprintf(esSpiceF, "%gp", dev->dev_area * scale * scale
 					* esScale * esScale);
@@ -1798,6 +1802,9 @@ spcdevVisit(dev, hierName, trans)
 		    case 'p':
 			if (esScale < 0)
 			    fprintf(esSpiceF, "%d", dev->dev_perim * scale);
+			else if (plist->parm_scale != 1.0)
+			    fprintf(esSpiceF, "%g", dev->dev_perim * scale
+					* esScale * plist->parm_scale * 1E-6);
 			else
 			    fprintf(esSpiceF, "%gu", dev->dev_perim * scale
 					* esScale);
@@ -1805,12 +1812,18 @@ spcdevVisit(dev, hierName, trans)
 		    case 'l':
 			if (esScale < 0)
 			    fprintf(esSpiceF, "%d", l * scale);
+			else if (plist->parm_scale != 1.0)
+			    fprintf(esSpiceF, "%g", l * scale * esScale
+					* plist->parm_scale * 1E-6);
 			else
 			    fprintf(esSpiceF, "%gu", l * scale * esScale);
 			break;
 		    case 'w':
 			if (esScale < 0)
 			    fprintf(esSpiceF, "%d", w * scale);
+			else if (plist->parm_scale != 1.0)
+			    fprintf(esSpiceF, "%g", w * scale * esScale
+					* plist->parm_scale * 1E-6);
 			else
 			    fprintf(esSpiceF, "%gu", w * scale * esScale);
 			break;
@@ -1822,6 +1835,9 @@ spcdevVisit(dev, hierName, trans)
 		    case 'x':
 			if (esScale < 0)
 			    fprintf(esSpiceF, "%d", dev->dev_rect.r_xbot * scale);
+			else if (plist->parm_scale != 1.0)
+			    fprintf(esSpiceF, "%g", dev->dev_rect.r_xbot * scale
+					* esScale * plist->parm_scale * 1E-6);
 			else
 			    fprintf(esSpiceF, "%gu", dev->dev_rect.r_xbot * scale
 					* esScale);
@@ -1829,6 +1845,9 @@ spcdevVisit(dev, hierName, trans)
 		    case 'y':
 			if (esScale < 0)
 			    fprintf(esSpiceF, "%d", dev->dev_rect.r_ybot * scale);
+			else if (plist->parm_scale != 1.0)
+			    fprintf(esSpiceF, "%g", dev->dev_rect.r_ybot * scale
+					* esScale * plist->parm_scale * 1E-6);
 			else
 			    fprintf(esSpiceF, "%gu", dev->dev_rect.r_ybot * scale
 					* esScale);
@@ -2063,7 +2082,7 @@ FILE *outf;
 {
     HashEntry *he;
     EFNodeName *nn;
-    char *suf ;
+    char *suf, *comma ;
     int  l ;
 
     suf = EFHNToStr(suffix);
@@ -2073,6 +2092,9 @@ FILE *outf;
 	   if (  ( EFTrimFlags & EF_TRIMGLOB ) && suf[l] =='!' ||
 	         ( EFTrimFlags & EF_TRIMLOCAL ) && suf[l] == '#'  )
 	        suf[l] = '\0' ;
+	   if (EFTrimFlags & EF_CONVERTCOMMAS)
+		if ((comma = strchr(suf, ',')) != NULL)
+		    *comma = ';';
 	   fprintf(outf, "%s", suf);
 	}
 	return NULL;
@@ -2496,7 +2518,7 @@ EFHNSprintf(str, hierName)
     char *str;
     HierName *hierName;
 {
-    bool trimGlob, trimLocal;
+    bool trimGlob, trimLocal, convertComma;
     char *s, *cp, c;
     char *efHNSprintfPrefix(HierName *, char *);
 
@@ -2507,6 +2529,7 @@ EFHNSprintf(str, hierName)
 	cp = hierName->hn_name; 
 	trimGlob = (EFTrimFlags & EF_TRIMGLOB);
 	trimLocal = (EFTrimFlags & EF_TRIMLOCAL);
+	convertComma = (EFTrimFlags & EF_CONVERTCOMMAS);
 	while (c = *cp++)
 	{
 	    switch (c)
@@ -2514,6 +2537,7 @@ EFHNSprintf(str, hierName)
 		case '!':	if (!trimGlob) *str++ = c; break;
 		case '.':	*str++ = (esFormat == HSPICE)?'@':'.'; break;
 		case '#':	if (trimLocal) break;
+		case ',':	if (convertComma) *str++ = ';'; break;
 		default:	*str++ = c; break;
 	    }
 	}

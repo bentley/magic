@@ -208,6 +208,7 @@ EFArgs(argc, argv, err_result, argsProc, cdata)
 		    goto usage;
 		if (index(cp, '!')) EFTrimFlags |= EF_TRIMGLOB;
 		if (index(cp, '#')) EFTrimFlags |= EF_TRIMLOCAL;
+		if (index(cp, ',')) EFTrimFlags |= EF_CONVERTCOMMAS;
 		break;
 	    case 'C':
 		EFCapThreshold = INFINITE_THRESHOLD;

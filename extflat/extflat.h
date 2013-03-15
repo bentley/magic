@@ -36,8 +36,9 @@ typedef unsigned char U_char;
 #define	EF_NOFLATSUBCKT		0x10	/* Don't flatten standard cells */
 
 /* Flags to control output of node names.  Stored in EFTrimFlags */
-#define	EF_TRIMGLOB	0x01	/* Delete trailing '!' from names */
-#define	EF_TRIMLOCAL	0x02	/* Delete trailing '#' from names */
+#define	EF_TRIMGLOB		0x01	/* Delete trailing '!' from names */
+#define	EF_TRIMLOCAL		0x02	/* Delete trailing '#' from names */
+#define EF_CONVERTCOMMAS	0x04	/* Change commas to semicolons in names */
 
 /*
  * capacitance type now set to float
@@ -237,6 +238,7 @@ typedef struct parm
 {
     char	 parm_type;
     char	*parm_name;
+    double	 parm_scale;
     struct parm	*parm_next;
 } DevParam;
 

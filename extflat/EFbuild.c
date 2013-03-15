@@ -488,6 +488,8 @@ efBuildDeviceParams(name, argc, argv)
     /* Parse arguments for each parameter */
     for (n = 0; n < argc; n++)
     {
+	char *mult;
+
 	pptr = strchr(argv[n], '=');
 	if (pptr == NULL)
 	{
@@ -497,6 +499,15 @@ efBuildDeviceParams(name, argc, argv)
 	}
 	newparm = (DevParam *)mallocMagic(sizeof(DevParam));
 	newparm->parm_type = *argv[n];
+
+	if ((mult = strchr(pptr + 1, '*')) != NULL)
+	{
+	    *mult = '\0';
+	    newparm->parm_scale = atof(mult + 1);
+	}
+	else
+	    newparm->parm_scale = 1.0;
+
 	newparm->parm_name = StrDup((char **)NULL, pptr + 1);
 	newparm->parm_next = plist;
 	plist = newparm;

@@ -864,7 +864,7 @@ EFHNOut(hierName, outf)
     HierName *hierName;
     FILE *outf;
 {
-    bool trimGlob, trimLocal;
+    bool trimGlob, trimLocal, trimComma;
     char *cp, c;
 
     if (hierName->hn_parent) efHNOutPrefix(hierName->hn_parent, outf);
@@ -873,9 +873,16 @@ EFHNOut(hierName, outf)
 	cp = hierName->hn_name; 
 	trimGlob = (EFTrimFlags & EF_TRIMGLOB);
 	trimLocal = (EFTrimFlags & EF_TRIMLOCAL);
+	trimComma = (EFTrimFlags & EF_CONVERTCOMMAS);
 	while (c = *cp++)
 	{
-	    if (*cp) (void) putc(c, outf);
+	    if (*cp) 
+	    {
+		if (trimComma && (c == ','))
+		    putc(';', outf);
+		else
+		    putc(c, outf);
+	    }
 	    else switch (c)
 	    {
 		case '!':	if (!trimGlob) (void) putc(c, outf); break;

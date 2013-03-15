@@ -61,6 +61,7 @@ typedef struct pl
     int		 pl_count;	/* Share this list. . . */
     char	 pl_param;	/* Default character for parameter */
     char	*pl_name;	/* Full name for parameter */
+    double	 pl_scale;	/* Scaling of parameter, if specified */
     struct pl	*pl_next;	/* Next parameter in list */
 } ParamList;
 

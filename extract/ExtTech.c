@@ -1985,10 +1985,27 @@ ExtTechLine(sectionName, argc, argv)
 
 		    while ((paramName = strchr(argv[argc - 1], '=')) != NULL)
 		    {
+			char *mult;
+
 			paramName++;
 			newParam = (ParamList *)mallocMagic(sizeof(ParamList));
 			newParam->pl_count = 0;
 			newParam->pl_param = *argv[argc - 1];
+
+			// Parameter syntax "<type>=<name>*<scale>" indicates
+			// that the subcircuit has internal scaling, and the
+			// extractor should multiply the parameter by this value
+			// before passing it to the subcircuit.
+
+			if ((mult = strchr(paramName, '*')) != NULL)
+			{
+			    *mult = '\0';
+			    mult++;
+			    newParam->pl_scale = atof(mult);
+			}
+			else
+			    newParam->pl_scale = 1.0;
+
 			newParam->pl_name = StrDup((char **)NULL, paramName);
 			newParam->pl_next = subcktParams;
 			subcktParams = newParam;
@@ -2024,10 +2041,24 @@ ExtTechLine(sectionName, argc, argv)
 
 		    while ((paramName = strchr(argv[argc - 1], '=')) != NULL)
 		    {
+			char *mult;
+
 			paramName++;
 			newParam = (ParamList *)mallocMagic(sizeof(ParamList));
 			newParam->pl_count = 0;
 			newParam->pl_param = *argv[argc - 1];
+
+			// See comments for DEV_SUBCKT above.
+
+			if ((mult = strchr(paramName, '*')) != NULL)
+			{
+			    *mult = '\0';
+			    mult++;
+			    newParam->pl_scale = atof(mult);
+			}
+			else
+			    newParam->pl_scale = 1.0;
+
 			newParam->pl_name = StrDup((char **)NULL, paramName);
 			newParam->pl_next = subcktParams;
 			subcktParams = newParam;
