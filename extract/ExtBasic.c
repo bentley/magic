@@ -1494,12 +1494,20 @@ extOutputTrans(def, transList, outFile)
 	    case DEV_RSUBCKT:
 		hasModel = strcmp(ExtCurStyle->exts_transName[t], "None");
 		length = extTransRec.tr_perim;
+		isAnnular = FALSE;
 	
 		/* Boundary perimeter scan for resistors with more than */
 		/* one tile.						*/
 
-		for (n = 0; n < extTransRec.tr_nterm &&
-				extTransRec.tr_termnode[n] != NULL; n++);
+		for (n = 0; n < extTransRec.tr_nterm; n++)
+		{
+		    if (extTransRec.tr_termnode[n] == NULL) continue;
+
+		    /* Mark annular resistors as requiring extra processing */
+		    if (extTransRec.tr_termvector[n].p_x == 0 &&
+				extTransRec.tr_termvector[n].p_y == 0)
+			isAnnular = TRUE;
+		}
 
 		if (n == 0)
 		    width = length = 0;
@@ -1516,14 +1524,21 @@ extOutputTrans(def, transList, outFile)
 
 		    arg.fra_uninit = (ClientData) extTransRec.tr_gatenode;
 		    arg.fra_region = (Region *) reg;
-		    arg.fra_each = extResistorTileFunc;
+		    if (isAnnular)
+		        arg.fra_each = extAnnularTileFunc;
+		    else
+		        arg.fra_each = extResistorTileFunc;
 		    (void) ExtFindNeighbors(reg->treg_tile, arg.fra_pNum, &arg);
 
 		    if (extSpecialBounds[0] != NULL)
 		    {
 			extSeparateBounds(n - 1);
-			extComputeEffectiveLW(&width, &length, n, 
-				ExtCurStyle->exts_cornerChop[t]);
+			if (isAnnular)
+			    extComputeEffectiveLW(&length, &width, n, 
+					ExtCurStyle->exts_cornerChop[t]);
+			else
+			    extComputeEffectiveLW(&width, &length, n, 
+					ExtCurStyle->exts_cornerChop[t]);
 		    }
 		    else
 		    {
