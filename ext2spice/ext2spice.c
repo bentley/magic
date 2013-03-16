@@ -1394,6 +1394,7 @@ topVisit(def)
 	    while (he = HashNext(&def->def_nodes, &hs))
 	    {
 		int portidx;
+		EFNodeName *unnumbered;
 
 		sname = (EFNodeName *) HashGetValue(he);
 		snode = sname->efnn_node;
@@ -1403,7 +1404,9 @@ topVisit(def)
 		for (nodeName = sname; nodeName != NULL; nodeName = nodeName->efnn_next)
 		{
 		    portidx = nodeName->efnn_port;
-		    if (portidx == portorder)
+		    if (portidx > portorder)
+			break;	// This node belongs to a higher numbered port
+		    else if (portidx == portorder)
 		    {
 			// fprintf(esSpiceF, " %s", he->h_key.h_name);
 			fprintf(esSpiceF, " %s",
@@ -1411,9 +1414,13 @@ topVisit(def)
 			break;
 		    }
 		    else if (portidx < 0)
-			nodeName->efnn_port = ++portmax;
+			unnumbered = nodeName;
 		}
-		if (nodeName != NULL) break;
+		if (nodeName != NULL)
+		    break;
+		else if (portidx < 0)
+		    // Node has not been assigned a port number
+		    unnumbered->efnn_port = ++portmax;
 	    }
 	    portorder++;
 	}
