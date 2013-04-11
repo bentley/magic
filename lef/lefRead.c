@@ -743,6 +743,126 @@ parse_error:
 
 /*
  *------------------------------------------------------------
+ * LefReadPolygon --
+ *
+ *	Read a LEF "POLYGON" record from the file, and
+ *	return a linked point structure.  
+ *
+ * Results:
+ *	Returns a pointer to a Rect containing the magic
+ *	coordinates, or NULL if an error occurred.
+ *
+ * Side Effects:
+ *	Reads input from file f;
+ *
+ * Note:
+ *	LEF/DEF does NOT define a RECT record as having (...)
+ *	pairs, only routes.  However, at least one DEF file
+ *	contains this syntax, so it is checked.
+ *
+ *------------------------------------------------------------
+ */
+
+Point *
+LefReadPolygon(f, curlayer, oscale, ppoints)
+    FILE *f;
+    TileType curlayer;
+    float oscale;
+    int *ppoints;
+{
+    linkedRect *lr = NULL, *newRect;
+    Point *plist = NULL;
+    char *token;
+    float px, py;
+    int lpoints = 0;
+
+    while (1)
+    {
+	token = LefNextToken(f, TRUE);
+	if (token == NULL || *token == ';') break;
+ 	if (sscanf(token, "%f", &px) != 1)
+	{
+	    LefError("Bad X value in polygon.\n");
+	    LefEndStatement(f);
+	    break;
+	}
+
+	token = LefNextToken(f, TRUE);
+	if (token == NULL || *token == ';')
+	{
+	    LefError("Missing Y value in polygon point!\n");
+	    break;
+	}
+	if (sscanf(token, "%f", &py) != 1)
+	{
+	    LefError("Bad Y value in polygon.\n");
+	    LefEndStatement(f);
+	    break;
+	}
+
+	/* Use the rect structure for convenience;  we only	*/
+	/* use the r_ll point of the rect to store each point	*/
+	/* as we read it in.					*/
+
+	newRect = (linkedRect *)mallocMagic(sizeof(linkedRect));
+	newRect->area.r_xbot = (int)roundf(px / oscale);
+	newRect->area.r_ybot = (int)roundf(py / oscale);
+	newRect->rect_next = lr;
+	lr = newRect;
+	lpoints++;
+    }
+
+    *ppoints = lpoints;
+    if (lpoints == 0) return NULL;
+
+    /* Convert linkedRect structure into a simple point list */
+
+    plist = (Point *)mallocMagic(lpoints * sizeof(Point));
+    lpoints = 0;
+    while (lr != NULL)
+    {
+	plist[*ppoints - lpoints - 1].p_x = lr->area.r_xbot;
+	plist[*ppoints - lpoints - 1].p_y = lr->area.r_ybot;
+	freeMagic(lr);
+	lpoints++;
+	lr = lr->rect_next;
+    }	
+    return plist;	
+}
+
+/*
+ *------------------------------------------------------------
+ * LefPaintPolygon --
+ *
+ *	Paint a polygon into the CellDef indicated by lefMacro.
+ * 
+ *------------------------------------------------------------
+ */
+
+void
+LefPaintPolygon(lefMacro, pointList, points, curlayer)
+    CellDef *lefMacro;
+    Point *pointList;
+    int points;
+    TileType curlayer;
+{
+    int pNum;
+    PaintUndoInfo ui;
+
+    ui.pu_def = lefMacro;
+    for (pNum = PL_PAINTBASE; pNum < DBNumPlanes; pNum++)
+    {
+	if (DBPaintOnPlane(curlayer, pNum))
+	{
+	    ui.pu_pNum = pNum;
+	    PaintPolygon(pointList, points, lefMacro->cd_planes[pNum],
+			DBStdPaintTbl(curlayer, pNum), &ui);
+	}
+    }
+}
+
+/*
+ *------------------------------------------------------------
  * LefReadGeometry --
  *
  *	Read Geometry information from a LEF file.
@@ -781,6 +901,8 @@ LefReadGeometry(lefMacro, f, oscale, do_list)
     char *token;
     int keyword;
     linkedRect *newRect, *rectList;
+    Point *pointList;
+    int points;
     Rect *paintrect;
 
     static char *geometry_keys[] = {
@@ -842,7 +964,17 @@ LefReadGeometry(lefMacro, f, oscale, do_list)
 		LefEndStatement(f);
 		break;
 	    case LEF_POLYGON:
-		LefEndStatement(f);
+		pointList = LefReadPolygon(f, curlayer, oscale, &points);
+		if (pointList)
+		{
+		    if (lefMacro)
+		    {
+			LefPaintPolygon(lefMacro, pointList, points, curlayer);
+			if ((!do_list) && (otherlayer != -1))
+			    LefPaintPolygon(lefMacro, pointList, points, otherlayer);
+		    }
+		    freeMagic(pointList);
+		}
 		break;
 	    case LEF_VIA:
 		LefEndStatement(f);

@@ -35,13 +35,21 @@ typedef struct
 #define DO_SPECIAL  1
 #define ALL_SPECIAL 2	/* treat all nets as SPECIALNETS */
 
-/* Struture used for returning information from a route or geometry section */
+/* Structure used for returning information from a route or geometry section */
 
 typedef struct _linkedRect {
    Rect      area;
    TileType  type;
    struct _linkedRect *rect_next;
 } linkedRect;
+
+/* Structure used for returning information about polygon geometry */
+
+typedef struct _linkedPoint {
+   Point     pos;
+   TileType  type;
+   struct _linkedPoint *point_next;
+} linkedPoint;
 
 /* Structure used to maintain default routing information for each	*/
 /* routable layer type.							*/
