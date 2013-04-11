@@ -673,7 +673,8 @@ parse_error:
 enum def_pins_keys {DEF_PINS_START = 0, DEF_PINS_END};
 enum def_pins_prop_keys {
 	DEF_PINS_PROP_NET = 0, DEF_PINS_PROP_DIR,
-	DEF_PINS_PROP_LAYER, DEF_PINS_PROP_PLACED};
+	DEF_PINS_PROP_LAYER, DEF_PINS_PROP_USE,
+	DEF_PINS_PROP_PLACED, DEF_PINS_PROP_FIXED};
 
 void
 DefReadPins(f, rootDef, sname, oscale, total)
@@ -703,7 +704,9 @@ DefReadPins(f, rootDef, sname, oscale, total)
 	"NET",
 	"DIRECTION",
 	"LAYER",
+	"USE",
 	"PLACED",
+	"FIXED",
 	NULL
     };
 
@@ -773,6 +776,7 @@ DefReadPins(f, rootDef, sname, oscale, total)
 		    }
 		    switch (subkey)
 		    {
+			case DEF_PINS_PROP_USE:
 			case DEF_PINS_PROP_NET:
 			    /* Get the net name, but ignore it */
 			    token = LefNextToken(f, TRUE);
@@ -789,6 +793,7 @@ DefReadPins(f, rootDef, sname, oscale, total)
 			    curlayer = LefReadLayer(f, FALSE);
 			    currect = LefReadRect(f, curlayer, oscale);
 			    break;
+			case DEF_PINS_PROP_FIXED:
 			case DEF_PINS_PROP_PLACED:
 			    DefReadLocation(NULL, f, oscale, &t);
 			    GeoTransRect(&t, currect, &topRect);
