@@ -589,11 +589,19 @@ char *libPath;
 	    sstyle = dstylehead;
 	    for (i = MaxTileStyles - 1; i >= 0; i--)
 	    {
-		GrStyleTable[i] = sstyle->style;
-		/* Add short style name reverse lookup table entry */
-		GrStyleNames[(int)(sstyle->shortname)] = i;
-		freeMagic(sstyle);
-		sstyle = sstyle->next;
+		if (sstyle == NULL)
+		{
+		    GrStyleTable[i].longname = NULL;
+		    break;
+		}
+		else
+		{
+		    GrStyleTable[i] = sstyle->style;
+		    /* Add short style name reverse lookup table entry */
+		    GrStyleNames[(int)(sstyle->shortname)] = i;
+		    freeMagic(sstyle);
+		    sstyle = sstyle->next;
+		}
 	    }
 	    dstylehead = NULL;
 	}
