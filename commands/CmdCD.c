@@ -3396,6 +3396,12 @@ CmdDrc(w, cmd)
 	    window = ToolGetBoxWindow(&rootArea, (int *) NULL);
 	    if (window == NULL) return;
 	    rootUse = (CellUse *) window->w_surfaceID;
+
+#ifdef MAGIC_WRAPPER
+	    if (doforall)
+	       DRCWhyAll(rootUse, &rootArea, NULL);
+	    else
+#endif
 	    DRCWhy(dolist, rootUse, &rootArea);
 	    break;
     }

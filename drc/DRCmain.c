@@ -215,16 +215,55 @@ drcListError (celldef, rect, cptr, area)
     HashEntry *h;
     int i;
 
-    ASSERT (cptr != (DRCCookie *) NULL, "drcPrintError");
+    ASSERT (cptr != (DRCCookie *) NULL, "drcListError");
 
     if ((area != NULL) && (!GEO_OVERLAP(area, rect))) return;
     DRCErrorCount += 1;
     h = HashFind(&DRCErrorTable, cptr->drcc_why);
     i = (spointertype) HashGetValue(h);
     if (i == 0)
-	Tcl_SetObjResult(magicinterp, Tcl_NewStringObj(cptr->drcc_why, -1));
+    {
+	Tcl_Obj *lobj;
+	lobj = Tcl_GetObjResult(magicinterp);
+	Tcl_ListObjAppendElement(magicinterp, lobj,
+			Tcl_NewStringObj(cptr->drcc_why, -1));
+	Tcl_SetObjResult(magicinterp, lobj);
+    }
     i += 1;
     HashSetValue(h, (spointertype)i);
+}
+
+/* Same routine as above, but output for every single error is recorded	*/
+/* along with position information.					*/
+
+void
+drcListallError (celldef, rect, cptr, area)
+    CellDef   * celldef;	/* CellDef being checked -- not used here */
+    Rect      * rect;		/* Area of error */
+    DRCCookie * cptr;  		/* Design rule violated */
+    Rect      * area;		/* Only errors in this area get reported. */
+{
+    Tcl_Obj *lobj, *pobj;
+    HashEntry *h;
+
+    ASSERT (cptr != (DRCCookie *) NULL, "drcListallError");
+
+    if ((area != NULL) && (!GEO_OVERLAP(area, rect))) return;
+    DRCErrorCount += 1;
+    h = HashFind(&DRCErrorTable, cptr->drcc_why);
+    lobj = (Tcl_Obj *) HashGetValue(h);
+    if (lobj == NULL)
+       lobj = Tcl_NewListObj(0, NULL);
+    
+    pobj = Tcl_NewListObj(0, NULL);
+
+    Tcl_ListObjAppendElement(magicinterp, pobj, Tcl_NewIntObj(rect->r_xbot));
+    Tcl_ListObjAppendElement(magicinterp, pobj, Tcl_NewIntObj(rect->r_ybot));
+    Tcl_ListObjAppendElement(magicinterp, pobj, Tcl_NewIntObj(rect->r_xtop));
+    Tcl_ListObjAppendElement(magicinterp, pobj, Tcl_NewIntObj(rect->r_ytop));
+    Tcl_ListObjAppendElement(magicinterp, lobj, pobj);
+
+    HashSetValue(h, lobj);
 }
 
 #else
@@ -359,7 +398,7 @@ DRCWhy(dolist, use, area)
     scx.scx_y = use->cu_ylo;
     scx.scx_area = *area;
     scx.scx_trans = GeoIdentityTransform;
-    (void) drcWhyFunc(&scx, (pointertype)dolist);
+    drcWhyFunc(&scx, (pointertype)dolist);
     UndoEnable();
 
     /* Delete the hash table now that we're finished (otherwise there
@@ -378,7 +417,81 @@ DRCWhy(dolist, use, area)
 
     if (DRCErrorCount == 0) TxPrintf("No errors found.\n");
 }
-
+
+#ifdef MAGIC_WRAPPER
+
+void
+DRCWhyAll(use, area, fout)
+    CellUse *use;			/* Use in whose definition to start
+					 * the hierarchical check.
+					 */
+    Rect *area;				/* Area, in def's coordinates, that
+					 * is to be checked.
+					 */
+    FILE *fout;				/*
+					 * Write formatted output to fout
+					 */
+{
+    SearchContext scx;
+    Rect box;
+    extern int drcWhyAllFunc();		/* Forward reference. */
+    HashSearch	hs;
+    HashEntry	*he;
+    Tcl_Obj *lobj, *robj;
+
+    /* Create a hash table to used for eliminating duplicate messages. */
+
+    HashInit(&DRCErrorTable, 16, HT_STRINGKEYS);
+    DRCErrorCount = 0;
+    box = DRCdef->cd_bbox;
+
+    /* Undo will only slow things down in here, so turn it off. */
+
+    UndoDisable();
+    scx.scx_use = use;
+    scx.scx_x = use->cu_xlo;
+    scx.scx_y = use->cu_ylo;
+    scx.scx_area = *area;
+    scx.scx_trans = GeoIdentityTransform;
+    drcWhyAllFunc(&scx, NULL);
+    UndoEnable();
+
+    /* Generate results */
+
+    robj = Tcl_NewListObj(0, NULL);
+    
+    HashStartSearch(&hs);
+    while ((he = HashNext(&DRCErrorTable, &hs)) != (HashEntry *)NULL)
+    {
+	lobj = (Tcl_Obj *)HashGetValue(he);
+	if (lobj != NULL)
+	{
+	    Tcl_ListObjAppendElement(magicinterp, robj, 
+			Tcl_NewStringObj((char *)he->h_key.h_name, -1));
+	    Tcl_ListObjAppendElement(magicinterp, robj, lobj);
+	}
+    }
+    Tcl_SetObjResult(magicinterp, robj);
+
+    /* Delete the hash table now that we're finished (otherwise there
+     * will be a core leak.
+     */
+	
+    HashKill(&DRCErrorTable);
+
+    /* Redisplay the DRC yank definition in case anyone is looking
+     * at it.
+     */
+    
+    DBReComputeBbox(DRCdef);
+    (void) GeoInclude(&DRCdef->cd_bbox, &box);
+    DBWAreaChanged(DRCdef, &box, DBW_ALLWINDOWS, &DBAllButSpaceBits);
+
+    if (DRCErrorCount == 0) TxPrintf("No errors found.\n");
+}
+
+#endif	/* MAGIC_WRAPPER */
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -425,7 +538,32 @@ drcWhyFunc(scx, cdarg)
 
     return 0;
 }
-
+
+#ifdef MAGIC_WRAPPER
+
+int
+drcWhyAllFunc(scx, cdarg)
+    SearchContext *scx;		/* Describes current state of search. */
+    ClientData cdarg;		/* Unused */
+{
+    CellDef *def = scx->scx_use->cu_def;
+
+    /* Check paint and interactions in this subcell. */
+    
+    (void) DRCInteractionCheck(def, &scx->scx_area, &scx->scx_area,
+		drcListallError, (ClientData) &scx->scx_area);
+    (void) DRCArrayCheck(def, &scx->scx_area,
+		drcListallError, (ClientData) &scx->scx_area);
+    
+    /* Also search children. */
+
+    (void) DBCellSrArea(scx, drcWhyAllFunc, (ClientData)cdarg);
+
+    return 0;
+}
+
+#endif /* MAGIC_WRAPPER */
+
 /*
  * ----------------------------------------------------------------------------
  *
