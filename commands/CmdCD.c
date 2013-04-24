@@ -3015,6 +3015,9 @@ CmdDrc(w, cmd)
     DRCCountList *dcl, *dclsrch;
     int argc = cmd->tx_argc;
     char **argv = cmd->tx_argv;
+#ifdef MAGIC_WRAPPER
+    Tcl_Obj *lobj;
+#endif
 
     static char *cmdDrcOption[] =
     {	
@@ -3129,6 +3132,10 @@ CmdDrc(w, cmd)
 		if (!strncmp(argv[2], "total", 5))
 		    count_total = 0;
 
+#ifdef MAGIC_WRAPPER
+	    if (count_total == -1) lobj = Tcl_NewListObj(0, NULL);
+#endif
+
 	    if ((window = w) == NULL)
 	    {
 		window = ToolGetBoxWindow(&rootArea, (int *) NULL);
@@ -3145,6 +3152,19 @@ CmdDrc(w, cmd)
 		    count_total += dcl->dcl_count;
 		else
 		{
+#ifdef MAGIC_WRAPPER
+		    if (dolist)
+		    {
+			Tcl_Obj *pobj = Tcl_NewListObj(0, NULL);
+			Tcl_ListObjAppendElement(magicinterp, pobj,
+				Tcl_NewStringObj(dcl->dcl_def->cd_name, -1));
+			Tcl_ListObjAppendElement(magicinterp, pobj,
+				Tcl_NewIntObj(dcl->dcl_count));
+			Tcl_ListObjAppendElement(magicinterp, lobj, pobj);
+		    }
+		    else
+		    {
+#endif
 		   
 		    if (dcl->dcl_count > 1)
 			TxPrintf("Cell %s has %d error tiles.\n",
@@ -3152,16 +3172,33 @@ CmdDrc(w, cmd)
 		    else if (dcl->dcl_count == 1)
 			TxPrintf("Cell %s has just one error tile.\n",
 				dcl->dcl_def->cd_name);
+#ifdef MAGIC_WRAPPER
+		    }
+#endif
 		}
 		freeMagic((char *)dcl);
 		dcl = dcl->dcl_next;
 	    }
+
+#ifdef MAGIC_WRAPPER
+	    if (count_total >= 0)
+	    {
+		if (dolist)
+		    Tcl_SetObjResult(magicinterp, Tcl_NewIntObj(count_total));
+		else
+		{
+		    if ((DRCBackGround != DRC_SET_OFF) && (count_total == -1))
+			count_total = 0;
+		    if (count_total >= 0)
+			TxPrintf("Total DRC errors found: %d\n", count_total);
+		}
+	    }
+	    else if (dolist)
+	        Tcl_SetObjResult(magicinterp, lobj);
+#else
 	    if ((DRCBackGround != DRC_SET_OFF) && (count_total == -1))
 		count_total = 0;
 	    if (count_total >= 0)
-#ifdef MAGIC_WRAPPER
-	        Tcl_SetObjResult(magicinterp, Tcl_NewIntObj(count_total));
-#else
 		TxPrintf("Total DRC errors found: %d\n", count_total);
 #endif
 	    break;
@@ -3218,14 +3255,27 @@ CmdDrc(w, cmd)
 	    {
 		ToolMoveBox(TOOL_BL, &area.r_ll, FALSE, rootDef);
 		ToolMoveCorner(TOOL_TR, &area.r_ur, FALSE, rootDef);
+#ifdef MAGIC_WRAPPER
+		if (!dolist)
+#endif
 		TxPrintf("Error area #%d:\n", result);
-		DRCWhy(rootUse, &area);
+		DRCWhy(dolist, rootUse, &area);
+	    }
+	    else if (result < 0)
+	    {
+#ifdef MAGIC_WRAPPER
+		Tcl_SetObjResult(magicinterp, Tcl_NewIntObj(-1));
+		if (!dolist)
+#endif
+		TxPrintf("There aren't that many errors");
 	    }
 	    else
 	    {
-		if (result < 0) TxPrintf("There aren't that many errors");
-		else TxPrintf("There are no errors");
-		TxPrintf(" in %s.\n", rootDef->cd_name);
+#ifdef MAGIC_WRAPPER
+		Tcl_SetObjResult(magicinterp, Tcl_NewIntObj(0));
+		if (!dolist)
+#endif
+		TxPrintf("There are no errors in %s.\n", rootDef->cd_name);
 	    }
 	    break;
 	
@@ -3346,7 +3396,7 @@ CmdDrc(w, cmd)
 	    window = ToolGetBoxWindow(&rootArea, (int *) NULL);
 	    if (window == NULL) return;
 	    rootUse = (CellUse *) window->w_surfaceID;
-	    DRCWhy(rootUse, &rootArea);
+	    DRCWhy(dolist, rootUse, &rootArea);
 	    break;
     }
     return;

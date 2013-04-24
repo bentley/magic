@@ -25,6 +25,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 #include <sys/types.h>
 #include <stdio.h>
 
+#include "tcltk/tclmagic.h"
 #include "utils/magic.h"
 #include "utils/malloc.h"
 #include "textio/textio.h"
@@ -177,7 +178,6 @@ drcPaintError(celldef, rect, cptr, plane)
  * ----------------------------------------------------------------------------
  */
 
-/* ARGSUSED */
 void
 drcPrintError (celldef, rect, cptr, area)
     CellDef   * celldef;	/* CellDef being checked -- not used here */
@@ -199,6 +199,39 @@ drcPrintError (celldef, rect, cptr, area)
     i += 1;
     HashSetValue(h, (spointertype)i);
 }
+
+/* Same routine as above, but output goes to a Tcl list and is appended	*/
+/* to the interpreter result.						*/
+
+#ifdef MAGIC_WRAPPER
+
+void
+drcListError (celldef, rect, cptr, area)
+    CellDef   * celldef;	/* CellDef being checked -- not used here */
+    Rect      * rect;		/* Area of error */
+    DRCCookie * cptr;  		/* Design rule violated */
+    Rect      * area;		/* Only errors in this area get reported. */
+{
+    HashEntry *h;
+    int i;
+
+    ASSERT (cptr != (DRCCookie *) NULL, "drcPrintError");
+
+    if ((area != NULL) && (!GEO_OVERLAP(area, rect))) return;
+    DRCErrorCount += 1;
+    h = HashFind(&DRCErrorTable, cptr->drcc_why);
+    i = (spointertype) HashGetValue(h);
+    if (i == 0)
+	Tcl_SetObjResult(magicinterp, Tcl_NewStringObj(cptr->drcc_why, -1));
+    i += 1;
+    HashSetValue(h, (spointertype)i);
+}
+
+#else
+
+#define drcListError(a,b,c,d) drcPrintError(a,b,c,d)
+
+#endif
 
 /*
  * ----------------------------------------------------------------------------
@@ -297,7 +330,10 @@ DRCPrintStats()
  */
 
 void
-DRCWhy(use, area)
+DRCWhy(dolist, use, area)
+    bool dolist;			/*
+					 * Generate Tcl list for value
+					 */
     CellUse *use;			/* Use in whose definition to start
 					 * the hierarchical check.
 					 */
@@ -323,7 +359,7 @@ DRCWhy(use, area)
     scx.scx_y = use->cu_ylo;
     scx.scx_area = *area;
     scx.scx_trans = GeoIdentityTransform;
-    (void) drcWhyFunc(&scx, (ClientData) NULL);
+    (void) drcWhyFunc(&scx, (pointertype)dolist);
     UndoEnable();
 
     /* Delete the hash table now that we're finished (otherwise there
@@ -366,22 +402,26 @@ DRCWhy(use, area)
 int
 drcWhyFunc(scx, cdarg)
     SearchContext *scx;		/* Describes current state of search. */
-    ClientData cdarg;		/* Not used. */
+    ClientData cdarg;		/* Used to hold boolean value "dolist" */
 {
     CellDef *def = scx->scx_use->cu_def;
+    bool dolist = (bool)((pointertype)cdarg);
 
     /* Check paint and interactions in this subcell. */
     
 //  (void) DRCBasicCheck(def, &haloArea, &scx->scx_area,
-//		drcPrintError, (ClientData) &scx->scx_area);
+//		(dolist) ? drcListError : drcPrintError,
+//		(ClientData) &scx->scx_area);
     (void) DRCInteractionCheck(def, &scx->scx_area, &scx->scx_area,
-		drcPrintError, (ClientData) &scx->scx_area);
+		(dolist) ? drcListError : drcPrintError,
+		(ClientData) &scx->scx_area);
     (void) DRCArrayCheck(def, &scx->scx_area,
-		drcPrintError, (ClientData) &scx->scx_area);
+		(dolist) ? drcListError : drcPrintError,
+		(ClientData) &scx->scx_area);
     
     /* Also search children. */
 
-    (void) DBCellSrArea(scx, drcWhyFunc, (ClientData) NULL);
+    (void) DBCellSrArea(scx, drcWhyFunc, (ClientData)cdarg);
 
     return 0;
 }

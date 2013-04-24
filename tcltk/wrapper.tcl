@@ -168,7 +168,7 @@ proc magic::drcstate { status } {
       set framename [winfo parent $lwin]
       switch $status {
          idle { 
-		set dct [*bypass drc count total]
+		set dct [*bypass drc list count total]
 		if {$dct > 0} {
 	           ${framename}.titlebar.drcbutton configure -selectcolor red
 		} else {
