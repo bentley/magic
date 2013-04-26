@@ -43,9 +43,9 @@ ${MODULE}: lib${MODULE}.o ${EXTRA_LIBS}
 	${RM} ${MODULE}
 	${CC} ${CFLAGS} ${CPPFLAGS} ${DFLAGS} lib${MODULE}.o ${EXTRA_LIBS} -o ${MODULE} ${LIBS}
 
-${BINDIR}/${MODULE}${EXEEXT}: ${MODULE}${EXEEXT}
-	${RM} ${BINDIR}/${MODULE}${EXEEXT}
-	${CP} ${MODULE}${EXEEXT} ${BINDIR}
+${DESTDIR}${BINDIR}/${MODULE}${EXEEXT}: ${MODULE}${EXEEXT}
+	${RM} ${DESTDIR}${BINDIR}/${MODULE}${EXEEXT}
+	${CP} ${MODULE}${EXEEXT} ${DESTDIR}${BINDIR}
 
 ../database/database.h: ../database/database.h.in
 	@echo --- making header file database/database.h

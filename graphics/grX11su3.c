@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include <X11/Xlib.h>
 
 #include "utils/magic.h"

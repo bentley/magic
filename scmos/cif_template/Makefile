@@ -11,7 +11,7 @@ TMCIFOUT   = $(OBJS_DIR)/TMCIFout
 SUBCIFIN   = $(OBJS_DIR)/SUBCIFin
 SUBCIFOUT  = $(OBJS_DIR)/SUBCIFout
 
-SED_CMD    = sed -e "s/\\/\\\\/" -e "/^\#/D" -e "s/(gen )/(gen)/" -e "s/(nowell )/(nowell)/" -e "s/(nwell )/(nwell)/" -e "s/(pwell )/(pwell)/"
+SED_CMD    = sed -e "s/\\\\/\\\\\\\\/" -e "/^\#/D" -e "s/(gen )/(gen)/" -e "s/(nowell )/(nowell)/" -e "s/(nwell )/(nwell)/" -e "s/(pwell )/(pwell)/"
 
 include ${MAGICDIR}/defs.mak
 
