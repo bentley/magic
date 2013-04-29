@@ -567,10 +567,11 @@ LefRedefined(lefl, redefname)
  */
 
 TileType
-LefReadLayers(f, obstruct, lreturn)
+LefReadLayers(f, obstruct, lreturn, rreturn)
     FILE *f;
     bool obstruct;
     TileType *lreturn;
+    Rect **rreturn;
 {
     char *token;
     TileType curlayer = -1;
@@ -601,6 +602,16 @@ LefReadLayers(f, obstruct, lreturn)
 	    {
 		if (lefl->lefClass != CLASS_IGNORE)
 		    curlayer = lefl->type;
+		if (lefl->lefClass == CLASS_VIA)
+		    if (rreturn) *rreturn = &(lefl->info.via.area);
+	    }
+
+	    if (rreturn)
+	    {
+		if (lefl->lefClass == CLASS_VIA)
+		    *rreturn = &(lefl->info.via.area);
+		else
+		    *rreturn = &GeoNullRect;
 	    }
 	}
 	else
@@ -648,7 +659,7 @@ LefReadLayer(f, obstruct)
     FILE *f;
     bool obstruct;
 {
-    return LefReadLayers(f, obstruct, (TileType *)NULL);
+    return LefReadLayers(f, obstruct, (TileType *)NULL, (Rect **)NULL);
 }
 
 /*
@@ -903,7 +914,7 @@ LefReadGeometry(lefMacro, f, oscale, do_list)
     linkedRect *newRect, *rectList;
     Point *pointList;
     int points;
-    Rect *paintrect;
+    Rect *paintrect, *contact;
 
     static char *geometry_keys[] = {
 	"LAYER",
@@ -930,7 +941,8 @@ LefReadGeometry(lefMacro, f, oscale, do_list)
 	switch (keyword)
 	{
 	    case LEF_LAYER:
-		curlayer = LefReadLayers(f, (do_list) ? FALSE : TRUE, &otherlayer);
+		curlayer = LefReadLayers(f, (do_list) ? FALSE : TRUE, &otherlayer,
+				&contact);
 		LefEndStatement(f);
 		break;
 	    case LEF_WIDTH:
@@ -946,7 +958,23 @@ LefReadGeometry(lefMacro, f, oscale, do_list)
 		    /* Paint the area, if a CellDef is defined */
 		    if (lefMacro)
 		    {
+			// Cut layers defined as contacts use the contact
+			// dimensions, not the dimension from the LEF file
+			if (DBIsContact(curlayer) && !(GEO_RECTNULL(contact)))
+			{
+			    paintrect->r_xbot = (paintrect->r_xbot + paintrect->r_xtop);
+			    paintrect->r_ybot = (paintrect->r_ybot + paintrect->r_ytop);
+			    paintrect->r_xtop = paintrect->r_xbot + contact->r_xtop;
+			    paintrect->r_ytop = paintrect->r_ybot + contact->r_ytop;
+			    paintrect->r_xbot += contact->r_xbot;
+			    paintrect->r_ybot += contact->r_ybot;
+			    paintrect->r_xbot >>= 1;
+			    paintrect->r_ybot >>= 1;
+			    paintrect->r_xtop >>= 1;
+			    paintrect->r_ytop >>= 1;
+			}
 			DBPaint(lefMacro, paintrect, curlayer);
+
 			if ((!do_list) && (otherlayer != -1))
 				DBPaint(lefMacro, paintrect, otherlayer);
 		    }
@@ -1633,25 +1661,29 @@ LefReadLayerSection(f, lname, mode, lefl)
 	    case LEF_LAYER_WIDTH:
 		token = LefNextToken(f, TRUE);
 		sscanf(token, "%f", &fvalue);
-		lefl->info.route.width = (int)roundf(fvalue / oscale);
+		if (lefl->lefClass == CLASS_ROUTE)
+		    lefl->info.route.width = (int)roundf(fvalue / oscale);
 		LefEndStatement(f);
 		break;
 	    case LEF_LAYER_SPACING:
 		token = LefNextToken(f, TRUE);
 		sscanf(token, "%f", &fvalue);
-		lefl->info.route.spacing = (int)roundf(fvalue / oscale);
+		if (lefl->lefClass == CLASS_ROUTE)
+		    lefl->info.route.spacing = (int)roundf(fvalue / oscale);
 		LefEndStatement(f);
 		break;
 	    case LEF_LAYER_PITCH:
 		token = LefNextToken(f, TRUE);
 		sscanf(token, "%f", &fvalue);
-		lefl->info.route.pitch = (int)roundf(fvalue / oscale);
+		if (lefl->lefClass == CLASS_ROUTE)
+		    lefl->info.route.pitch = (int)roundf(fvalue / oscale);
 		LefEndStatement(f);
 		break;
 	    case LEF_LAYER_DIRECTION:
 		token = LefNextToken(f, TRUE);
 		LefLower(token);
-		lefl->info.route.hdirection = (token[0] == 'h') ? TRUE : FALSE;
+		if (lefl->lefClass == CLASS_ROUTE)
+		    lefl->info.route.hdirection = (token[0] == 'h') ? TRUE : FALSE;
 		LefEndStatement(f);
 		break;
 	    case LEF_LAYER_OFFSET:

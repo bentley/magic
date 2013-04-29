@@ -184,8 +184,9 @@ lefRemoveGeneratedVias()
 #define LEFTECH_ROUTING 3
 #define LEFTECH_MASTER	4
 #define LEFTECH_CUT	5
-#define LEFTECH_OVERLAP 6
-#define LEFTECH_IGNORE	7
+#define LEFTECH_CONTACT	6
+#define LEFTECH_OVERLAP 7
+#define LEFTECH_IGNORE	8
 
 bool
 LefTechLine(sectionName, argc, argv)
@@ -201,7 +202,7 @@ LefTechLine(sectionName, argc, argv)
     int i, option;
     static char *keywords[] = {
 	"obstruction", "layer", "route", "routing", "masterslice",
-	"cut", "overlap", "ignore", NULL
+	"cut", "contact", "overlap", "ignore", NULL
     };
 
     option = Lookup(argv[0], keywords);
@@ -267,10 +268,10 @@ LefTechLine(sectionName, argc, argv)
 	isContact = DBIsContact(mtype);
 	if (option == LEFTECH_LAYER)
 	    option = (isContact) ? LEFTECH_CUT : LEFTECH_ROUTE;
-	else if (isContact && (option != LEFTECH_CUT))
+	else if (isContact && (option != LEFTECH_CUT && option != LEFTECH_CONTACT))
             TechError("Attempt to define cut type %s as %s.\n",
 			DBTypeLongNameTbl[mtype], keywords[option]);
-	else if (!isContact && (option == LEFTECH_CUT))
+	else if (!isContact && (option == LEFTECH_CUT || option == LEFTECH_CONTACT))
             TechError("Attempt to define non-cut type %s as a cut.\n",
 			DBTypeLongNameTbl[mtype]);
     }
@@ -312,6 +313,16 @@ LefTechLine(sectionName, argc, argv)
 		    case LEFTECH_CUT:
 			newlefl->lefClass = CLASS_VIA;
 			newlefl->info.via.area = GeoNullRect;
+			newlefl->info.via.cell = (CellDef *)NULL;
+			newlefl->info.via.lr = (linkedRect *)NULL;
+			newlefl->info.via.obsType = mtype2;
+			break;
+		    case LEFTECH_CONTACT:
+			newlefl->lefClass = CLASS_VIA;
+			newlefl->info.via.area.r_xtop = DRCGetDefaultLayerWidth(mtype);
+			newlefl->info.via.area.r_ytop = newlefl->info.via.area.r_xtop;
+			newlefl->info.via.area.r_xbot = -newlefl->info.via.area.r_xtop;
+			newlefl->info.via.area.r_ybot = -newlefl->info.via.area.r_ytop;
 			newlefl->info.via.cell = (CellDef *)NULL;
 			newlefl->info.via.lr = (linkedRect *)NULL;
 			newlefl->info.via.obsType = mtype2;
@@ -405,17 +416,17 @@ LefTechScale(scalen, scaled)
 		if (lefl->refCnt > 1) lefl->refCnt = -lefl->refCnt;
 		if (lefl->lefClass == CLASS_VIA)
 		{
-		    DBScalePoint(&lefl->info.via.area.r_ll, scalen, scaled);
-		    DBScalePoint(&lefl->info.via.area.r_ur, scalen, scaled);
+		    DBScalePoint(&lefl->info.via.area.r_ll, scaled, scalen);
+		    DBScalePoint(&lefl->info.via.area.r_ur, scaled, scalen);
 		}
 		else if (lefl->lefClass == CLASS_ROUTE)
 		{
-		    lefl->info.route.width *= scalen;
-		    lefl->info.route.width /= scaled;
-		    lefl->info.route.spacing *= scalen;
-		    lefl->info.route.spacing /= scaled;
-		    lefl->info.route.pitch *= scalen;
-		    lefl->info.route.pitch /= scaled;
+		    lefl->info.route.width *= scaled;
+		    lefl->info.route.width /= scalen;
+		    lefl->info.route.spacing *= scaled;
+		    lefl->info.route.spacing /= scalen;
+		    lefl->info.route.pitch *= scaled;
+		    lefl->info.route.pitch /= scalen;
 		}
 	    }
 	}
