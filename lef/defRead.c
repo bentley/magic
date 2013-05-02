@@ -1089,6 +1089,7 @@ DefReadComponents(f, rootDef, sname, oscale, total)
 		    LefEndStatement(f);
 		    break;
 		}
+		DBLinkCell(defUse, rootDef);
 
 		/* Now do a search through the line for "+" entries	*/
 		/* And process each.					*/
