@@ -1381,7 +1381,7 @@ Optional Features:
   --disable-calma        disable calma package
   --disable-cif        disable cif package
   --disable-client-render        disable OpenGL client-side rendering
-  --disable-framebuffer-backing-store     disable OpenGL framebuffer backing store
+  --enable-framebuffer-backing-store     enable OpenGL framebuffer backing store
   --disable-plot	disable plot package
   --disable-lef	disable LEF package
   --disable-readline	disable readline package
@@ -6563,11 +6563,11 @@ fi
 if test "${enable_framebuffer_backing_store+set}" = set; then :
   enableval=$enable_framebuffer_backing_store;
 else
-  enable_framebuffer_backing_store=yes
+  enable_framebuffer_backing_store=no
 fi
 
 
-if test "x$enable_framebuffer_backing_store" = "xno" ; then
+if test "x$enable_framebuffer_backing_store" != "xyes" ; then
   $as_echo "#define X11_BACKING_STORE 1" >>confdefs.h
 
 fi
