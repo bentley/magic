@@ -807,7 +807,7 @@ keys_and_buttons:
 			mw->w_flags &= ~WIND_OBSCURED;
 			if (mw->w_backingStore == (ClientData)NULL)
 			{
-			    grtoglCreateBackingStore(mw);
+			    (*GrCreateBackingStorePtr)(mw);
 			    if (mw->w_backingStore != (ClientData)NULL)
 			    {
 				WindAreaChanged(mw, &mw->w_allArea);
