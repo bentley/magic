@@ -409,7 +409,7 @@ extArrayPrimaryFunc(use, trans, x, y, ha)
      */
     primDef = extArrayPrimary->et_use->cu_def;
     extArrayPrimary->et_nodes = extFindNodes(primDef, &ha->ha_clipArea);
-    ExtLabelRegions(primDef, ExtCurStyle->exts_nodeConn);
+    ExtLabelRegions(primDef, ExtCurStyle->exts_nodeConn, &extArrayPrimary->et_nodes);
     if ((ExtOptions & (EXT_DOADJUST|EXT_DOCOUPLING))
 		   == (EXT_DOADJUST|EXT_DOCOUPLING))
 	extFindCoupling(primDef, &extArrayPrimary->et_coupleHash,
@@ -547,7 +547,7 @@ extArrayInterFunc(use, trans, x, y, ha)
      */
     oneDef = oneFlat->et_use->cu_def;
     oneFlat->et_nodes = extFindNodes(oneDef, &ha->ha_clipArea),
-    ExtLabelRegions(oneDef, ExtCurStyle->exts_nodeConn);
+    ExtLabelRegions(oneDef, ExtCurStyle->exts_nodeConn, &oneFlat->et_nodes);
     if ((ExtOptions & (EXT_DOADJUST|EXT_DOCOUPLING))
 		   == (EXT_DOADJUST|EXT_DOCOUPLING))
 	extFindCoupling(oneDef, &oneFlat->et_coupleHash, &ha->ha_clipArea);

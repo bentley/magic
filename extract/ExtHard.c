@@ -221,7 +221,7 @@ extHardProc(scx, arg)
 	 * will have uninitialized region pointers, and so will not have labels
 	 * assigned to them.
 	 */
-	ExtLabelRegions(def, ExtCurStyle->exts_nodeConn);
+	ExtLabelRegions(def, ExtCurStyle->exts_nodeConn, &labRegList);
 
 	/* Now try to find a region with a node label */
 	for (reg = labRegList; reg; reg = reg->treg_next)

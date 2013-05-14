@@ -27,6 +27,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 #endif  /* not lint */
 
 #include <stdio.h>
+#include <string.h>
 
 #include "utils/magic.h"
 #include "utils/geometry.h"
@@ -337,6 +338,7 @@ extSubtreeInteraction(ha)
     oneFlat = extHierNewOne();
     oneDef = oneFlat->et_use->cu_def;
     DBCellCopyPaint(&scx, &DBAllButSpaceBits, 0, oneFlat->et_use);
+
 #ifdef	notdef
     extCopyPaint(ha->ha_parentUse->cu_def, &ha->ha_interArea, oneDef);
 #endif	/* notdef */
@@ -378,7 +380,7 @@ extSubtreeInteraction(ha)
 	 * refer to nodes in the parent.
 	 */
 	ha->ha_cumFlat.et_nodes = extFindNodes(cumDef, &ha->ha_clipArea);
-	ExtLabelRegions(cumDef, ExtCurStyle->exts_nodeConn);
+	ExtLabelRegions(cumDef, ExtCurStyle->exts_nodeConn, &(ha->ha_cumFlat.et_nodes));
 	if (ExtOptions & EXT_DOCOUPLING)
 	{
 	    HashInit(&ha->ha_cumFlat.et_coupleHash, 32,
@@ -604,7 +606,7 @@ extSubtreeFunc(scx, ha)
      */
     oneDef = oneFlat->et_use->cu_def;
     oneFlat->et_nodes = extFindNodes(oneDef, &ha->ha_clipArea),
-    ExtLabelRegions(oneDef, ExtCurStyle->exts_nodeConn);
+    ExtLabelRegions(oneDef, ExtCurStyle->exts_nodeConn, &(oneFlat->et_nodes));
     if ((ExtOptions & (EXT_DOCOUPLING|EXT_DOADJUST))
 		   == (EXT_DOCOUPLING|EXT_DOADJUST))
 	extFindCoupling(oneDef, &oneFlat->et_coupleHash, &ha->ha_clipArea);
@@ -615,7 +617,37 @@ extSubtreeFunc(scx, ha)
      * since then ha_cumFlat contains only the parent mask geometry and
      * node names will be found by looking in ha_lookNames.
      */
-    if (extFirstPass) extFirstPass = FALSE;
+    if (extFirstPass)
+    {
+	// On the first pass, run through et_lookName's label list.
+	// Copy any sticky labels to cumUse->cu_def, so that the labels
+	// can be found even when there is no geometry underneath in
+	// the parent cell.
+
+	CellDef *cumDef = ha->ha_cumFlat.et_lookNames;
+
+	if (cumDef != NULL)
+	{
+	    Label *lab, *newlab;
+	    unsigned int n;
+
+	    for (lab = cumDef->cd_labels; lab ; lab = lab->lab_next)
+	    {
+		n = sizeof (Label) + strlen(lab->lab_text)
+			- sizeof lab->lab_text + 1;
+
+		newlab = (Label *)mallocMagic(n);
+		newlab->lab_type = lab->lab_type;
+		newlab->lab_rect = lab->lab_rect;
+		newlab->lab_flags = lab->lab_flags;
+		strcpy(newlab->lab_text, lab->lab_text);
+
+		newlab->lab_next = cumUse->cu_def->cd_labels;
+		cumUse->cu_def->cd_labels = newlab;
+	    }
+	}
+	extFirstPass = FALSE;
+    }
     else
     {
 	/*
@@ -628,7 +660,8 @@ extSubtreeFunc(scx, ha)
 	    (NodeRegion *) ExtFindRegions(cumUse->cu_def, &TiPlaneRect,
 				&DBAllButSpaceBits, ExtCurStyle->exts_nodeConn, extUnInit,
 				extHierLabFirst, (int (*)()) NULL);
-	ExtLabelRegions(cumUse->cu_def, ExtCurStyle->exts_nodeConn);
+	ExtLabelRegions(cumUse->cu_def, ExtCurStyle->exts_nodeConn,
+			&(ha->ha_cumFlat.et_nodes));
     }
 
     /* Process connections; this updates ha->ha_connHash */
@@ -719,6 +752,7 @@ extSubtreeTileToNode(tp, pNum, et, ha, doHard)
 	"Cannot find the name of this node (probable extractor error)";
     CellDef *parentDef = ha->ha_parentUse->cu_def;
     LabRegion *reg;
+    Label *lab;
     Rect r;
     TileType ttype;
 

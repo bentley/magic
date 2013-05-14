@@ -95,7 +95,7 @@ extUniqueCell(def, allNames)
 				extUnInit, extHierLabFirst, (int (*)()) NULL);
 
     /* Assign the labels to their associated regions */
-    ExtLabelRegions(def, ExtCurStyle->exts_nodeConn);
+    ExtLabelRegions(def, ExtCurStyle->exts_nodeConn, &lregList);
 
     /*
      * First pass:

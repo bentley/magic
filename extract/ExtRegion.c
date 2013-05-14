@@ -194,9 +194,10 @@ extRegionAreaFunc(tile, arg)
  */
 
 void
-ExtLabelRegions(def, connTo)
+ExtLabelRegions(def, connTo, nodeList)
     CellDef *def;		/* Cell definition being labelled */
     TileTypeBitMask *connTo;	/* Connectivity table (see above) */
+    NodeRegion **nodeList;
 {
     static Point offsets[] = { { 0, 0 }, { 0, -1 }, { -1, -1 }, { -1, 0 } };
     LabelList *ll;
@@ -205,9 +206,11 @@ ExtLabelRegions(def, connTo)
     LabRegion *reg;
     int quad, pNum;
     Point p;
+    bool found;
 
     for (lab = def->cd_labels; lab; lab = lab->lab_next)
     {
+	found = FALSE;
 	pNum = DBPlane(lab->lab_type);
 	if (lab->lab_type == TT_SPACE || pNum < PL_TECHDEPBASE)
 	    continue;
@@ -227,6 +230,7 @@ ExtLabelRegions(def, connTo)
 	    if (extConnectsTo(TiGetType(tp), lab->lab_type, connTo)
 		    && extHasRegion(tp, extUnInit))
 	    {
+		found = TRUE;
 		reg = (LabRegion *) extGetRegion(tp);
 		ll = (LabelList *) mallocMagic((unsigned) (sizeof (LabelList)));
 		ll->ll_label = lab;
@@ -237,6 +241,42 @@ ExtLabelRegions(def, connTo)
 		else
 		    ll->ll_attr = LL_NOATTR;
 		break;
+	    }
+	}
+	if (found == FALSE)
+	{
+	    // Unconnected node label.  This may be a "sticky label".
+	    // If it is not connected to TT_SPACE, then create a new
+	    // node region for it.
+
+	    if (lab->lab_type != TT_SPACE)
+	    {
+		NodeRegion *newNode;
+		int n;
+		int nclasses = ExtCurStyle->exts_numResistClasses;
+
+	    	n = sizeof (NodeRegion) + (sizeof (PerimArea) * (nclasses - 1));
+		newNode = (NodeRegion *)mallocMagic((unsigned) n);
+
+		ll = (LabelList *)mallocMagic(sizeof(LabelList));
+		ll->ll_label = lab;
+		ll->ll_next = NULL;
+		if (lab->lab_flags & PORT_DIR_MASK)
+		    ll->ll_attr = LL_PORTATTR;
+		else
+		    ll->ll_attr = LL_NOATTR;
+
+	 	newNode->nreg_next = *nodeList;
+		newNode->nreg_pnum = pNum;
+		newNode->nreg_type = lab->lab_type;
+		newNode->nreg_ll = lab->lab_rect.r_ll;
+		newNode->nreg_cap = (CapValue)0;
+		newNode->nreg_resist = 0;
+		for (n = 0; n < nclasses; n++)
+		    newNode->nreg_pa[n].pa_perim = newNode->nreg_pa[n].pa_area = 0;
+		newNode->nreg_labels = ll;
+		
+		*nodeList = newNode;
 	    }
 	}
     }

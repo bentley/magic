@@ -120,6 +120,7 @@ extHierConnectFunc1(oneTile, ha)
     Rect r;
     TileTypeBitMask mask, *connected;
     TileType rtype;
+    Label *lab;
     int i;
 
     /*
@@ -158,6 +159,49 @@ extHierConnectFunc1(oneTile, ha)
 			extHierConnectFunc2, (ClientData) ha);
 	}
     }
+
+    /* Where labels have been saved from the parent cell, look for any	*/
+    /* that are inside the cell boundary and would connect to the tile.	*/
+    /* This allows the extractor to catch "sticky" labels that are not	*/
+    /* attached to a physical layer in the parent cell.			*/
+
+    for (lab = cumDef->cd_labels;  lab;  lab = lab->lab_next)
+	if (GEO_TOUCH(&r, &lab->lab_rect))
+	    if (TTMaskHasType(connected, lab->lab_type))
+	    {
+		HashTable *table = &ha->ha_connHash;
+		HashEntry *he;
+		NodeName *nn;
+		Node *node1, *node2;
+		char *name;
+
+		/* Register the name, like is done in extHierConnectFunc2 */
+		he = HashFind(table, lab->lab_text);
+		nn = (NodeName *) HashGetValue(he);
+		node1 = nn ? nn->nn_node : extHierNewNode(he);
+
+		name = (*ha->ha_nodename)(ha->hierOneTile, ha->hierPNum,
+			extHierOneFlat, ha, TRUE);
+		he = HashFind(table, name);
+		nn = (NodeName *) HashGetValue(he);
+		node2 = nn ? nn->nn_node : extHierNewNode(he);
+
+		if (node1 != node2)
+		{
+		    /*
+		     * Both sets of names will now point to node1.
+		     * We don't need to update node_cap since it
+		     * hasn't been computed yet.
+		     */
+		    for (nn = node2->node_names; nn->nn_next; nn = nn->nn_next)
+			nn->nn_node = node1;
+		    nn->nn_node = node1;
+		    nn->nn_next = node1->node_names;
+		    node1->node_names = node2->node_names;
+		    freeMagic((char *) node2);
+		}
+	    }
+
     return (0);
 }
 
