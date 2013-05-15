@@ -73,7 +73,7 @@ void CmdPaintEraseButton();
  */
 
 void
-CmdLabelProc(text, font, size, rotate, offx, offy, pos, type)
+CmdLabelProc(text, font, size, rotate, offx, offy, pos, sticky, type)
     char *text;			/* Text for label. */
     int font;			/* Known font to use, or -1 for X11 fonts */
     int size;			/* Fixed size of font (invalid with X11 fonts) */
@@ -83,6 +83,7 @@ CmdLabelProc(text, font, size, rotate, offx, offy, pos, type)
     int pos;			/* Justification of text relative to text. -1
 				 * means "pick a nice one for me."
 				 */
+    bool sticky;		/* 1 if label should not be moved off chosen layer */
     TileType type;		/* Type of material label is to be attached
 				 * to.  -1 means "pick a reasonable layer".
 				 */
@@ -115,7 +116,8 @@ CmdLabelProc(text, font, size, rotate, offx, offy, pos, type)
     offset.p_x = offx;
     offset.p_y = offy;
     lab = DBPutFontLabel(EditCellUse->cu_def, &editBox, font, size,
-		rotate, &offset, pos, text, type, 0);
+		rotate, &offset, pos, text, type,
+		((sticky) ? LABEL_STICKY : 0));
     DBAdjustLabels(EditCellUse->cu_def, &editBox);
     DBReComputeBbox(EditCellUse->cu_def);
     tmpArea = lab->lab_rect;
@@ -169,6 +171,7 @@ CmdLabel(w, cmd)
 {
     TileType type;
     int pos, font = -1, size = 0, rotate = 0, offx = 0, offy = 0;
+    bool sticky = FALSE;
     int option;
     char *p;
 
@@ -280,12 +283,22 @@ CmdLabel(w, cmd)
     }
     
     /*
-     * Find and check validity of type parameter
+     * Find and check validity of type parameter.  Accept prefix "-" on
+     * layer as an indication of a "sticky" label (label is fixed to
+     * indicated type and does not change).
      */
 
-    if ((font < 0 && cmd->tx_argc > 3) || (font >= 0 && cmd->tx_argc > 8))
+    if ((font < 0 && cmd->tx_argc > 3) || (font >= 0 && cmd->tx_argc >= 8))
     {
-	type = DBTechNameType(cmd->tx_argv[cmd->tx_argc - 1]);
+	char *typename;
+
+	typename = cmd->tx_argv[cmd->tx_argc - 1];
+	if (*typename == '-')
+	{
+	    sticky = TRUE;
+	    typename++;
+	}
+	type = DBTechNameType(typename);
 	if (type < 0)
 	{
 	    TxError("Unknown layer: %s\n", cmd->tx_argv[cmd->tx_argc - 1]);
@@ -293,7 +306,7 @@ CmdLabel(w, cmd)
 	}
     } else type = -1;
 
-    CmdLabelProc(p, font, size, rotate, offx, offy, pos, type);
+    CmdLabelProc(p, font, size, rotate, offx, offy, pos, sticky, type);
 }
 
 

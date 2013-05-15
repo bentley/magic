@@ -513,7 +513,7 @@ NMPutLabel(window, cmd, nmButton, point)
     }
 
     pos = nmGetPos(nmButton, point);
-    CmdLabelProc(text, pos, (TileType) -1);
+    CmdLabelProc(text, -1, 1, 0, 0, 0, pos, 0, (TileType)-1);
 }
 
 /*

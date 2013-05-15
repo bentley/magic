@@ -1549,6 +1549,84 @@ cmdLabelJustFunc(label, cellUse, transform, value)
 }
 
 int
+cmdLabelLayerFunc(label, cellUse, transform, value)
+    Label *label;
+    CellUse *cellUse;
+    Transform *transform;
+    int *value;
+{
+    CellDef *cellDef = cellUse->cu_def;
+    TileType ttype;
+#ifdef MAGIC_WRAPPER
+    Tcl_Obj *lobj;
+#endif
+
+    if (value == NULL)
+    {
+#ifdef MAGIC_WRAPPER
+	lobj = Tcl_GetObjResult(magicinterp);
+	Tcl_ListObjAppendElement(magicinterp, lobj,
+			Tcl_NewStringObj(DBTypeLongNameTbl[label->lab_type], -1));
+	Tcl_SetObjResult(magicinterp, lobj);
+#else
+	TxPrintf("%s\n", DBTypeLongNameTbl[label->lab_type]);
+#endif
+    }
+    else if (cellDef == EditRootDef)
+    {
+	ttype = (TileType)(*value);
+	if (label->lab_type != ttype)
+	{
+	    DBUndoEraseLabel(cellDef, label);
+	    label->lab_type = ttype;
+	    DBUndoPutLabel(cellDef, label);
+	    DBCellSetModified(cellDef, TRUE);
+	}
+    }
+    return 0;
+}
+
+int
+cmdLabelStickyFunc(label, cellUse, transform, value)
+    Label *label;
+    CellUse *cellUse;
+    Transform *transform;
+    int *value;
+{
+    CellDef *cellDef = cellUse->cu_def;
+    int newvalue;
+#ifdef MAGIC_WRAPPER
+    Tcl_Obj *lobj;
+#endif
+
+    if (value == NULL)
+    {
+#ifdef MAGIC_WRAPPER
+	lobj = Tcl_GetObjResult(magicinterp);
+	Tcl_ListObjAppendElement(magicinterp, lobj,
+			Tcl_NewBooleanObj((label->lab_flags & LABEL_STICKY) ? 1 : 0));
+	Tcl_SetObjResult(magicinterp, lobj);
+#else
+	TxPrintf("%s\n", (label->lab_flags & LABEL_STICKY) ? "true" : "false");
+#endif
+    }
+    else if (cellDef == EditRootDef)
+    {
+	newvalue = label->lab_flags;
+	newvalue &= ~LABEL_STICKY;
+	newvalue |= *value;
+	if (newvalue != label->lab_flags)
+	{
+	    /* Label does not change appearance, just need to record the change */
+	    DBUndoEraseLabel(cellDef, label);
+	    label->lab_flags = newvalue;
+	    DBUndoPutLabel(cellDef, label);
+	}
+    }
+    return 0;
+}
+
+int
 cmdLabelOffsetFunc(label, cellUse, transform, point)
     Label *label;
     CellUse *cellUse;
@@ -1649,6 +1727,7 @@ cmdLabelFontFunc(label, cellUse, transform, font)
  *	size
  *	offset
  *	rotate
+ *	layer
  *
  * Results:
  *	None.
@@ -1669,19 +1748,23 @@ cmdLabelFontFunc(label, cellUse, transform, font)
 #define SETLABEL_SIZE		4
 #define SETLABEL_OFFSET		5
 #define SETLABEL_ROTATE		6
+#define SETLABEL_STICKY		7
+#define SETLABEL_LAYER		8
 
 void
 CmdSetLabel(w, cmd)
     MagWindow *w;
     TxCommand *cmd;
 {
-    int pos = -1, font = -1, size = 0, rotate = 0;
+    int pos = -1, font = -1, size = 0, rotate = 0, flags = 0;
     Point offset;
+    TileType ttype;
     int option;
 #ifdef MAGIC_WRAPPER
     Tcl_Obj *lobj;
 #endif
 
+    static char *cmdLabelYesNo[] = { "no", "false", "off", "yes", "true", "on", 0 };
     static char *cmdLabelSetOption[] =
     {
 	"text <text>		change/get label text",
@@ -1691,6 +1774,8 @@ CmdSetLabel(w, cmd)
 	"size <value>		change/get label size",
 	"offset <x> <y>		change/get label offset",
 	"rotate <degrees>	change/get label rotation",
+	"sticky [true|false]	change/get sticky property",
+	"layer <type>		change/get layer type",
 	NULL
     };
 
@@ -1846,6 +1931,51 @@ CmdSetLabel(w, cmd)
 			(ClientData)&rotate : (ClientData)NULL);
 		SelectTransform(&GeoIdentityTransform);
 	    }
+	    break;
+
+	case SETLABEL_STICKY:
+	    if (cmd->tx_argc == 3)
+	    {
+		option = Lookup(cmd->tx_argv[2], cmdLabelYesNo);
+		if (option < 0)
+		{
+		    TxError("Unknown sticky option \"%s\"\n", cmd->tx_argv[2]);
+		    break;
+		}
+		flags = (option < 3) ? 0 : LABEL_STICKY;
+	    }
+	    if (EditCellUse)
+	    {
+		SelEnumLabels(&DBAllTypeBits, FALSE, (bool *)NULL,
+			cmdLabelStickyFunc, (cmd->tx_argc == 3) ?
+			(ClientData)&flags : (ClientData)NULL);
+		SelectTransform(&GeoIdentityTransform);
+	    }
+	    break;
+
+	case SETLABEL_LAYER:
+	    if (cmd->tx_argc == 3)
+	    {
+		if (!strcasecmp(cmd->tx_argv[2], "default"))
+		    ttype = -1;
+		else
+		{
+		    ttype = DBTechNoisyNameType(cmd->tx_argv[2]);
+		    if (ttype < 0) break;
+		}
+	    }
+	    if (EditCellUse)
+	    {
+		SelEnumLabels(&DBAllTypeBits, FALSE, (bool *)NULL,
+			cmdLabelLayerFunc, (cmd->tx_argc == 3) ?
+			(ClientData)&ttype : (ClientData)NULL);
+		SelectTransform(&GeoIdentityTransform);
+	    }
+	    break;
+
+
+	default:
+	    TxError("Unknown setlabel option \"%s\"\n", cmd->tx_argv[1]);
 	    break;
     }
 }

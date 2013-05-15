@@ -225,9 +225,9 @@ file_is_not_writeable(name)
  *
  *	7. If the cell contains labels, then the labels are preceded
  *	by the line "<< labels >>".  Each label is one line of the form
- *		rlabel <layer> <xbot> <ybot> <xtop> <ytop> <position> <text>
+ *		rlabel <layer> [s] <xbot> <ybot> <xtop> <ytop> <position> <text>
  *		 or
- *		flabel <layer> <xbot> <ybot> <xtop> <ytop> <position> <fontname>
+ *		flabel <layer> [s] <xbot> <ybot> <xtop> <ytop> <position> <fontname>
  *			<size> <rotation> <offsetx> <offsety> <text>
  *		 or
  *		label <layer> <x> <y> <position> <text>
@@ -1613,9 +1613,10 @@ dbReadLabels(cellDef, line, len, f, scalen, scaled)
 {
     char layername[50], text[1024], port_use[50], port_class[50];
     TileType type;
-    int ntok, orient, size, rotate, font;
+    int ntok, orient, size, rotate, font, flags;
     Point offset;
     Rect r;
+    char stickyflag[2];
 
     /* Get first label line */
     if (dbFgets(line, len, f) == NULL) return (FALSE);
@@ -1638,26 +1639,76 @@ dbReadLabels(cellDef, line, len, f, scalen, scaled)
 	 */
 	if (line[0] == 'r')
 	{
-	    if (sscanf(line, "rlabel %49s %d %d %d %d %d %99[^\n]",
-		    layername, &r.r_xbot, &r.r_ybot, &r.r_xtop, &r.r_ytop,
-			       &orient, text) != 7)
+	    if (sscanf(line, "rlabel %*49s %1s", stickyflag) == 1)
 	    {
-		TxError("Skipping bad \"rlabel\" line: %s", line);
-		goto nextlabel;
+		font = -1;
+		if (*stickyflag == 's')
+		{
+		    flags = LABEL_STICKY;
+		    if (sscanf(line, "rlabel %49s %c %d %d %d %d %d %99[^\n]",
+			layername, &stickyflag[0], &r.r_xbot, &r.r_ybot,
+			&r.r_xtop, &r.r_ytop, &orient, text) != 8)
+		    {
+			TxError("Skipping bad \"rlabel\" line: %s", line);
+			goto nextlabel;
+		    }
+		}
+		else
+		{
+		    flags = 0;
+		    if (sscanf(line, "rlabel %49s %d %d %d %d %d %99[^\n]",
+			layername, &r.r_xbot, &r.r_ybot, &r.r_xtop, &r.r_ytop,
+			&orient, text) != 7)
+		    {
+			TxError("Skipping bad \"rlabel\" line: %s", line);
+			goto nextlabel;
+		    }
+		}
 	    }
-	    font = -1;
-	}
-	else if (line[0] == 'f')
-	{
-	    char fontname[256];
-	    if (sscanf(line, "flabel %49s %d %d %d %d %d %255s %d %d %d %d %99[^\n]",
-		    layername, &r.r_xbot, &r.r_ybot, &r.r_xtop, &r.r_ytop,
-				&orient, fontname, &size, &rotate, &offset.p_x,
-				&offset.p_y, text) != 12)
+	    else
 	    {
 		TxError("Skipping bad \"flabel\" line: %s", line);
 		goto nextlabel;
 	    }
+	}
+	else if (line[0] == 'f')
+	{
+	    char fontname[256];
+	    if (sscanf(line, "flabel %*49s %1s", stickyflag) == 1)
+	    {
+		if (*stickyflag == 's')
+		{
+		    flags = LABEL_STICKY;
+		    if (sscanf(line,
+			    "flabel %49s %c %d %d %d %d %d %255s %d %d %d %d %99[^\n]",
+			    layername, &stickyflag[0], &r.r_xbot, &r.r_ybot, &r.r_xtop,
+			    &r.r_ytop, &orient, fontname, &size, &rotate, &offset.p_x,
+			    &offset.p_y, text) != 13)
+		    {
+			TxError("Skipping bad \"flabel\" line: %s", line);
+			goto nextlabel;
+	    	    }
+		}
+		else
+		{
+		    flags = 0;
+		    if (sscanf(line,
+			    "flabel %49s %d %d %d %d %d %255s %d %d %d %d %99[^\n]",
+			    layername, &r.r_xbot, &r.r_ybot, &r.r_xtop, &r.r_ytop,
+			    &orient, fontname, &size, &rotate, &offset.p_x,
+			    &offset.p_y, text) != 12)
+		    {
+			TxError("Skipping bad \"flabel\" line: %s", line);
+			goto nextlabel;
+	    	    }
+		}
+	    }
+	    else
+	    {
+		TxError("Skipping bad \"flabel\" line: %s", line);
+		goto nextlabel;
+	    }
+
 	    font = DBNameToFont(fontname);
 	    if (font < -1) font = -1;	/* Force default font if font is unknown */
 	}
@@ -1676,7 +1727,8 @@ dbReadLabels(cellDef, line, len, f, scalen, scaled)
 		TxError("Skipping bad \"port\" line: %s", line);
 		goto nextlabel;
 	    }
-	    lab->lab_flags = idx;
+	    lab->lab_flags &= ~LABEL_STICKY;
+	    lab->lab_flags |= idx;
 	    for (pptr = &ppos[0]; *pptr != '\0'; pptr++)
 	    {
 		switch(*pptr)
@@ -1820,10 +1872,10 @@ dbReadLabels(cellDef, line, len, f, scalen, scaled)
 		    type = rtype;
 	}
 	if (font < 0)
-	    DBPutLabel(cellDef, &r, orient, text, type, 0);
+	    DBPutLabel(cellDef, &r, orient, text, type, flags);
 	else
 	    DBPutFontLabel(cellDef, &r, font, size, rotate, &offset,
-			orient, text, type, 0);
+			orient, text, type, flags);
 
 nextlabel:
 	if (dbFgets(line, len, f) == NULL)
@@ -2144,16 +2196,21 @@ DBCellWriteFile(cellDef, f)
 	for (lab = cellDef->cd_labels; lab; lab = lab->lab_next)
 	{
 	    if (lab->lab_font < 0)
-		sprintf(lstring, "rlabel %s %d %d %d %d %d %s\n",
+	    {
+		sprintf(lstring, "rlabel %s %s%d %d %d %d %d %s\n",
 			DBTypeLongName(lab->lab_type),
+			((lab->lab_flags & LABEL_STICKY) ? "s " : ""),
 			lab->lab_rect.r_xbot / reducer,
 			lab->lab_rect.r_ybot / reducer,
 			lab->lab_rect.r_xtop / reducer,
 			lab->lab_rect.r_ytop / reducer,
 			lab->lab_just, lab->lab_text);
+	    }
 	    else
-		sprintf(lstring, "flabel %s %d %d %d %d %d %s %d %d %d %d %s\n",
+	    {
+		sprintf(lstring, "flabel %s %s%d %d %d %d %d %s %d %d %d %d %s\n",
 			DBTypeLongName(lab->lab_type),
+			((lab->lab_flags & LABEL_STICKY) ? "s " : ""),
 			lab->lab_rect.r_xbot / reducer,
 			lab->lab_rect.r_ybot / reducer,
 			lab->lab_rect.r_xtop / reducer,
@@ -2162,6 +2219,7 @@ DBCellWriteFile(cellDef, f)
 			lab->lab_size / reducer, lab->lab_rotate,
 			lab->lab_offset.p_x / reducer,
 			lab->lab_offset.p_y / reducer, lab->lab_text);
+	    }
 	    FPRINTF(f, lstring);
 	    if (lab->lab_flags & PORT_DIR_MASK)
 	    {

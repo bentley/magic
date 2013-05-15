@@ -1,6 +1,7 @@
 # Text helper window
 
 proc magic::make_texthelper { mgrpath } {
+   global typedflt typesticky
    toplevel ${mgrpath}
    wm withdraw ${mgrpath}
 
@@ -11,6 +12,7 @@ proc magic::make_texthelper { mgrpath } {
    frame ${mgrpath}.just
    frame ${mgrpath}.rotate
    frame ${mgrpath}.offset
+   frame ${mgrpath}.layer
 
    frame ${mgrpath}.buttonbar
 
@@ -22,11 +24,22 @@ proc magic::make_texthelper { mgrpath } {
    label ${mgrpath}.just.tlab -text "Justification: "
    label ${mgrpath}.rotate.tlab -text "Rotation: "
    label ${mgrpath}.offset.tlab -text "Offset from reference: "
+   label ${mgrpath}.layer.tlab -text "Attach to layer: "
 
    entry ${mgrpath}.text.tent -background white
    entry ${mgrpath}.size.tent -background white
    entry ${mgrpath}.rotate.tent -background white
    entry ${mgrpath}.offset.tent -background white
+   entry ${mgrpath}.layer.tent -background white
+
+   set typedflt 1
+   set typesticky 0
+   checkbutton ${mgrpath}.layer.btn1 -text "default" -variable typedflt \
+	-command [subst {if {\$typedflt} {pack forget ${mgrpath}.layer.tent \
+		} else {pack forget ${mgrpath}.layer.btn2; \
+		pack ${mgrpath}.layer.tent -side left -fill x -expand true; \
+		pack ${mgrpath}.layer.btn2 -side left}}]
+   checkbutton ${mgrpath}.layer.btn2 -text "sticky" -variable typesticky
 
    menubutton ${mgrpath}.just.btn -text "default" -menu ${mgrpath}.just.btn.menu
    menubutton ${mgrpath}.font.btn -text "default" -menu ${mgrpath}.font.btn.menu
@@ -47,6 +60,9 @@ proc magic::make_texthelper { mgrpath } {
    pack ${mgrpath}.rotate.tent -side right -fill x -expand true
    pack ${mgrpath}.offset.tlab -side left
    pack ${mgrpath}.offset.tent -side right -fill x -expand true
+   pack ${mgrpath}.layer.tlab -side left
+   pack ${mgrpath}.layer.btn1 -side left
+   pack ${mgrpath}.layer.btn2 -side left
    pack ${mgrpath}.buttonbar.apply -side left
    pack ${mgrpath}.buttonbar.cancel -side right
 
@@ -57,6 +73,7 @@ proc magic::make_texthelper { mgrpath } {
    pack ${mgrpath}.just -side top -anchor w
    pack ${mgrpath}.rotate -side top -anchor w -expand true
    pack ${mgrpath}.offset -side top -anchor w -expand true
+   pack ${mgrpath}.layer -side top -anchor w -expand true
    pack ${mgrpath}.buttonbar -side bottom -fill x -expand true
 
    # Create menus for Font and Justification records
@@ -99,12 +116,15 @@ proc magic::make_texthelper { mgrpath } {
 }
 
 proc magic::analyze_labels {} {
+   global typedflt typesticky
    set tlist [lsort -uniq [setlabel text]]
    set jlist [lsort -uniq [setlabel justify]]
    set flist [lsort -uniq [setlabel font]]
    set slist [lsort -uniq [setlabel size]]
    set rlist [lsort -uniq [setlabel rotate]]
    set olist [lsort -uniq [setlabel offset]]
+   set llist [lsort -uniq [setlabel layer]]
+   set klist [lsort -uniq [setlabel sticky]]
 
    .texthelper.text.tent delete 0 end
    if {[llength $tlist] == 1} {
@@ -133,15 +153,24 @@ proc magic::analyze_labels {} {
    if {[llength $rlist] == 1} {
       .texthelper.rotate.tent insert 0 $rlist
    }
+   .texthelper.layer.tent delete 0 end
+   if {[llength $llist] == 1} {
+      .texthelper.layer.tent insert 0 $llist
+   }
+   if {[llength $klist] == 1} {
+      set typesticky $klist
+   }
 }
 
 proc magic::change_label {} {
+   global typedflt typesticky
    set ltext [.texthelper.text.tent get]
    set lfont [.texthelper.font.btn cget -text]
    set lsize [.texthelper.size.tent get]
    set lrot  [.texthelper.rotate.tent get]
    set loff  [.texthelper.offset.tent get]
    set ljust [.texthelper.just.btn cget -text]
+   set ltype [.texthelper.layer.tent get]
 
    if {$ltext != ""} {
       setlabel text $ltext
@@ -172,15 +201,21 @@ proc magic::change_label {} {
    if {$lrot != ""} {
       setlabel rotate $lrot
    }
+   if {$ltype != ""} {
+      setlabel layer $ltype
+   }
+   setlabel sticky $typesticky
 }
 
 proc magic::make_new_label {} {
+   global typedflt typesticky
    set ltext [.texthelper.text.tent get]
    set lfont [.texthelper.font.btn cget -text]
    set lsize [.texthelper.size.tent get]
    set lrot  [.texthelper.rotate.tent get]
    set loff  [.texthelper.offset.tent get]
    set ljust [.texthelper.just.btn cget -text]
+   set ltype [.texthelper.layer.tent get]
 
    if {$ltext == ""} return	;# don't generate null label strings!
 
@@ -193,10 +228,19 @@ proc magic::make_new_label {} {
    if {$lrot == ""} {set lrot 0}
    if {$loff == ""} {set loff "0 0"}
 
-   if {$ljust == "default"} {
-      label $ltext $lfont $lsize $lrot [join $loff]
+   if {$typedflt == 1 || $ltype == ""} {
+      if {$ljust == "default"} {
+         label $ltext $lfont $lsize $lrot [join $loff]
+      } else {
+         label $ltext $lfont $lsize $lrot [join $loff] $ljust
+      }
    } else {
-      label $ltext $lfont $lsize $lrot [join $loff] $ljust
+      if {$typesticky == 1} {set ltype "-$ltype"}
+      if {$ljust == "default"} {
+         label $ltext $lfont $lsize $lrot [join $loff] center $ltype
+      } else {
+         label $ltext $lfont $lsize $lrot [join $loff] $ljust $ltype
+      }
    }
 
    # puts stdout "label $ltext $lfont $lsize $lrot $loff $ljust"
