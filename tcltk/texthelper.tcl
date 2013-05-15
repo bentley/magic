@@ -161,10 +161,13 @@ proc magic::change_label {} {
       }
    }
    if {$lsize != ""} {
-      setlabel size $lsize
+      setlabel size ${lsize}i
    }
    if {$loff != ""} {
+      set oldsnap [snap list]
+      snap internal
       setlabel offset [join $loff]
+      snap $oldsnap
    }
    if {$lrot != ""} {
       setlabel rotate $lrot

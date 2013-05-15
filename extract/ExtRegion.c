@@ -243,7 +243,7 @@ ExtLabelRegions(def, connTo, nodeList)
 		break;
 	    }
 	}
-	if (found == FALSE)
+	if ((found == FALSE) && (nodeList != NULL))
 	{
 	    // Unconnected node label.  This may be a "sticky label".
 	    // If it is not connected to TT_SPACE, then create a new

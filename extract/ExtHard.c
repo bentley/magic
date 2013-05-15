@@ -221,7 +221,8 @@ extHardProc(scx, arg)
 	 * will have uninitialized region pointers, and so will not have labels
 	 * assigned to them.
 	 */
-	ExtLabelRegions(def, ExtCurStyle->exts_nodeConn, &labRegList);
+	// ExtLabelRegions(def, ExtCurStyle->exts_nodeConn, &labRegList);
+	ExtLabelRegions(def, ExtCurStyle->exts_nodeConn, NULL);
 
 	/* Now try to find a region with a node label */
 	for (reg = labRegList; reg; reg = reg->treg_next)
@@ -468,8 +469,11 @@ extHardFreeAll(def, tReg)
     {
 	/* Reset all ti_client fields to extUnInit */
 	arg.fra_uninit = (ClientData) reg;
-	arg.fra_pNum = reg->treg_area;
-	(void) ExtFindNeighbors(reg->treg_tile, arg.fra_pNum, &arg);
+	if (reg->treg_tile)
+	{
+	    arg.fra_pNum = reg->treg_area;
+	    ExtFindNeighbors(reg->treg_tile, arg.fra_pNum, &arg);
+	}
 
 	/* Free all LabelLists and then the region */
 	for (ll = reg->treg_labels; ll; ll = ll->ll_next)

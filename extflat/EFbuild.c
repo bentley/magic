@@ -804,7 +804,6 @@ efBuildPortNode(def, name, idx, x, y, layername)
     }
 }
 
-
 /*
  * ----------------------------------------------------------------------------
  *
@@ -904,10 +903,10 @@ efBuildDevNode(def, name, isSubsNode)
 #ifdef MAGIC_WRAPPER
 		if ((name[0] == '$') && (name[1] != '$'))
 		    efReadError("Substrate node is an undefined Tcl variable.\n");
-		else
+		// else
 #endif
-		    efReadError("Default device substrate node"
-				" \"%s\" is not a global\n", name);
+		//    efReadError("Default device substrate node"
+		//		" \"%s\" is not a global\n", name);
 
 		/* This node is declared to be an implicit port */
 		nn->efnn_node->efnode_flags |= EF_SUBS_PORT;
