@@ -415,17 +415,9 @@ efAddNodes(hc, stdcell)
     float scale;
     int size, asize;
     HashEntry *he;
-    Transform t;
     bool is_subcircuit = (def->def_flags & DEF_SUBCIRCUIT) ? TRUE : FALSE;
 
     scale = def->def_scale;
-    t = hc->hc_trans;
-    t.t_a = (int)((float)t.t_a * scale);
-    t.t_b = (int)((float)t.t_b * scale);
-    t.t_c = (int)((float)t.t_c * scale);
-    t.t_d = (int)((float)t.t_d * scale);
-    t.t_e = (int)((float)t.t_e * scale);
-    t.t_f = (int)((float)t.t_f * scale);
     size = sizeof (EFNode) + (efNumResistClasses-1) * sizeof (PerimArea);
 
     for (node = (EFNode *) def->def_firstn.efnode_next;
@@ -443,7 +435,12 @@ efAddNodes(hc, stdcell)
 	    asize = ATTRSIZE(strlen(ap->efa_text));
 	    newap = (EFAttr *) mallocMagic((unsigned)(asize));
 	    (void) strcpy(newap->efa_text, ap->efa_text);
-	    GeoTransRect(&t, &ap->efa_loc, &newap->efa_loc);
+	    GeoTransRect(&hc->hc_trans, &ap->efa_loc, &newap->efa_loc);
+	    newap->efa_loc.r_xbot = (int)((float)(newap->efa_loc.r_xbot) * scale);
+	    newap->efa_loc.r_xtop = (int)((float)(newap->efa_loc.r_xtop) * scale);
+	    newap->efa_loc.r_ybot = (int)((float)(newap->efa_loc.r_ybot) * scale);
+	    newap->efa_loc.r_ytop = (int)((float)(newap->efa_loc.r_ytop) * scale);
+
 	    newap->efa_type = ap->efa_type;
 	    newap->efa_next = newnode->efnode_attrs;
 	    newnode->efnode_attrs = newap;
@@ -454,7 +451,15 @@ efAddNodes(hc, stdcell)
 	newnode->efnode_type = node->efnode_type;
 	bcopy((char *) node->efnode_pa, (char *) newnode->efnode_pa,
 		efNumResistClasses * sizeof (PerimArea));
-	GeoTransRect(&t, &node->efnode_loc, &newnode->efnode_loc);
+	GeoTransRect(&hc->hc_trans, &node->efnode_loc, &newnode->efnode_loc);
+
+	/* Scale the result by "scale" --- hopefully we end up with an integer	*/
+	/* We don't scale the transform because the scale may be non-integer	*/
+	/* and the Transform type has integers only.				*/
+	newnode->efnode_loc.r_xbot = (int)((float)(newnode->efnode_loc.r_xbot) * scale);
+	newnode->efnode_loc.r_xtop = (int)((float)(newnode->efnode_loc.r_xtop) * scale);
+	newnode->efnode_loc.r_ybot = (int)((float)(newnode->efnode_loc.r_ybot) * scale);
+	newnode->efnode_loc.r_ytop = (int)((float)(newnode->efnode_loc.r_ytop) * scale);
 
 	/* Prepend to global node list */
 	newnode->efnode_next = efNodeList.efnode_next;

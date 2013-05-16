@@ -79,7 +79,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 ResSimNode *ResInitializeNode();
 
 ResSimNode	*ResOriginalNodes;	/*Linked List of Nodes 	*/
-static int		lambda=1;       	/* Scale factor		*/
+static float	lambda=1.0;       	/* Scale factor		*/
 char	RTRAN_NOATTR[1]={'0'};
 ResFixPoint		*ResFixList;
 
@@ -146,8 +146,8 @@ ResReadSim(simfile,fetproc,capproc,resproc,attrproc,mergeproc)
 	       	    case '|': 	
 		    		if (strcmp(line[NODEUNITS],"units:") == 0)
 				{
-				     lambda = atoi(line[NODELAMBDA]);
-				     if (lambda == 0) lambda = 1; 
+				     lambda = (float)atof(line[NODELAMBDA]);
+				     if (lambda == 0.0) lambda = 1.0; 
 				}
 				result=0;
 				break;
@@ -237,13 +237,13 @@ ResReadNode(nodefile)
 	entry = HashFind(&ResNodeTable,line[NODENODENAME]);
 	node = ResInitializeNode(entry);
 	      
-	node->location.p_x = atoi(line[NODENODEX])/lambda;
-	node->location.p_y = atoi(line[NODENODEY])/lambda;
+	node->location.p_x = (int)((float)atof(line[NODENODEX])/lambda);
+	node->location.p_y = (int)((float)atof(line[NODENODEY])/lambda);
 #ifdef ARIEL	      
-	node->rs_bbox.r_xbot = atoi(line[NODE_BBOX_LL_X])/lambda;
-	node->rs_bbox.r_ybot = atoi(line[NODE_BBOX_LL_Y])/lambda;
-	node->rs_bbox.r_xtop = atoi(line[NODE_BBOX_UR_X])/lambda;
-	node->rs_bbox.r_ytop = atoi(line[NODE_BBOX_UR_Y])/lambda;
+	node->rs_bbox.r_xbot = (int)((float)atof(line[NODE_BBOX_LL_X])/lambda);
+	node->rs_bbox.r_ybot = (int)((float)atof(line[NODE_BBOX_LL_Y])/lambda);
+	node->rs_bbox.r_xtop = (int)((float)atof(line[NODE_BBOX_UR_X])/lambda);
+	node->rs_bbox.r_ytop = (int)((float)atof(line[NODE_BBOX_UR_Y])/lambda);
 #endif
 	if (cp = index(line[NODETYPE], ';')) *cp = '\0';
 	node->type = DBTechNameType(line[NODETYPE]);
