@@ -1473,17 +1473,15 @@ topVisit(def)
  */
 
 void
-esOutputResistor(dev, hierName, trans, term1, term2, has_model, l, w, dscale)
+esOutputResistor(dev, hierName, scale, term1, term2, has_model, l, w, dscale)
     Dev *dev;			/* Dev being output */
     HierName *hierName;		/* Hierarchical path down to this dev */
-    Transform *trans;		/* Coordinate transform for output */
+    float scale;		/* Scale transform for output */
     DevTerm *term1, *term2;	/* Terminals of the device */
     bool has_model;		/* Is this a modeled resistor? */
     int l, w;			/* Device length and width */
     int dscale;			/* Device scaling (for split resistors) */
 {
-    int scale;
-    Rect r;
     float sdM ; 
     char name[12], devchar;
 
@@ -1512,9 +1510,6 @@ esOutputResistor(dev, hierName, trans, term1, term2, has_model, l, w, dscale)
     else
     {
 	fprintf(esSpiceF, " %s", EFDevTypes[dev->dev_type]);
-
-	GeoTransRect(trans, &dev->dev_rect, &r);
-	scale = GeoScale(trans);
 
 	if (esScale < 0) 
 	    fprintf(esSpiceF, " w=%d l=%d", w * scale, (l * scale) / dscale);
@@ -1564,16 +1559,15 @@ esOutputResistor(dev, hierName, trans, term1, term2, has_model, l, w, dscale)
  */
 
 int
-spcdevVisit(dev, hierName, trans)
+spcdevVisit(dev, hierName, scale)
     Dev *dev;		/* Dev being output */
     HierName *hierName;	/* Hierarchical path down to this dev */
-    Transform *trans;	/* Coordinate transform for output */
+    float scale;	/* Scale transform for output */
 {
     DevParam *plist, *pptr;
     DevTerm *gate, *source, *drain;
     EFNode  *subnode, *snode, *dnode, *subnodeFlat = NULL;
-    int scale, l, w, i;
-    Rect r;
+    int l, w, i;
     bool subAP= FALSE, hierS, hierD, extHierSDAttr() ;
     float sdM; 
     char name[12], devchar;
@@ -1786,9 +1780,6 @@ spcdevVisit(dev, hierName, trans)
 
 	    /* Write all requested parameters to the subcircuit call.	*/
 
-	    GeoTransRect(trans, &dev->dev_rect, &r);
-	    scale = GeoScale(trans);
-
 	    sdM = getCurDevMult();
 	    while (plist != NULL)
 	    {
@@ -1889,19 +1880,19 @@ spcdevVisit(dev, hierName, trans)
 		/* havoc with LVS.  So, the choice is a command	*/
 		/* line option.					*/
 
-		esOutputResistor(dev, hierName, trans, gate, source, has_model,
+		esOutputResistor(dev, hierName, scale, gate, source, has_model,
 			l, w, 2);
 		fprintf(esSpiceF, "\n%c", devchar);
 		if (gate->dterm_attrs)
 		    fprintf(esSpiceF, "%sB", gate->dterm_attrs);
 		else
 		    fprintf(esSpiceF, "%dB", esResNum - 1);
-		esOutputResistor(dev, hierName, trans, gate, drain, has_model,
+		esOutputResistor(dev, hierName, scale, gate, drain, has_model,
 			l, w, 2);
 	    }
 	    else
 	    {
-		esOutputResistor(dev, hierName, trans, source, drain, has_model,
+		esOutputResistor(dev, hierName, scale, source, drain, has_model,
 			l, w, 1);
 	    }
 	    break;
@@ -1944,9 +1935,6 @@ spcdevVisit(dev, hierName, trans)
 	    {
 		fprintf(esSpiceF, " %s", EFDevTypes[dev->dev_type]);
 
-		GeoTransRect(trans, &dev->dev_rect, &r);
-		scale = GeoScale(trans);
-
 		if (esScale < 0)
 		    fprintf(esSpiceF, " w=%d l=%d", w*scale, l*scale);
 		else
@@ -1988,8 +1976,6 @@ spcdevVisit(dev, hierName, trans)
 	     * all dimensions explicitly instead of having a single scale
 	     * factor at the beginning of the .spice file.
 	     */
-	    GeoTransRect(trans, &dev->dev_rect, &r);
-	    scale = GeoScale(trans);
 
 	    sdM = getCurDevMult();
 
@@ -2144,9 +2130,9 @@ FILE *outf;
  */
 int spcnAP(node, resClass, scale, sterm, m, outf, w)
     EFNode *node;
-    int  resClass, scale;
+    int  resClass;
+    float scale, m;
     char *sterm;
-    float m;
     FILE *outf;
     int w;
 {
@@ -2197,8 +2183,8 @@ oldFmt:
 int spcnAPHier(dterm, hierName, resClass, scale, sterm, m, outf)
     DevTerm *dterm;
     HierName *hierName;
-    int  resClass, scale;
-    float m;
+    int  resClass;
+    float scale, m;
     char *sterm;
     FILE *outf;
 {
@@ -2219,7 +2205,7 @@ int spcnAPHier(dterm, hierName, resClass, scale, sterm, m, outf)
 	}
 	if (resClass == NO_RESCLASS ||
 	    beenVisited((nodeClientHier *)node->efnode_client, resClass) ) 
-		scale = 0;
+		scale = 0.0;
 	else markVisited((nodeClientHier *)node->efnode_client, resClass);
 	if ( esScale < HSPICE )
 	   fprintf(outf,fmt,
@@ -2876,23 +2862,22 @@ mergeAttr(a1, a2)
  */
 
 int
-devMergeVisit(dev, hierName, trans)
+devMergeVisit(dev, hierName, scale)
     Dev *dev;			/* Dev to examine */
     HierName *hierName;		/* Hierarchical path down to this dev */
-    Transform *trans;		/* Coordinate transform not used */
+    float scale;		/* Scale transform */
 {
     DevTerm *gate, *source, *drain;
     Dev     *cf;
     DevTerm *cg, *cs, *cd;
     EFNode *subnode, *snode, *dnode, *gnode;
-    int      scale, pmode, l, w;
+    int      pmode, l, w;
     bool     hS, hD, chS, chD;
-    Rect r;
     devMerge *fp, *cfp;
     float m;
 
     if (esDistrJunct)
-	devDistJunctVisit(dev, hierName, trans);
+	devDistJunctVisit(dev, hierName, scale);
 
     if (dev->dev_nterm < 2)
     {
@@ -2918,9 +2903,6 @@ devMergeVisit(dev, hierName, trans)
 			dev->dev_type, NULL);
     else
 	subnode = NULL;
-
-    GeoTransRect(trans, &dev->dev_rect, &r);
-    scale = GeoScale(trans);
 
     /* Get length and width of the device */
     EFGetLengthAndWidth(dev, &l, &w);
@@ -3077,15 +3059,14 @@ update_w(resClass, w,  n)
  */
 
 int 
-devDistJunctVisit(dev, hierName, trans)
+devDistJunctVisit(dev, hierName, scale)
     Dev *dev;			/* Dev to examine */
     HierName *hierName;		/* Hierarchical path down to this dev */
-    Transform *trans;		/* Coordinate transform not used */
+    float scale;		/* Scale transform */
 {
     EFNode  *n;
-    int      scale, i;
+    int      i;
     int l, w;
-    Rect r;
 
     if (dev->dev_nterm < 2)
     {
@@ -3093,9 +3074,7 @@ devDistJunctVisit(dev, hierName, trans)
 	return 0;
     }
 
-    GeoTransRect(trans, &dev->dev_rect, &r);
-    scale = GeoScale(trans);
-    w *= scale;
+    w = (int)((float)w * scale);
     EFGetLengthAndWidth(dev, &l, &w);
 
     for (i = 1; i<dev->dev_nterm; i++)

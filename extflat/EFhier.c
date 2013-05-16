@@ -400,10 +400,10 @@ efHierDevKilled(hc, dev, prefix)
  * For each dev in the circuit, call the user-supplied procedure
  * (*devProc)(), which should be of the following form:
  *
- *	(*devProc)(hc, dev, trans, cdata)
+ *	(*devProc)(hc, dev, scale, cdata)
  *	    HierContext *hc;
  *	    Dev *dev;
- *	    Transform *trans;
+ *	    float scale;
  *	    ClientData cdata;
  *	{
  *	}
@@ -456,27 +456,14 @@ efHierVisitDevs(hc, ca)
     Def *def = hc->hc_use->use_def;
     Dev *dev;
     float scale;
-    Transform t;
 
     /*
-     * Compute the proper transform to convert distance values to
-     * scaled distances.  This transform will have a scale different
-     * from 1 only in the case when the scale factors of some of the
-     * .ext files differed, making it necessary to scale all dimensions
-     * explicitly instead of having a single scale factor applying to
-     * the entire circuit.
+     * Note that the transform passed does not transform
+     * the scale;  where def->def_scale != 1.0, the visited
+     * procedure will have to multiply values by def->def_scale.
      */
-    scale = def->def_scale;
-    t = hc->hc_trans;
-    if (efScaleChanged && scale != 1.0)
-    {
-	t.t_a = (int)((float)t.t_a * scale);
-	t.t_b = (int)((float)t.t_b * scale);
-	t.t_c = (int)((float)t.t_c * scale);
-	t.t_d = (int)((float)t.t_d * scale);
-	t.t_e = (int)((float)t.t_e * scale);
-	t.t_f = (int)((float)t.t_f * scale);
-    }
+
+    scale = (efScaleChanged && def->def_scale != 1.0) ? def->def_scale : 1.0;
 
     /* Visit all devices */
     for (dev = def->def_devs; dev; dev = dev->dev_next)
@@ -484,7 +471,7 @@ efHierVisitDevs(hc, ca)
 	if (efHierDevKilled(hc, dev, hc->hc_hierName))
 	    continue;
 
-	if ((*ca->ca_proc)(hc, dev, &t, ca->ca_cdata))
+	if ((*ca->ca_proc)(hc, dev, scale, ca->ca_cdata))
 	    return 1;
     }
     return 0;
