@@ -329,10 +329,15 @@ typedef enum {
 			TRUE : FALSE;
 		TxPrintf("%s\n", onOff[value]);
 	    }
-	    else if (value)
-	      	   ResOptionsFlags |= ResOpt_Simplify | ResOpt_Tdi; 
 	    else
+	    {
+		value = Lookup(cmd->tx_argv[2], onOff);
+
+		if (value)
+	      	   ResOptionsFlags |= ResOpt_Simplify | ResOpt_Tdi; 
+		else
 	      	   ResOptionsFlags &= ~(ResOpt_Simplify | ResOpt_Tdi);
+	    }
 	    return;
 	case RES_EXTOUT:
 	    if (cmd->tx_argc == 2)
@@ -341,10 +346,14 @@ typedef enum {
 			TRUE : FALSE;
 		TxPrintf("%s\n", onOff[value]);
 	    }
-	    else if (value)
-	      	   ResOptionsFlags |= ResOpt_DoExtFile;
 	    else
+	    {
+		value = Lookup(cmd->tx_argv[2], onOff);
+		if (value)
+	      	   ResOptionsFlags |= ResOpt_DoExtFile;
+		else
 	      	   ResOptionsFlags &= ~ResOpt_DoExtFile;
+	    }
 	    return;
 	case RES_LUMPED:
 	    if (cmd->tx_argc == 2)
@@ -353,10 +362,14 @@ typedef enum {
 			TRUE : FALSE;
 		TxPrintf("%s\n", onOff[value]);
 	    }
-	    else if (value)
-	      	   ResOptionsFlags |= ResOpt_DoLumpFile;
 	    else
+	    {
+		value = Lookup(cmd->tx_argv[2], onOff);
+		if (value)
+	      	   ResOptionsFlags |= ResOpt_DoLumpFile;
+		else
 	      	   ResOptionsFlags &= ~ResOpt_DoLumpFile;
+	    }
 	    return;
 	case RES_SILENT:
 	    if (cmd->tx_argc == 2)
@@ -365,10 +378,14 @@ typedef enum {
 			TRUE : FALSE;
 		TxPrintf("%s\n", onOff[value]);
 	    }
-	    else if (value)
-	      	   ResOptionsFlags |= ResOpt_RunSilent;
 	    else
+	    {
+		value = Lookup(cmd->tx_argv[2], onOff);
+		if (value)
+	      	   ResOptionsFlags |= ResOpt_RunSilent;
+		else
 	      	   ResOptionsFlags &= ~ResOpt_RunSilent;
+	    }
 	    return;
 
 	case RES_SKIP:
@@ -854,7 +871,7 @@ ResCheckSimNodes(celldef, resisdata)
 	    if (ResExtractNet(&fp, &gparams, outfile) != 0)
 	    {
 	       	TxError("Error in extracting node %s\n",node->name);
-		break;
+		// break;	// Don't stop for one error. . .
 	    }
 	    else
 	    {
