@@ -173,8 +173,8 @@ EFArgs(argc, argv, err_result, argsProc, cdata)
 	{
 	    if (inname)
 	    {
-		(void) printf("Warning: multiple input files specified; ");
-		(void) printf("ignoring %s\n", inname);
+		TxError("Warning: multiple input files specified; ");
+		TxError("ignoring \"%s\"\n", inname);
 	    }
 	    inname = argv[0];
 	    continue;
