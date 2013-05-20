@@ -2195,6 +2195,7 @@ DBCellWriteFile(cellDef, f)
 	FPRINTF(f, "<< labels >>\n");
 	for (lab = cellDef->cd_labels; lab; lab = lab->lab_next)
 	{
+	    if (strlen(lab->lab_text) == 0) continue;	// Shouldn't happen
 	    if (lab->lab_font < 0)
 	    {
 		sprintf(lstring, "rlabel %s %s%d %d %d %d %d %s\n",

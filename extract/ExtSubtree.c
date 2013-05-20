@@ -136,6 +136,8 @@ extSubtree(parentUse, f)
     int halo = ExtCurStyle->exts_sideCoupleHalo	 + 1;
     HierExtractArg ha;
     Rect r, rbloat, *b;
+    Label *lab;
+    bool result;
 
     if ((ExtOptions & (EXT_DOCOUPLING|EXT_DOADJUST))
 		   != (EXT_DOCOUPLING|EXT_DOADJUST))
@@ -177,7 +179,14 @@ extSubtree(parentUse, f)
 	    rbloat = r;
 	    rbloat.r_xbot -= halo, rbloat.r_ybot -= halo;
 	    rbloat.r_xtop += halo, rbloat.r_ytop += halo;
-	    if (DRCFindInteractions(def, &rbloat, halo, &ha.ha_interArea))
+	    result = DRCFindInteractions(def, &rbloat, halo, &ha.ha_interArea);
+
+	    // Check area for sticky labels with no paint underneath
+	    for (lab = def->cd_labels; lab; lab = lab->lab_next)
+		if (GEO_OVERLAP(&lab->lab_rect, &rbloat))
+		    result |= GeoIncludeAll(&lab->lab_rect, &ha.ha_interArea);
+
+	    if (result)
 	    {
 		ha.ha_clipArea = ha.ha_interArea;
 		GEOCLIP(&ha.ha_clipArea, &r);
