@@ -111,6 +111,18 @@ typedef struct LB1
 
 LinkedBoundary **extSpecialBounds;		/* Linked Boundary List */
 
+/* Structure used for finding substrate connections on implicitly-defined
+ * substrates
+ */
+
+typedef struct TSD1
+{
+    bool found;		/* Set to 1 if a substrate connection was found */
+    Rect rtrans;	/* Rectangle of device */
+    Rect rhalo;		/* Search halo around device */
+    NodeRegion *nreg;	/* Closest substrate region within halo */
+} TransSubsData;
+
 #define	EDGENULL(r)	((r)->r_xbot > (r)->r_xtop || (r)->r_ybot > (r)->r_ytop)
 
 /* Forward declarations */
@@ -118,7 +130,7 @@ void extOutputNodes();
 int extTransTileFunc();
 int extTransPerimFunc();
 NodeRegion *extTransFindSubsNode();
-int extTransFindSubsFunc();
+int extTransFindSubs();
 
 int extAnnularTileFunc();
 int extResistorTileFunc();
@@ -1774,7 +1786,7 @@ extOutputTrans(def, transList, outFile)
 }
 
 int
-extTransFindSubsFunc1(tile, def, sn)
+extTransFindSubs(tile, def, sn)
     Tile *tile;
     CellDef *def;
     NodeRegion **sn;
@@ -1783,7 +1795,7 @@ extTransFindSubsFunc1(tile, def, sn)
     TileTypeBitMask *mask;
     Rect tileArea;
     int pNum;
-    int extTransFindSubsFunc2();	/* Forward declaration */
+    int extTransFindSubsFunc1();	/* Forward declaration */
 
     TiToRect(tile, &tileArea);
     if (IsSplit(tile))
@@ -1796,7 +1808,7 @@ extTransFindSubsFunc1(tile, def, sn)
 	if (TTMaskIntersect(&DBPlaneTypes[pNum], mask))
 	{
 	    if (DBSrPaintArea((Tile *) NULL, def->cd_planes[pNum], &tileArea,
-		    mask, extTransFindSubsFunc2, (ClientData)sn))
+		    mask, extTransFindSubsFunc1, (ClientData)sn))
 		return 1;
 	}
     }
@@ -1804,18 +1816,26 @@ extTransFindSubsFunc1(tile, def, sn)
 }
 
 int
-extTransFindSubsFunc2(tile, sn)
+extTransFindSubsFunc1(tile, sn)
     Tile *tile;
     NodeRegion **sn;
 {
+    /* Report split substrate region errors (two different substrate
+     * regions under the same device)
+     */
+
     if (tile->ti_client != (ClientData) extUnInit)
     {
+	if ((*sn != (NodeRegion *)NULL) && (*sn != tile->ti_client))
+	    TxError("Warning:  Split substrate under device at (%d %d)\n",
+			tile->ti_ll.p_x, tile->ti_ll.p_y);
+
 	*sn = (NodeRegion *) tile->ti_client;
 	return 1;
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1884,7 +1904,8 @@ extTransTileFunc(tile, pNum, arg)
     extTransRec.tr_perim += perim;
 
     if (extTransRec.tr_subsnode == (NodeRegion *)NULL)
-	extTransFindSubsFunc1(tile, arg->fra_def, &extTransRec.tr_subsnode);
+	extTransFindSubs(tile, arg->fra_def, &extTransRec.tr_subsnode);
+
     return (0);
 }
 

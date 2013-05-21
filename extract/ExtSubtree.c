@@ -181,9 +181,11 @@ extSubtree(parentUse, f)
 	    rbloat.r_xtop += halo, rbloat.r_ytop += halo;
 	    result = DRCFindInteractions(def, &rbloat, halo, &ha.ha_interArea);
 
-	    // Check area for sticky labels with no paint underneath
+	    // Check area for labels.  Expand interaction area to include
+	    // the labels.
+
 	    for (lab = def->cd_labels; lab; lab = lab->lab_next)
-		if (GEO_OVERLAP(&lab->lab_rect, &rbloat))
+		if (GEO_OVERLAP(&lab->lab_rect, &r))
 		    result |= GeoIncludeAll(&lab->lab_rect, &ha.ha_interArea);
 
 	    if (result)

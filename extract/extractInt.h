@@ -807,11 +807,13 @@ typedef struct extstyle
 	 * if the mask exts_transSubstrateTypes[t] is non-zero, and if
 	 * the transistor overlaps material of one of the types in the
 	 * mask, then the transistor substrate node is the node of the
-	 * material it overlaps.
+	 * material it overlaps.  If exts_transSub
 	 */
     char		*exts_transSubstrateName[NT];
     TileTypeBitMask	 exts_transSubstrateTypes[NT];
+#ifdef ARIEL
     TileTypeBitMask	 exts_subsTransistorTypes[NT];
+#endif	/* ARIEL */
 
     /* Scaling */
 	/*

@@ -53,7 +53,9 @@ struct conSrArg2
 
 extern int dbcUnconnectFunc();
 extern int dbcConnectFuncDCS();
+#ifdef ARIEL
 extern int resSubSearchFunc();
+#endif
 
 static ResTranTile  *TransList = NULL;
 static TileTypeBitMask	DiffTypeBitMask;
@@ -493,6 +495,8 @@ DBTreeCopyConnectDCS(scx, mask, xMask, connect, area, destUse)
     return(TransList);
 }
 
+
+#ifdef ARIEL
 /*
  *-------------------------------------------------------------------------
  *
@@ -535,3 +539,5 @@ resSubSearchFunc(tile,cx)
      
      return 0;
 }
+
+#endif 	/* ARIEL */

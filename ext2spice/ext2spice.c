@@ -79,6 +79,14 @@ DQueue    subcktNameQueue ; /* q used to print it sorted at the end*/
 
 fetInfoList esFetInfo[MAXDEVTYPES];
 
+/* Record for keeping a list of global names */
+
+typedef struct GLL *globalListPtr;
+
+typedef struct GLL {
+    globalListPtr gll_next;
+    char *gll_name;   
+} globalList;
 
 unsigned long	initMask = 0;
 
@@ -186,6 +194,7 @@ CmdExtToSpice(w, cmd)
     char *devname;
     char *subname;
     int idx, idx2;
+    globalList *glist = NULL;
 
     static EFCapValue LocCapThreshold = 2;
     static int LocResistThreshold = INFINITE_THRESHOLD; 
@@ -639,6 +648,43 @@ runexttospice:
 			TCL_GLOBAL_ONLY);
 	    if (resstr != NULL) esFetInfo[i].defSubs = resstr;
 	}
+
+	if (esDoHierarchy && (subname != NULL))
+	{
+	    globalList *glptr;
+	    char *locsubname, *bangptr;
+	    bool isgood = TRUE;
+
+	    locsubname = StrDup(NULL, subname);
+
+	    bangptr = locsubname + strlen(locsubname) - 1;
+	    if (*bangptr == '!') *bangptr = '\0';
+
+	    // Ad-hoc check: Global names with "Error", "err", etc.
+	    // should be rejected from the list.  Also node name
+	    // "None" is a common entry indicating that extracting
+	    // an implicit substrate is disallowed.
+
+	    if (!strncmp(locsubname, "err", 3)) isgood = FALSE;
+	    else if (strstr(locsubname, "error") != NULL) isgood = FALSE;
+	    else if (strstr(locsubname, "Error") != NULL) isgood = FALSE;
+	    else if (strstr(locsubname, "ERROR") != NULL) isgood = FALSE;
+	    else if (!strcasecmp(locsubname, "None")) isgood = FALSE;
+
+	    for (glptr = glist; glptr; glptr = glptr->gll_next)
+		if (!strcmp(glptr->gll_name, locsubname))
+		    break;
+
+	    if (isgood && (glptr == NULL))
+	    {
+		glptr = (globalList *)mallocMagic(sizeof(globalList));
+		glptr->gll_name = locsubname;
+		glptr->gll_next = glist;
+		glist = glptr;
+	    }
+	    else
+		freeMagic(locsubname);
+	}
     }
 
     /* Keep a pointer to the "GND" variable, if it exists. */
@@ -656,6 +702,21 @@ runexttospice:
     	fprintf(esSpiceF,".option scale=%gu\n\n", EFScale / 100.0);
     else
 	esScale = EFScale / 100.0;
+
+    /* Write globals under a ".global" card */
+
+    if (esDoHierarchy && (glist != NULL))
+    {
+	fprintf(esSpiceF, ".global ");
+	while (glist != NULL)
+	{
+	    fprintf(esSpiceF, "%s ", glist->gll_name);
+	    freeMagic(glist->gll_name);
+	    freeMagic(glist);
+	    glist = glist->gll_next;
+	}
+	fprintf(esSpiceF, "\n\n");
+    }
 
     /* Convert the hierarchical description to a flat one */
     flatFlags = EF_FLATNODES;

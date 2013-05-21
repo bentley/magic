@@ -22,7 +22,8 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 #endif  /* not lint */
 
 #include <stdio.h>
-#include <stdlib.h>                 /* for abs() */
+#include <stdlib.h>             /* for abs() */
+#include <string.h>		/* for strlen() */
 #include <sys/types.h>
 
 #include <netinet/in.h>
@@ -779,11 +780,16 @@ calmaElementText()
 	static bool algmsg = FALSE;
 	bool changed = FALSE;
 	char *cp;
+	char *savstring;
 	for (cp = textbody; *cp; cp++)
 	{
 	    if (*cp <= ' ' | *cp > '~') 
 	    {
-		changed = TRUE;
+		if (!changed)
+		{
+		    savstring = StrDup(NULL, textbody);
+		    changed = TRUE;
+		}
 		if (*cp == '\r' && *(cp+1) == '\0')
 		    *cp = '\0';
 		else if (*cp == '\r') 
@@ -795,19 +801,34 @@ calmaElementText()
 	    }
 	}
 	if (changed) {
-	    calmaReadError("Warning:  weird characters fixed in label '%s'\n",
-			textbody);
+	    calmaReadError("Warning:  improper characters fixed in label '%s'\n",
+			savstring);
 	    if (!algmsg) {
 		algmsg = TRUE;
 		calmaReadError("    (algorithm used:  trailing <CR> dropped, "
 				"<CR> and ' ' changed to '_', \n"
 				"    other non-printables changed to '?')\n");
 	    }
+	    calmaReadError("	modified label is '%s'\n", textbody);
+	    freeMagic(savstring);
 	}
     }
 
     /* Place the label */
-    if (type >= 0)
+    if (strlen(textbody) == 0)
+    {
+	calmaReadError("Warning:  Ignoring empty string label at (%d, %d)\n",
+		r.r_ll.p_x * cifCurReadStyle->crs_scaleFactor,
+		r.r_ll.p_y * cifCurReadStyle->crs_scaleFactor);
+    }
+    else if (type < 0)
+    {
+	calmaReadError("Warning:  label \"%s\" at (%d, %d) is on unhandled"
+		" layer:purpose pair %d:%d and will be discarded.\n", textbody,
+		r.r_ll.p_x * cifCurReadStyle->crs_scaleFactor,
+		r.r_ll.p_y * cifCurReadStyle->crs_scaleFactor, layer, textt);
+    }
+    else
     {
 	int flags;
 

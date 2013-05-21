@@ -598,7 +598,9 @@ extTechStyleInit(style)
 	}
 
 	TTMaskZero(&style->exts_perimCapMask[r]);
+#ifdef ARIEL
 	TTMaskZero(&style->exts_subsTransistorTypes[r]);
+#endif
 	if (style->exts_transSDTypes[r] != NULL)
 	    freeMagic(style->exts_transSDTypes[r]);
 	style->exts_transSDTypes[r] = NULL;
@@ -1820,6 +1822,7 @@ ExtTechLine(sectionName, argc, argv)
 		    ExtCurStyle->exts_transSubstrateName[t] =
 			    StrDup((char **) NULL, subsName);
 		    ExtCurStyle->exts_transSubstrateTypes[t] = subsTypes;
+#ifdef ARIEL
 		    {
 			int z;
 
@@ -1830,6 +1833,7 @@ ExtTechLine(sectionName, argc, argv)
 					t);
 			}
 		    }
+#endif
 		}
 	    break;
 
@@ -2110,9 +2114,11 @@ ExtTechLine(sectionName, argc, argv)
 		    ExtCurStyle->exts_deviceClass[t] = class;
 		    ExtCurStyle->exts_transName[t] =
 			    StrDup((char **) NULL, transName);
-		    ExtCurStyle->exts_transSubstrateName[t] =
-			    StrDup((char **) NULL, subsName);
+		    if (subsName != NULL)
+			ExtCurStyle->exts_transSubstrateName[t] =
+				StrDup((char **) NULL, subsName);
 		    ExtCurStyle->exts_transSubstrateTypes[t] = subsTypes;
+#ifdef ARIEL
 		    {
 			int z;
 
@@ -2123,6 +2129,7 @@ ExtTechLine(sectionName, argc, argv)
 					exts_subsTransistorTypes[z], t);
 			}
 		    }
+#endif
 		    if (subcktParams != NULL)
 		    {
 			ExtCurStyle->exts_deviceParams[t] = subcktParams;
@@ -2722,6 +2729,7 @@ zinit:
 		for (ec = style->exts_sideCoupleCap[r][s]; ec != NULL;
 				ec = ec->ec_next)
 		    ec->ec_cap *= scalefac;
+
 	    }
 	}
 
