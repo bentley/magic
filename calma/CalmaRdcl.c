@@ -96,6 +96,7 @@ calmaSetPosition(sname)
     int nbytes, rtype;
     char *strname = NULL;
     int strRecSize = 0;
+    bool found = FALSE;
 
     originalPos = ftello(calmaInputFile);
 
@@ -104,13 +105,14 @@ calmaSetPosition(sname)
         do
         {
              READRH(nbytes, rtype);      /* Read header	*/
-             if (nbytes <= 0) goto complete;
+             if (nbytes <= 0) break;
 
              /* Skip no of bytes in record header until
               * we reach to next structure record.
               */
              fseek(calmaInputFile, nbytes - CALMAHEADERLENGTH, SEEK_CUR);
         } while (rtype != CALMA_BGNSTR);
+        if (nbytes <= 0) break;
 
         calmaReadStringRecord(CALMA_STRNAME, &strname);
         if ((strcmp(sname, strname)) == 0)
@@ -123,13 +125,25 @@ calmaSetPosition(sname)
              if (strRecSize & 01) strRecSize++;
              fseek(calmaInputFile, -(nbytes + strRecSize + CALMAHEADERLENGTH),
 				SEEK_CUR);
-             break;
+	     freeMagic(strname);
+	     return originalPos;
         }
+	freeMagic(strname);
      }
 
-complete:
-     /* Done with strname */
-     if (strname != NULL) freeMagic(strname);
+     // Ran out of file.  It's possible that we were seeking ahead to a
+     // definition that called something that was defined between it and
+     // our previous position, so we will rewind the file and try again.
+     // If that doesn't work, then the cell is not defined in the file.
+
+     if (originalPos != 0)
+     {
+	rewind(calmaInputFile);
+	return calmaSetPosition(sname);
+     }
+
+     calmaReadError("Cell \"%s\" is used but not defined in this file.\n", sname);
+
      return originalPos;
 }
 
