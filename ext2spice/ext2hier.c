@@ -1233,6 +1233,7 @@ esMakePorts(hc, cdata)
 
 		if ((tptr = strchr(portname, '/')) == NULL)
 		    break;
+		if (portdef == NULL) break;	// Error condition?
 
 		updef = portdef;
 	    }
