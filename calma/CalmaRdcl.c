@@ -139,7 +139,8 @@ calmaSetPosition(sname)
      if (originalPos != 0)
      {
 	rewind(calmaInputFile);
-	return calmaSetPosition(sname);
+	calmaSetPosition(sname);
+	return originalPos;
      }
 
      calmaReadError("Cell \"%s\" is used but not defined in this file.\n", sname);
