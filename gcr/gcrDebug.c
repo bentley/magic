@@ -251,7 +251,10 @@ gcrMakePinLR(fp, x, size)
     result[size + 1].gcr_pId = (GCRNet *) NULL;
     for (i = 1; i <= size; i++)
     {
-	(void) fscanf(fp, "%d", &result[i].gcr_pId);
+	/* FIXME: Reading a pointer from file is almost guaranteed to break. */
+	dlong pointer_bits;
+	(void) fscanf(fp, "%"DLONG_PREFIX"d", &pointer_bits);
+	result[i].gcr_pId = (struct gcrnet *) pointer_bits;
 	result[i].gcr_x = x;
 	result[i].gcr_y = i;
     }
@@ -284,7 +287,7 @@ gcrSaveChannel(ch)
     char name[128];
     int flags, i, j;
 
-    (void) sprintf(name, "chan.%x", ch);
+    (void) sprintf(name, "chan.%p", ch);
     fp = fopen(name, "w");
     if (fp == NULL)
     {

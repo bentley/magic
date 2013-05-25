@@ -423,11 +423,11 @@ void rtrPinShow(pin)
 
     area = pin->gcr_ch->gcr_area;
     (void) sprintf(mesg,
-	"ChanType=%d grid=(%d,%d) point=(%d,%d) Net=%d, linked=0x%x",
+	"ChanType=%d grid=(%d,%d) point=(%d,%d) Net=%"DLONG_PREFIX"d, linked=%p",
 		pin->gcr_ch->gcr_type,
 		pin->gcr_x, pin->gcr_y,
 		pin->gcr_point.p_x, pin->gcr_point.p_y,
-		pin->gcr_pId, pin->gcr_linked);
+		(dlong) pin->gcr_pId, pin->gcr_linked);
     if (pin->gcr_pId || pin->gcr_linked == NULL)
 	(void) strcat(mesg, " **BLOCKED**");
     else DBWFeedbackAdd(&r, mesg, EditCellUse->cu_def, 1, STYLE_PALEHIGHLIGHTS);

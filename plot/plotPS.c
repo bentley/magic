@@ -1238,7 +1238,7 @@ PlotPS(fileName, scx, layers, xMask)
     {
 	fprintf(file, "{<");
 	for (j = 0; j < 8; j++)
-	    fprintf(file, "%08x%08x", curPattern->stipple[j], curPattern->stipple[j]);
+	    fprintf(file, "%08lx%08lx", curPattern->stipple[j], curPattern->stipple[j]);
 	fprintf(file, ">} %d dp\n", curPattern->index);
     }
 

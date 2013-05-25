@@ -378,14 +378,14 @@ NLNetName(net)
     /* Handle case of small integers, for debugging the channel router */
     if (net <= (NLNet *)(&etext))
     {
-	(void) sprintf(tempId, "#%d", net);
+	(void) sprintf(tempId, "#%"DLONG_PREFIX"d", (dlong) net);
 	return tempId;
     }
 
     term = net->nnet_terms;
     if (term == NULL || term->nterm_name == NULL)
     {
-	(void) sprintf(tempId, "[0x%x]", net);
+	(void) sprintf(tempId, "[%p]", net);
 	return tempId;
     }
 

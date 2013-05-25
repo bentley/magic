@@ -363,8 +363,8 @@ glChanCheckFunc(tile, ch)
 	if (tile->ti_client != (ClientData) ch)
 	{
 	    TITORECT(tile, &r);
-	    (void) sprintf(mesg, "Tile client %x doesn't match chan %x",
-		    tile->ti_client, ch);
+	    (void) sprintf(mesg, "Tile client 0x%"DLONG_PREFIX"x doesn't match chan %p",
+		    (dlong) tile->ti_client, ch);
 	    DBWFeedbackAdd(&r, mesg, EditCellUse->cu_def,
 		    1, STYLE_MEDIUMHIGHLIGHTS);
 	}
@@ -421,7 +421,7 @@ glChanClip(ch)
     {
 	char mesg[256];
 
-	(void) sprintf(mesg, "After clipping chan %x", ch);
+	(void) sprintf(mesg, "After clipping chan %p", ch);
 	glChanShowTiles(mesg);
     }
 
@@ -463,15 +463,15 @@ glChanShowFunc(tile)
 
     TITORECT(tile, &r);
     ShowRect(EditCellUse->cu_def, &r, STYLE_PALEHIGHLIGHTS);
-    (void) sprintf(mesg, "tile ch=%x type=%d",
-		tile->ti_client, TiGetType(tile));
+    (void) sprintf(mesg, "tile ch=%"DLONG_PREFIX"x type=%d",
+		(dlong) tile->ti_client, TiGetType(tile));
     TxMore(mesg);
     ShowRect(EditCellUse->cu_def, &r, STYLE_ERASEHIGHLIGHTS);
     if (tile->ti_client == (ClientData) CLIENTDEFAULT)
 	return 0;
     ch = (GCRChannel *) tile->ti_client;
     ShowRect(EditCellUse->cu_def, &ch->gcr_area, STYLE_MEDIUMHIGHLIGHTS);
-    (void) sprintf(mesg, "chan %x type=%d", ch, ch->gcr_type);
+    (void) sprintf(mesg, "chan %p type=%d", ch, ch->gcr_type);
     TxMore(mesg);
     ShowRect(EditCellUse->cu_def, &ch->gcr_area, STYLE_ERASEHIGHLIGHTS);
     return 0;

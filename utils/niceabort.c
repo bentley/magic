@@ -94,7 +94,7 @@ DumpCore()
 	{
 	    if (gcpid == 0)
 	    {
-		execl(GCORE, "gcore", pidString, 0);
+		execl(GCORE, "gcore", pidString, NULL);
 		exit (1);
 	    }
 	    WaitPid (gcpid,0);

@@ -370,12 +370,12 @@ calmaParseStructure(filename)
 
 	char *fpcopy = (char *)mallocMagic(20);
 	char *fncopy = StrDup(NULL, filename);
-	sprintf(fpcopy, "%d", filepos);
+	sprintf(fpcopy, "%"DLONG_PREFIX"d", (dlong) filepos);
 	DBPropPut(cifReadCellDef, "GDS_START", (ClientData)fpcopy);
 
 	fpcopy = (char *)mallocMagic(20);
 	filepos = ftello(calmaInputFile);
-	sprintf(fpcopy, "%d", filepos);
+	sprintf(fpcopy, "%"DLONG_PREFIX"d", (dlong) filepos);
 	DBPropPut(cifReadCellDef, "GDS_END", (ClientData)fpcopy);
 
 	DBPropPut(cifReadCellDef, "GDS_FILE", (ClientData)fncopy);

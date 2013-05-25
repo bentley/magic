@@ -474,7 +474,7 @@ spcdevHierVisit(hc, dev, scale)
 		{
 		    case 'a':
 			if (esScale < 0)
-			    fprintf(esSpiceF, "%d", dev->dev_area * scale * scale);
+			    fprintf(esSpiceF, "%g", dev->dev_area * scale * scale);
 			else if (plist->parm_scale != 1.0)
 			    fprintf(esSpiceF, "%g", dev->dev_area * scale * scale
 					* esScale * esScale * plist->parm_scale
@@ -485,7 +485,7 @@ spcdevHierVisit(hc, dev, scale)
 			break;
 		    case 'p':
 			if (esScale < 0)
-			    fprintf(esSpiceF, "%d", dev->dev_perim * scale);
+			    fprintf(esSpiceF, "%g", dev->dev_perim * scale);
 			else if (plist->parm_scale != 1.0)
 			    fprintf(esSpiceF, "%g", dev->dev_perim * scale
 					* esScale * plist->parm_scale * 1E-6);
@@ -495,7 +495,7 @@ spcdevHierVisit(hc, dev, scale)
 			break;
 		    case 'l':
 			if (esScale < 0)
-			    fprintf(esSpiceF, "%d", l * scale);
+			    fprintf(esSpiceF, "%g", l * scale);
 			else if (plist->parm_scale != 1.0)
 			    fprintf(esSpiceF, "%g", l * scale * esScale
 					* plist->parm_scale * 1E-6);
@@ -504,7 +504,7 @@ spcdevHierVisit(hc, dev, scale)
 			break;
 		    case 'w':
 			if (esScale < 0)
-			    fprintf(esSpiceF, "%d", w * scale);
+			    fprintf(esSpiceF, "%g", w * scale);
 			else if (plist->parm_scale != 1.0)
 			    fprintf(esSpiceF, "%g", w * scale * esScale
 					* plist->parm_scale * 1E-6);
@@ -518,7 +518,7 @@ spcdevHierVisit(hc, dev, scale)
 			break;
 		    case 'x':
 			if (esScale < 0)
-			    fprintf(esSpiceF, "%d", dev->dev_rect.r_xbot * scale);
+			    fprintf(esSpiceF, "%g", dev->dev_rect.r_xbot * scale);
 			else if (plist->parm_scale != 1.0)
 			    fprintf(esSpiceF, "%g", dev->dev_rect.r_xbot * scale
 					* esScale * plist->parm_scale * 1E-6);
@@ -528,7 +528,7 @@ spcdevHierVisit(hc, dev, scale)
 			break;
 		    case 'y':
 			if (esScale < 0)
-			    fprintf(esSpiceF, "%d", dev->dev_rect.r_ybot * scale);
+			    fprintf(esSpiceF, "%g", dev->dev_rect.r_ybot * scale);
 			else if (plist->parm_scale != 1.0)
 			    fprintf(esSpiceF, "%g", dev->dev_rect.r_ybot * scale
 					* esScale * plist->parm_scale * 1E-6);
@@ -629,13 +629,13 @@ spcdevHierVisit(hc, dev, scale)
 
 		if (esScale < 0)
 		{
-		    fprintf(esSpiceF, " w=%d l=%d", w*scale, l*scale);
+		    fprintf(esSpiceF, " w=%g l=%g", w*scale, l*scale);
 		}
 		else
 		{
 		    fprintf(esSpiceF, " w=%gu l=%gu",
-			(float)w * scale * esScale,
-			(float)l * scale * esScale);
+			w * scale * esScale,
+			l * scale * esScale);
 		}
 		if (sdM != 1.0)
 		    fprintf(esSpiceF, " M=%g", sdM);
@@ -671,13 +671,13 @@ spcdevHierVisit(hc, dev, scale)
 
 	    if (esScale < 0)
 	    {
-		fprintf(esSpiceF, " w=%d l=%d", w*scale, l*scale);
+		fprintf(esSpiceF, " w=%g l=%g", w*scale, l*scale);
 	    }
 	    else
 	    {
 		fprintf(esSpiceF, " w=%gu l=%gu",
-			(float)w * scale * esScale,
-			(float)l * scale * esScale);
+			w * scale * esScale,
+			l * scale * esScale);
 	    }
 	    if (sdM != 1.0)
 		fprintf(esSpiceF, " M=%g", sdM);

@@ -89,11 +89,14 @@ ERROR: Cannot compile without knowing the size of a pointer.  See utils/magic.h
 #if defined(LONG_MAX) && defined(INT_MAX) 
   #if LONG_MAX == INT_MAX
   typedef long long dlong;
+  #define DLONG_PREFIX "ll"
   #else
   typedef long dlong;
+  #define DLONG_PREFIX "l"
   #endif
 #else
 typedef long long dlong;
+#define DLONG_PREFIX "ll"
 #endif
 
 /* Modified by NP & Tim 7/04 */

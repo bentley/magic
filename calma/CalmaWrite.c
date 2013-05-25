@@ -466,7 +466,7 @@ calmaProcessDef(def, outf)
 	else
 	{
 	    offptr = (char *)DBPropGet(def, "GDS_END", NULL);
-	    sscanf(offptr, "%lld", &cval);
+	    sscanf(offptr, "%"DLONG_PREFIX"d", &cval);
 	    cellend = (off_t)cval;
 	    offptr = (char *)DBPropGet(def, "GDS_BEGIN", &oldStyle);
 	    if (!oldStyle)
@@ -485,7 +485,7 @@ calmaProcessDef(def, outf)
 		calmaOutStructName(CALMA_STRNAME, def, outf);
 	    }
 
-	    sscanf(offptr, "%lld", &cval);
+	    sscanf(offptr, "%"DLONG_PREFIX"d", &cval);
 	    cellstart = (off_t)cval;
 	    fseek(fi, cellstart, SEEK_SET);
 

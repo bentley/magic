@@ -1573,11 +1573,11 @@ esOutputResistor(dev, hierName, scale, term1, term2, has_model, l, w, dscale)
 	fprintf(esSpiceF, " %s", EFDevTypes[dev->dev_type]);
 
 	if (esScale < 0) 
-	    fprintf(esSpiceF, " w=%d l=%d", w * scale, (l * scale) / dscale);
+	    fprintf(esSpiceF, " w=%g l=%g", w * scale, (l * scale) / dscale);
 	else
 	    fprintf(esSpiceF, " w=%gu l=%gu",
-		(float)w * scale * esScale,
-		(float)((l * scale * esScale) / dscale));
+		w * scale * esScale,
+		((l * scale * esScale) / dscale));
 
 	if (sdM != 1.0)
 	    fprintf(esSpiceF, " M=%g", sdM);
@@ -1849,7 +1849,7 @@ spcdevVisit(dev, hierName, scale)
 		{
 		    case 'a':
 			if (esScale < 0)
-			    fprintf(esSpiceF, "%d", dev->dev_area * scale * scale);
+			    fprintf(esSpiceF, "%g", dev->dev_area * scale * scale);
 			else if (plist->parm_scale != 1.0)
 			    fprintf(esSpiceF, "%g", dev->dev_area * scale * scale
 					* esScale * esScale * plist->parm_scale
@@ -1860,7 +1860,7 @@ spcdevVisit(dev, hierName, scale)
 			break;
 		    case 'p':
 			if (esScale < 0)
-			    fprintf(esSpiceF, "%d", dev->dev_perim * scale);
+			    fprintf(esSpiceF, "%g", dev->dev_perim * scale);
 			else if (plist->parm_scale != 1.0)
 			    fprintf(esSpiceF, "%g", dev->dev_perim * scale
 					* esScale * plist->parm_scale * 1E-6);
@@ -1870,7 +1870,7 @@ spcdevVisit(dev, hierName, scale)
 			break;
 		    case 'l':
 			if (esScale < 0)
-			    fprintf(esSpiceF, "%d", l * scale);
+			    fprintf(esSpiceF, "%g", l * scale);
 			else if (plist->parm_scale != 1.0)
 			    fprintf(esSpiceF, "%g", l * scale * esScale
 					* plist->parm_scale * 1E-6);
@@ -1879,7 +1879,7 @@ spcdevVisit(dev, hierName, scale)
 			break;
 		    case 'w':
 			if (esScale < 0)
-			    fprintf(esSpiceF, "%d", w * scale);
+			    fprintf(esSpiceF, "%g", w * scale);
 			else if (plist->parm_scale != 1.0)
 			    fprintf(esSpiceF, "%g", w * scale * esScale
 					* plist->parm_scale * 1E-6);
@@ -1893,7 +1893,7 @@ spcdevVisit(dev, hierName, scale)
 			break;
 		    case 'x':
 			if (esScale < 0)
-			    fprintf(esSpiceF, "%d", dev->dev_rect.r_xbot * scale);
+			    fprintf(esSpiceF, "%g", dev->dev_rect.r_xbot * scale);
 			else if (plist->parm_scale != 1.0)
 			    fprintf(esSpiceF, "%g", dev->dev_rect.r_xbot * scale
 					* esScale * plist->parm_scale * 1E-6);
@@ -1903,7 +1903,7 @@ spcdevVisit(dev, hierName, scale)
 			break;
 		    case 'y':
 			if (esScale < 0)
-			    fprintf(esSpiceF, "%d", dev->dev_rect.r_ybot * scale);
+			    fprintf(esSpiceF, "%g", dev->dev_rect.r_ybot * scale);
 			else if (plist->parm_scale != 1.0)
 			    fprintf(esSpiceF, "%g", dev->dev_rect.r_ybot * scale
 					* esScale * plist->parm_scale * 1E-6);
@@ -1997,11 +1997,11 @@ spcdevVisit(dev, hierName, scale)
 		fprintf(esSpiceF, " %s", EFDevTypes[dev->dev_type]);
 
 		if (esScale < 0)
-		    fprintf(esSpiceF, " w=%d l=%d", w*scale, l*scale);
+		    fprintf(esSpiceF, " w=%g l=%g", w*scale, l*scale);
 		else
 		    fprintf(esSpiceF, " w=%gu l=%gu",
-			(float)w * scale * esScale,
-			(float)l * scale * esScale);
+			w * scale * esScale,
+			l * scale * esScale);
 
 		if (sdM != 1.0)
 		    fprintf(esSpiceF, " M=%g", sdM);
@@ -2041,11 +2041,11 @@ spcdevVisit(dev, hierName, scale)
 	    sdM = getCurDevMult();
 
 	    if (esScale < 0)
-		fprintf(esSpiceF, " w=%d l=%d", w*scale, l*scale);
+		fprintf(esSpiceF, " w=%g l=%g", w*scale, l*scale);
 	    else
 		fprintf(esSpiceF, " w=%gu l=%gu",
-			(float)w * scale * esScale,
-			(float)l * scale * esScale);
+			w * scale * esScale,
+			l * scale * esScale);
 
 	    if (sdM != 1.0)
 		fprintf(esSpiceF, " M=%g", sdM);
@@ -2164,7 +2164,7 @@ FILE *outf;
     	/* Canonical name */
     	nn = (EFNodeName *) HashGetValue(he);
 	if (outf) 
-	   fprintf(outf, nodeSpiceName(nn->efnn_node->efnode_name->efnn_hier));
+	   fprintf(outf, "%s", nodeSpiceName(nn->efnn_node->efnode_name->efnn_hier));
         return nn->efnn_node;
    }
 }
@@ -2487,7 +2487,7 @@ nodeVisitDebug(node, res, cap)
     nsn = nodeSpiceName(hierName);
     TxError("** %s (%x)\n", nsn, node);
 
-    printf("\t client.name=%s, client.m_w=%x\n", 
+    printf("\t client.name=%s, client.m_w=%p\n",
     ((nodeClient *)node->efnode_client)->spiceNodeName,
     ((nodeClient *)node->efnode_client)->m_w.widths);
    return 0;
@@ -2648,7 +2648,7 @@ int nodeHspiceName(s)
     for (p = s + l; (p > s) && *p != '/'; p--); 
     if (p == s)
     {
-	sprintf(map, s);
+	strcpy(map, s);
 	goto topLevel;
     }
 
@@ -2729,7 +2729,7 @@ int printSubcktDict()
     HashStartSearch(&hs);
     while ((he = HashNext(&subcktNameTable, &hs)) != NULL) 
 #endif
-	fprintf(esSpiceF,"* x%d\t%s\n", HashGetValue(he), he->h_key.h_name);
+	fprintf(esSpiceF,"* x%"DLONG_PREFIX"d\t%s\n", (dlong) HashGetValue(he), he->h_key.h_name);
     return 0;
 }
 

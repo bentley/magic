@@ -210,7 +210,7 @@ gcrDumpChannel(ch)
     FILE * fp, * fopen();
 
     netNames[0]=(GCRNet *) 0;
-    (void) sprintf(name, "channel.%x", ch);
+    (void) sprintf(name, "channel.%p", ch);
     if((fp = fopen(name, "w")) == NULL)
     {
 	TxError("Can't open file %s to dump channel.\n", name);

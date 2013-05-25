@@ -194,7 +194,7 @@ HistPrint(name)
 	if(h->hi_ptrKeys)
 	    fprintf(fp, "Histogram %s", h->hi_title);
 	else
-	    fprintf(fp, "Histogram %d", h->hi_title);
+	    fprintf(fp, "Histogram %"DLONG_PREFIX"d", (dlong) h->hi_title);
 	fprintf(fp, "; Low=%d; Bins=%d\n", h->hi_lo, h->hi_bins);
 	total=0.0;
 	running=0.0;

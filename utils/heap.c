@@ -545,12 +545,12 @@ HeapDump(heap)
 	    case HE_INT:	printf("%d", heap->he_list[i].he_int); break;
 	    case HE_FLOAT:	printf("%f", heap->he_list[i].he_float); break;
 	    case HE_DOUBLE:	printf("%f", heap->he_list[i].he_double); break;
-	    case HE_DLONG:	printf("%lld", heap->he_list[i].he_dlong); break;
+	    case HE_DLONG:	printf("%"DLONG_PREFIX"d", heap->he_list[i].he_dlong); break;
 	}
 	if (heap->he_stringId == TRUE)
 	    printf("//id %s; ", heap->he_list[i].he_id);
 	else
-	    printf("//id %x; ", heap->he_list[i].he_id);
+	    printf("//id %p; ", heap->he_list[i].he_id);
     }
     printf("\n");
 }

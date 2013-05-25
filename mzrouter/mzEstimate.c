@@ -1976,8 +1976,8 @@ mzDumpEstFunc(tile, fd)
     /* dump info, to file if provided, else to screen */
     if(fd)
     {
-	fprintf(fd,"\ntile %x\t\t  (x: %d to %d, y: %d to %d)\n",
-		(pointertype) tile, r.r_xbot, r.r_xtop, r.r_ybot, r.r_ytop);
+	fprintf(fd,"\ntile %p\t\t  (x: %d to %d, y: %d to %d)\n",
+		tile, r.r_xbot, r.r_xtop, r.r_ybot, r.r_ytop);
 	fprintf(fd,"\thcost = %d ", 
 		tilec->tc_hCost); 
 	fprintf(fd,"vcost = %d \n", 
@@ -1990,7 +1990,7 @@ mzDumpEstFunc(tile, fd)
 
 	    for(e=tilec->tc_estimates; e!=NULL; e=e->e_next)
 	    {
-		fprintf(fd,"\t\t%lld + ABS(x - %d)*%d + ABS(y - %d)*%d\n",
+		fprintf(fd,"\t\t%"DLONG_PREFIX"d + ABS(x - %d)*%d + ABS(y - %d)*%d\n",
 			e->e_cost0,e->e_x0,e->e_hCost,
 			e->e_y0,e->e_vCost);
 	    }
