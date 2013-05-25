@@ -1190,7 +1190,7 @@ esMakePorts(hc, cdata)
 		/* the cell definition hierarchy.			*/
 
 		aptr = strchr(portname, '[');
-		if (aptr == NULL)
+		if ((aptr == NULL) || (aptr > tptr))
 		    *tptr = '\0';
 		else
 		    *aptr = '\0';
@@ -1205,7 +1205,7 @@ esMakePorts(hc, cdata)
 			break;
 		    }
 		}
-		if (aptr == NULL)
+		if ((aptr == NULL) || (aptr > tptr))
 		    *tptr = '/';
 		else
 		    *aptr = '[';

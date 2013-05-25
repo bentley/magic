@@ -710,7 +710,19 @@ runexttospice:
 	fprintf(esSpiceF, ".global ");
 	while (glist != NULL)
 	{
-	    fprintf(esSpiceF, "%s ", glist->gll_name);
+	    /* Handle global names that are TCL variables */
+	    if (glist->gll_name[0] == '$')
+	    {
+		resstr = (char *)Tcl_GetVar(magicinterp, &(glist->gll_name[1]),
+			TCL_GLOBAL_ONLY);
+		if (resstr != NULL)
+		    fprintf(esSpiceF, "%s ", resstr);
+		else
+		    fprintf(esSpiceF, "%s ", glist->gll_name);
+	    }
+	    else
+		fprintf(esSpiceF, "%s ", glist->gll_name);
+
 	    freeMagic(glist->gll_name);
 	    freeMagic(glist);
 	    glist = glist->gll_next;
