@@ -1385,7 +1385,7 @@ efNodeAddName(node, he, hn)
  * make this node2 and free its memory.
  *
  * Results:
- *	None.
+ *	Return 0 if node1 has precedence, 1 if node2 has precedence
  *
  * Side effects:
  *	See above.

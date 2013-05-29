@@ -153,6 +153,40 @@ Exttospice_Init(interp)
 /*
  * ----------------------------------------------------------------------------
  *
+ * Apply modifications to a global node name and output to file "outf"
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	Output to file
+ * ----------------------------------------------------------------------------
+ */
+
+void
+esFormatSubs(outf, suf)
+    FILE *outf;
+    char *suf;
+{
+    char *comma;
+    int l;
+
+    if (outf)
+    {
+	l = strlen(suf) - 1;
+	if ((EFTrimFlags & EF_TRIMGLOB ) && suf[l] == '!' ||
+	         (EFTrimFlags & EF_TRIMLOCAL) && suf[l] == '#')
+	    suf[l] = '\0' ;
+	if (EFTrimFlags & EF_CONVERTCOMMAS)
+	    if ((comma = strchr(suf, ',')) != NULL)
+		*comma = ';';
+	fprintf(outf, "%s", suf);
+    }
+}
+
+/*
+ * ----------------------------------------------------------------------------
+ *
  * Main callback for command "magic::exttospice"
  *
  * ----------------------------------------------------------------------------
@@ -716,13 +750,14 @@ runexttospice:
 		resstr = (char *)Tcl_GetVar(magicinterp, &(glist->gll_name[1]),
 			TCL_GLOBAL_ONLY);
 		if (resstr != NULL)
-		    fprintf(esSpiceF, "%s ", resstr);
+		    fprintf(esSpiceF, "%s", resstr);
 		else
-		    fprintf(esSpiceF, "%s ", glist->gll_name);
+		    esFormatSubs(esSpiceF, glist->gll_name);
 	    }
 	    else
-		fprintf(esSpiceF, "%s ", glist->gll_name);
+		esFormatSubs(esSpiceF, glist->gll_name);
 
+	    fprintf(esSpiceF, " ");
 	    freeMagic(glist->gll_name);
 	    freeMagic(glist);
 	    glist = glist->gll_next;
@@ -1433,6 +1468,9 @@ topVisit(def)
 	/* as we encounter them.  This normally happens only	*/
 	/* when writing hierarchical decks for LVS.		*/
 
+	globalList *plist = NULL, *newport, *srchport, *lastport;
+	char *portname;
+
 	portorder = 0;
 
 	HashStartSearch(&hs);
@@ -1446,13 +1484,40 @@ topVisit(def)
 	    {
 		if (snode->efnode_name->efnn_port < 0)
 		{
-		    // fprintf(esSpiceF, " %s", he->h_key.h_name);
-		    // sname->efnn_port = portorder++;
-		    fprintf(esSpiceF, " %s",
-				nodeSpiceName(snode->efnode_name->efnn_hier));
-		    snode->efnode_name->efnn_port = portorder++;
+		    portname = nodeSpiceName(snode->efnode_name->efnn_hier);
+
+		    // This is not the most efficient search. . .
+		    lastport = NULL;
+		    for (srchport = plist; srchport; srchport = srchport->gll_next)
+		    {
+			if (!strcmp(srchport->gll_name, portname))
+			{
+			    /* This port is a duplicate, and should be ignored */
+			    snode->efnode_flags &= ~EF_PORT;
+			    break;
+			}
+			lastport = srchport;
+		    }
+
+		    if (!srchport)
+		    {
+			newport = (globalList *)mallocMagic(sizeof(globalList));
+			newport->gll_name = StrDup(NULL, portname);
+			newport->gll_next = NULL;
+			if (lastport == NULL)
+			    plist = newport;
+			else
+			    lastport->gll_next = newport;
+			snode->efnode_name->efnn_port = portorder++;
+		    }
 		}
 	    }
+	}
+	while (plist != NULL)
+	{
+	    fprintf(esSpiceF, " %s", plist->gll_name);
+	    freeMagic(plist);
+	    plist = plist->gll_next;
 	}
     }
     else
@@ -2148,21 +2213,11 @@ FILE *outf;
 {
     HashEntry *he;
     EFNodeName *nn;
-    char *suf, *comma ;
-    int  l ;
+    char *suf;
 
     suf = EFHNToStr(suffix);
     if (esFetInfo[type].defSubs && strcasecmp(suf,esFetInfo[type].defSubs) == 0) {
-	if ( outf ) {
-    	   l = strlen(suf) - 1;
-	   if (  ( EFTrimFlags & EF_TRIMGLOB ) && suf[l] =='!' ||
-	         ( EFTrimFlags & EF_TRIMLOCAL ) && suf[l] == '#'  )
-	        suf[l] = '\0' ;
-	   if (EFTrimFlags & EF_CONVERTCOMMAS)
-		if ((comma = strchr(suf, ',')) != NULL)
-		    *comma = ';';
-	   fprintf(outf, "%s", suf);
-	}
+	esFormatSubs(outf, suf);
 	return NULL;
     }
     else {
