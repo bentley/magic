@@ -38,7 +38,8 @@ typedef unsigned char U_char;
 /* Flags to control output of node names.  Stored in EFTrimFlags */
 #define	EF_TRIMGLOB		0x01	/* Delete trailing '!' from names */
 #define	EF_TRIMLOCAL		0x02	/* Delete trailing '#' from names */
-#define EF_CONVERTCOMMAS	0x04	/* Change commas to semicolons in names */
+#define EF_CONVERTCOMMAS	0x04	/* Change ',' to ';' in names */
+#define EF_CONVERTEQUAL		0x08	/* Change '=' to ':' in names */
 
 /*
  * capacitance type now set to float

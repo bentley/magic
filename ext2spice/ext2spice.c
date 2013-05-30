@@ -168,7 +168,7 @@ esFormatSubs(outf, suf)
     FILE *outf;
     char *suf;
 {
-    char *comma;
+    char *specchar;
     int l;
 
     if (outf)
@@ -178,8 +178,11 @@ esFormatSubs(outf, suf)
 	         (EFTrimFlags & EF_TRIMLOCAL) && suf[l] == '#')
 	    suf[l] = '\0' ;
 	if (EFTrimFlags & EF_CONVERTCOMMAS)
-	    if ((comma = strchr(suf, ',')) != NULL)
-		*comma = ';';
+	    while ((specchar = strchr(suf, ',')) != NULL)
+		*specchar = ';';
+	if (EFTrimFlags & EF_CONVERTEQUAL)
+	    while ((specchar = strchr(suf, '=')) != NULL)
+		*specchar = ':';
 	fprintf(outf, "%s", suf);
     }
 }
@@ -537,7 +540,7 @@ CmdExtToSpice(w, cmd)
 	case EXTTOSPC_DEFAULT:
 	    LocCapThreshold = 2;
 	    LocResistThreshold = INFINITE_THRESHOLD;
-	    EFTrimFlags = EF_CONVERTCOMMAS;
+	    EFTrimFlags = EF_CONVERTCOMMAS | EF_CONVERTEQUAL;
 	    EFScale = 0.0;
 	    if (EFArgTech)
 	    {
@@ -737,6 +740,16 @@ runexttospice:
     else
 	esScale = EFScale / 100.0;
 
+    /* Set output format flags */
+
+    flatFlags = EF_FLATNODES;
+    // This forces options TRIMGLOB and CONVERTEQUAL, not sure that's such a
+    // good idea. . .
+    EFTrimFlags |= EF_TRIMGLOB | EF_CONVERTEQUAL;
+    if (EFCapThreshold < INFINITE_THRESHOLD) flatFlags |= EF_FLATCAPS;
+    if (esFormat == HSPICE )
+	EFTrimFlags |= EF_TRIMLOCAL ;
+
     /* Write globals under a ".global" card */
 
     if (esDoHierarchy && (glist != NULL))
@@ -750,7 +763,7 @@ runexttospice:
 		resstr = (char *)Tcl_GetVar(magicinterp, &(glist->gll_name[1]),
 			TCL_GLOBAL_ONLY);
 		if (resstr != NULL)
-		    fprintf(esSpiceF, "%s", resstr);
+		    esFormatSubs(esSpiceF, resstr);
 		else
 		    esFormatSubs(esSpiceF, glist->gll_name);
 	    }
@@ -766,11 +779,8 @@ runexttospice:
     }
 
     /* Convert the hierarchical description to a flat one */
-    flatFlags = EF_FLATNODES;
-    EFTrimFlags |= EF_TRIMGLOB;
-    if (EFCapThreshold < INFINITE_THRESHOLD) flatFlags |= EF_FLATCAPS;
+
     if (esFormat == HSPICE ) {
-	EFTrimFlags |= EF_TRIMLOCAL ;
 	HashInit(&subcktNameTable, 32, HT_STRINGKEYS);
 #ifndef UNSORTED_SUBCKT
 	DQInit(&subcktNameQueue, 64);
@@ -1267,10 +1277,14 @@ subcktVisit(use, hierName, is_top)
 	fprintf(esSpiceF, "X%d", esSbckNum++);
     else
     {
+	int savflags = EFTrimFlags;
+	EFTrimFlags = 0;	// Do no substitutions on subcircuit names
+
 	/* Use full hierarchical decomposition for name */
 	/* (not just use->use_id.  hierName already has use->use_id at end) */
 	EFHNSprintf(stmp, hierName);
 	fprintf(esSpiceF, "X%s", stmp);
+	EFTrimFlags = savflags;
     }
 
     /* This is not a DEV, but "spcdevOutNode" is a general-purpose routine that */
@@ -1468,9 +1482,6 @@ topVisit(def)
 	/* as we encounter them.  This normally happens only	*/
 	/* when writing hierarchical decks for LVS.		*/
 
-	globalList *plist = NULL, *newport, *srchport, *lastport;
-	char *portname;
-
 	portorder = 0;
 
 	HashStartSearch(&hs);
@@ -1481,43 +1492,12 @@ topVisit(def)
 	    snode = sname->efnn_node;
 
 	    if (snode->efnode_flags & EF_PORT)
-	    {
 		if (snode->efnode_name->efnn_port < 0)
 		{
-		    portname = nodeSpiceName(snode->efnode_name->efnn_hier);
-
-		    // This is not the most efficient search. . .
-		    lastport = NULL;
-		    for (srchport = plist; srchport; srchport = srchport->gll_next)
-		    {
-			if (!strcmp(srchport->gll_name, portname))
-			{
-			    /* This port is a duplicate, and should be ignored */
-			    snode->efnode_flags &= ~EF_PORT;
-			    break;
-			}
-			lastport = srchport;
-		    }
-
-		    if (!srchport)
-		    {
-			newport = (globalList *)mallocMagic(sizeof(globalList));
-			newport->gll_name = StrDup(NULL, portname);
-			newport->gll_next = NULL;
-			if (lastport == NULL)
-			    plist = newport;
-			else
-			    lastport->gll_next = newport;
-			snode->efnode_name->efnn_port = portorder++;
-		    }
+		    fprintf(esSpiceF, " %s",
+				nodeSpiceName(snode->efnode_name->efnn_hier));
+		    snode->efnode_name->efnn_port = portorder++;
 		}
-	    }
-	}
-	while (plist != NULL)
-	{
-	    fprintf(esSpiceF, " %s", plist->gll_name);
-	    freeMagic(plist);
-	    plist = plist->gll_next;
 	}
     }
     else
@@ -2639,7 +2619,7 @@ EFHNSprintf(str, hierName)
     char *str;
     HierName *hierName;
 {
-    bool trimGlob, trimLocal, convertComma;
+    bool trimGlob, trimLocal, convertComma, convertEqual;
     char *s, *cp, c;
     char *efHNSprintfPrefix(HierName *, char *);
 
@@ -2651,14 +2631,16 @@ EFHNSprintf(str, hierName)
 	trimGlob = (EFTrimFlags & EF_TRIMGLOB);
 	trimLocal = (EFTrimFlags & EF_TRIMLOCAL);
 	convertComma = (EFTrimFlags & EF_CONVERTCOMMAS);
+	convertEqual = (EFTrimFlags & EF_CONVERTEQUAL);
 	while (c = *cp++)
 	{
 	    switch (c)
 	    {
 		case '!':	if (!trimGlob) *str++ = c; break;
 		case '.':	*str++ = (esFormat == HSPICE)?'@':'.'; break;
-		case '#':	if (trimLocal) break;
+		case '=':	if (convertEqual) *str++ = ':'; break;
 		case ',':	if (convertComma) *str++ = ';'; break;
+		case '#':	if (trimLocal) break;	// else fall through
 		default:	*str++ = c; break;
 	    }
 	}
@@ -2673,13 +2655,22 @@ char *efHNSprintfPrefix(hierName, str)
     char *str;
 {
     char *cp, c;
+    bool convertEqual = (EFTrimFlags & EF_CONVERTEQUAL) ? TRUE : FALSE;
 
     if (hierName->hn_parent)
 	str = efHNSprintfPrefix(hierName->hn_parent, str);
 
     cp = hierName->hn_name;
-    while (*str++ = *cp++) ;
-    *(--str) = '/';
+    while (1) {
+	if (convertEqual && (*cp == '='))
+	   *str = ':';
+	else
+	   *str = *cp;
+	if (!(*str)) break;
+	str++;
+	cp++;
+    }
+    *str = '/';
     return ++str;
 }
 
