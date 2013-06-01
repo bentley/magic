@@ -631,7 +631,7 @@ runexttosim:
 	devMergeList = NULL;
     }
 
-    EFVisitDevs(simdevVisit, (ClientData) NULL);
+    EFVisitDevs(simdevVisit, (ClientData)NULL);
     if (flatFlags & EF_FLATCAPS) {
     	(void) sprintf( esCapFormat, " %%.%dlf\n", esCapAccuracy);
 	EFVisitCaps(simcapVisit, (ClientData) NULL);
@@ -990,14 +990,14 @@ HierName *suffix;
  */
 
 int
-simdevVisit(dev, hierName, trans)
+simdevVisit(dev, hierName, scale, trans)
     Dev *dev;		/* Device being output */
     HierName *hierName;	/* Hierarchical path down to this device */
-    Transform *trans;	/* Coordinate transform for output */
+    float scale;	/* Scale transform for output */
+    Transform *trans;	/* Coordinate transform */
 {
     DevTerm *gate, *source, *drain;
     EFNode  *subnode, *snode, *dnode;
-    int scale;
     int l, w;
     Rect r;
     char name[12];
@@ -1074,7 +1074,6 @@ simdevVisit(dev, hierName, trans)
     }
 
     GeoTransRect(trans, &dev->dev_rect, &r);
-    scale = GeoScale(trans);
 
     if (dev->dev_class == DEV_BJT || EFDevTypes[dev->dev_type][0] == 'b')
     {
@@ -1098,8 +1097,8 @@ simdevVisit(dev, hierName, trans)
 	cl = 0.5 * (chp + sqrt(chp * chp - 4 * ca));
 	cw = ca / cl;
 
-	fprintf(esSimF, " %d %d %d %d", (int)cl, (int)cw,
-		r.r_xbot, r.r_ybot);
+	fprintf(esSimF, " %d %d %g %g", (int)cl, (int)cw,
+		r.r_xbot * scale, r.r_ybot * scale);
     }
     else if (dev->dev_class == DEV_RES) {	/* generate a resistor */
        fprintf(esSimF, " %f", (double)(dev->dev_res));
@@ -1118,8 +1117,8 @@ simdevVisit(dev, hierName, trans)
         * factor at the beginning of the .sim file.
         */
 
-       fprintf(esSimF, " %d %d %d %d",
-		l*scale, w*scale, r.r_xbot, r.r_ybot);
+       fprintf(esSimF, " %g %g %g %g",
+		l * scale, w * scale, r.r_xbot * scale, r.r_ybot * scale);
 
        /* Attributes, if present */
        if (!esNoAttrs)
@@ -1537,7 +1536,7 @@ int simnodeVisit(node, res, cap)
  * ----------------------------------------------------------------------------
  */
 devMerge *simmkDevMerge(l, w, g, s, d, b, hn, dev)
-int     l, w;
+int   l, w;
 EFNode *g, *s, *d, *b;
 HierName *hn;
 Dev    *dev;
@@ -1631,17 +1630,17 @@ Dev    *dev;
  * ----------------------------------------------------------------------------
  */
 int
-simmergeVisit(dev, hierName, trans)
+simmergeVisit(dev, hierName, scale, trans)
 Dev *dev;		/* Dev to examine */
 HierName *hierName;	/* Hierarchical path down to this dev */
-Transform *trans;	/* Coordinate transform not used */
+float scale;		/* Scale transform */
+Transform *trans;	/* Coordinate transform (not used) */
 {
 	DevTerm *gate, *source, *drain;
 	Dev     *cf;
 	DevTerm *cg, *cs, *cd;
 	EFNode	*subnode, *snode, *dnode, *gnode;
-	int      scale, pmode, l, w;
-    	Rect	 r;
+	int      pmode, l, w;
 	float	 m;
 	devMerge *fp, *cfp;
 
@@ -1660,10 +1659,8 @@ Transform *trans;	/* Coordinate transform not used */
 	snode = SimGetNode (hierName, source->dterm_node->efnode_name->efnn_hier);
 	dnode = SimGetNode (hierName, drain->dterm_node->efnode_name->efnn_hier);
 
-    	GeoTransRect(trans, &dev->dev_rect, &r);
-    	scale = GeoScale(trans);
 	EFGetLengthAndWidth(dev, &l, &w);
-	fp = simmkDevMerge(l*scale, w*scale, gnode, snode, 
+	fp = simmkDevMerge((int)(l*scale), (int)(w*scale), gnode, snode, 
 			dnode, subnode, hierName, dev);
 
 	/*

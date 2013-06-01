@@ -238,10 +238,11 @@ EFGetLengthAndWidth(dev, lptr, wptr)
  * For each dev in the circuit, call the user-supplied procedure
  * (*devProc)(), which should be of the following form:
  *
- *	(*devProc)(dev, hierName, scale, l, w, cdata)
+ *	(*devProc)(dev, hierName, scale, cdata)
  *	    Dev *dev;
  *	    HierName *hierName;
  *	    float scale;
+ *	    Transform *trans;
  *	    ClientData cdata;
  *	{
  *	}
@@ -293,6 +294,7 @@ efVisitDevs(hc, ca)
     Def *def = hc->hc_use->use_def;
     Dev *dev;
     float scale;
+    Transform t;
 
     if (def->def_flags & DEF_SUBCIRCUIT) return 0;
 
@@ -301,6 +303,7 @@ efVisitDevs(hc, ca)
 	return 1;
 
     scale = (efScaleChanged && def->def_scale != 1.0) ? def->def_scale : 1.0;
+    t = hc->hc_trans;
   
     /* Visit our own devices */
     for (dev = def->def_devs; dev; dev = dev->dev_next)
@@ -308,7 +311,7 @@ efVisitDevs(hc, ca)
 	if (efDevKilled(dev, hc->hc_hierName))
 	    continue;
 
-	if ((*ca->ca_proc)(dev, hc->hc_hierName, scale, ca->ca_cdata))
+	if ((*ca->ca_proc)(dev, hc->hc_hierName, scale, &t, ca->ca_cdata))
 	    return 1;
     }
 

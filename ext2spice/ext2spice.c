@@ -1677,10 +1677,11 @@ esOutputResistor(dev, hierName, scale, term1, term2, has_model, l, w, dscale)
  */
 
 int
-spcdevVisit(dev, hierName, scale)
+spcdevVisit(dev, hierName, scale, trans)
     Dev *dev;		/* Dev being output */
     HierName *hierName;	/* Hierarchical path down to this dev */
     float scale;	/* Scale transform for output */
+    Transform *trans;	/* (unused) */
 {
     DevParam *plist, *pptr;
     DevTerm *gate, *source, *drain;
@@ -2981,10 +2982,11 @@ mergeAttr(a1, a2)
  */
 
 int
-devMergeVisit(dev, hierName, scale)
+devMergeVisit(dev, hierName, scale, trans)
     Dev *dev;			/* Dev to examine */
     HierName *hierName;		/* Hierarchical path down to this dev */
     float scale;		/* Scale transform */
+    Transform *trans;		/* (unused) */
 {
     DevTerm *gate, *source, *drain;
     Dev     *cf;
@@ -2996,7 +2998,7 @@ devMergeVisit(dev, hierName, scale)
     float m;
 
     if (esDistrJunct)
-	devDistJunctVisit(dev, hierName, scale);
+	devDistJunctVisit(dev, hierName, scale, trans);
 
     if (dev->dev_nterm < 2)
     {
@@ -3178,10 +3180,11 @@ update_w(resClass, w,  n)
  */
 
 int 
-devDistJunctVisit(dev, hierName, scale)
+devDistJunctVisit(dev, hierName, scale, trans)
     Dev *dev;			/* Dev to examine */
     HierName *hierName;		/* Hierarchical path down to this dev */
     float scale;		/* Scale transform */
+    Transform *trans;		/* (unused) */
 {
     EFNode  *n;
     int      i;
