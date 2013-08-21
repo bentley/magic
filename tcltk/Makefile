@@ -44,7 +44,7 @@ install-tcl: magicexec magicdnull ${BIN_FILES} ${TCL_FILES}
 	(cd $(DESTDIR)${TCLDIR}; chmod 0755 tkcon.tcl tkshell.tcl)
 
 magicexec: magicexec.c ${MAGICDIR}/defs.mak
-	${CC} ${CFLAGS} -pg ${CPPFLAGS} ${DFLAGS} ${LDFLAGS} magicexec.c \
+	${CC} ${CFLAGS} ${CPPFLAGS} ${DFLAGS} ${LDFLAGS} magicexec.c \
 		-o magicexec ${LD_RUN_PATH} ${LIBS} ${LIB_SPECS}
 
 magicdnull: magicdnull.c ${MAGICDIR}/defs.mak
