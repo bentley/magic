@@ -242,9 +242,26 @@ LefNextToken(f, ignore_eol)
 	curtoken = nexttoken;
 
     /* Find the next token; set to NULL if none (end-of-line). */
+    /* Treat quoted material as a single token. */
 
-    while (!isspace(*nexttoken) && (*nexttoken != '\0') && (*nexttoken != '\n'))
-	nexttoken++;	/* skip non-whitespace (move past current token) */
+    if (*nexttoken == '\"') {
+	nexttoken++;
+	while (((*nexttoken != '\"') || (*(nexttoken - 1) == '\\')) &&
+		(*nexttoken != '\0')) {
+	    if (*nexttoken == '\n') {
+		if (fgets(nexttoken + 1, LEF_LINE_MAX -
+				(size_t)(nexttoken - line), f) == NULL)
+		    return NULL;
+	    }
+	    nexttoken++;
+	}
+	if (*nexttoken == '\"')
+	    nexttoken++;
+    }
+    else {
+	while (!isspace(*nexttoken) && (*nexttoken != '\0') && (*nexttoken != '\n'))
+	    nexttoken++;	/* skip non-whitespace (move past current token) */
+    }
 
     /* Terminate the current token */
     if (*nexttoken != '\0') *nexttoken++ = '\0';
