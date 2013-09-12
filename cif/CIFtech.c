@@ -1918,6 +1918,12 @@ CIFLoadStyle(stylename)
  *   to the "squares" function operating on the indicated type.  This value
  *   is computed as the (cut size) + 2 * (cut border).
  *
+ *   9/12/2013:  Added "squares-grid" and "slots" to the functions understood
+ *   by the routine.  "squares-grid" behaves the same as "squares".  "slots"
+ *   can be used for contact cuts with differing metal overlap on different
+ *   sides.  Normally this would define a square slot;  this routine finds
+ *   the minimum cut size for the slot.
+ *
  * Results:
  *	Contact minimum dimension, in CIF/GDS units
  *
@@ -1939,6 +1945,7 @@ CIFGetContactSize(type, edge, spacing, border)
     CIFOp *op, *sop;
     int i;
     SquaresData *squares;
+    SlotsData *slots;
 
     if (style == NULL)
     {
@@ -1954,7 +1961,8 @@ CIFGetContactSize(type, edge, spacing, border)
 	    if (TTMaskHasType(&op->co_paintMask, type))
 		for (sop = op->co_next; sop != NULL; sop = sop->co_next)
 		{
-		    if (sop->co_opcode == CIFOP_SQUARES)
+		    if (sop->co_opcode == CIFOP_SQUARES ||
+				sop->co_opcode == CIFOP_SQUARES_G)
 		    {
 			squares = (SquaresData *)sop->co_client;
 			if (edge != NULL) *edge = squares->sq_size;
@@ -1962,6 +1970,15 @@ CIFGetContactSize(type, edge, spacing, border)
 			if (spacing != NULL) *spacing = squares->sq_sep;
 			return (squares->sq_size + (squares->sq_border << 1));
 		    }
+		    else if (sop->co_opcode == CIFOP_SLOTS)
+		    {
+			slots = (SlotsData *)sop->co_client;
+			if (edge != NULL) *edge = slots->sl_ssize;
+			if (border != NULL) *border = slots->sl_sborder;
+			if (spacing != NULL) *spacing = slots->sl_ssep;
+			return (slots->sl_ssize + (slots->sl_sborder << 1));
+		    }
+
 		    /* Anything other than an OR function will break	*/
 		    /* the relationship between magic layers and cuts.	*/
 		    else if (sop->co_opcode != CIFOP_OR)
