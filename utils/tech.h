@@ -33,8 +33,8 @@ typedef int SectionID;		/* Mask set by TechAddClient */
 
 #define TECH_NOT_LOADED	0
 #define TECH_LOADED	1
-#define TECH_PENDING   -1
-#define TECH_SUSPENDED -2
+#define TECH_PENDING   ((char)-1)
+#define TECH_SUSPENDED ((char)-2)
 
 /* The last format version which was included in the file name */
 #define TECH_FORMAT_VERSION 27
