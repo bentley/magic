@@ -1506,6 +1506,7 @@ ExtTechLine(sectionName, argc, argv)
     ExtKeep *es, *newStyle;
     ParamList *subcktParams, *newParam;
     int refcnt;
+    double dhalo;
     bool bad;
 
     if (argc < 1)
@@ -2398,7 +2399,14 @@ ExtTechLine(sectionName, argc, argv)
 	case SIDEHALO:
 	    /* Allow floating-point and increase by factor of 1000	*/
 	    /* to accomodate "units microns".				*/
-	    ExtCurStyle->exts_sideCoupleHalo = (int)(1000 * (float)atof(argv[1]));
+
+	    /* Warning:  Due to some gcc bug with an i686 FPU, using a	*/
+	    /* result from atof() with a static value like 1000		*/
+	    /* produces a NaN result!  sscanf() seems to be safe. . .	*/
+
+	    sscanf(argv[1], "%lg", &dhalo);
+	    dhalo *= (double)1000.0;
+	    ExtCurStyle->exts_sideCoupleHalo = (int)dhalo;
 	    break;
 	case PERIMC:
 	    DBTechNoisyNameMask(argv[2], &types2);
