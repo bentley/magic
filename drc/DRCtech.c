@@ -872,7 +872,7 @@ DRCTechLine(sectionName, argc, argv)
 void
 drcAssign(cookie, dist, next, mask, corner, why, cdist, flags, planeto, planefrom)
     DRCCookie *cookie, *next;
-    short dist, cdist;
+    int dist, cdist;
     TileTypeBitMask *mask, *corner;
     char *why;
     int flags, planeto, planefrom;
