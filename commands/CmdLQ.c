@@ -1042,8 +1042,9 @@ CmdPolygon(w, cmd)
 #define PORT_EQUIV	3
 #define PORT_CONNECT	4
 #define PORT_MAKE	5
-#define PORT_REMOVE	6
-#define PORT_HELP	7
+#define PORT_MAKEALL	6
+#define PORT_REMOVE	7
+#define PORT_HELP	8
 
 void
 CmdPort(w, cmd)
@@ -1067,6 +1068,7 @@ CmdPort(w, cmd)
 	"equivalent [number]	make port equivalent to another port",
 	"connections [dir...]	get [set] port connection directions",
 	"make [index] [dir...]	turn a label into a port",
+	"makeall [index] [dir]	turn all labels into ports",
 	"remove			turn a port back into a label",
 	"help			print this help information",
 	NULL
@@ -1163,6 +1165,7 @@ CmdPort(w, cmd)
 	    }
 	    lab = sl;
 	    found = TRUE;
+	    if (option == PORT_MAKEALL) break;	// Found at least one
 	}
     }
     if (found == FALSE)
@@ -1174,7 +1177,7 @@ CmdPort(w, cmd)
     posstart = 1;
     if (option >= 0)
     {
-	if (option != PORT_MAKE)
+	if ((option != PORT_MAKE) && (option != PORT_MAKEALL))
 	{
 	    /* label "lab" must already be a port */
 	    if (!(lab->lab_flags & PORT_DIR_MASK))
@@ -1320,6 +1323,10 @@ CmdPort(w, cmd)
 		editDef->cd_flags |= (CDMODIFIED | CDGETNEWSTAMP);
 		break;
 
+	    case PORT_MAKEALL:
+		lab = editDef->cd_labels;
+		// Fall through. . .
+
 	    case PORT_MAKE:
 		posstart = 2;
 		goto parseindex;
@@ -1340,128 +1347,155 @@ portWrongNumArgs:
     
 parseindex:
 
-    /* For this syntax, the label must not already be a port */
-    if ((lab->lab_flags & PORT_DIR_MASK))
-    {
-	TxError("The selected label is already a port.\n");
-	TxError("Do \"port help\" to get a list of options.\n");
-	return;
-    }
+    while (1) {
 
-    if ((cmd->tx_argc > posstart) && StrIsInt(cmd->tx_argv[posstart]))
-    {
-	idx = atoi(cmd->tx_argv[posstart]);
-	for (sl = editDef->cd_labels; sl != NULL; sl = sl->lab_next)
+	/* For this syntax, the label must not already be a port */
+	if (lab->lab_flags & PORT_DIR_MASK)
 	{
-	    if (sl == lab) continue;	/* don't consider self */
-	    if (sl->lab_flags & PORT_DIR_MASK)
+	    TxError("The selected label is already a port.\n");
+	    TxError("Do \"port help\" to get a list of options.\n");
+	    return;
+	}
+
+	if ((cmd->tx_argc > posstart) && StrIsInt(cmd->tx_argv[posstart]))
+	{
+	    idx = atoi(cmd->tx_argv[posstart]);
+	    for (sl = editDef->cd_labels; sl != NULL; sl = sl->lab_next)
 	    {
-		if ((sl->lab_flags & PORT_NUM_MASK) == idx)
+		if (sl == lab) continue;	/* don't consider self */
+		if (sl->lab_flags & PORT_DIR_MASK)
 		{
-		    TxError("Port index %d is already used by port %s.\n"
+		    if ((sl->lab_flags & PORT_NUM_MASK) == idx)
+		    {
+			TxError("Port index %d is already used by port %s.\n"
 				"Use command \"port index %d\" to force "
 				"equivalence after defining the port.\n",
 				idx, sl->lab_text, idx);
-		    return;
+			return;
+		    }
 		}
 	    }
+	    posstart++;
 	}
-	posstart++;
-    }
-    else
-    {
-	idx = 0;
-	for (sl = editDef->cd_labels; sl != NULL; sl = sl->lab_next)
+	else
 	{
-	    if (sl == lab) continue;	/* don't consider self */
-	    if (sl->lab_flags & PORT_DIR_MASK)
-		if ((sl->lab_flags & PORT_NUM_MASK) > idx)
-		    idx = (sl->lab_flags & PORT_NUM_MASK);
+	    idx = 0;
+	    for (sl = editDef->cd_labels; sl != NULL; sl = sl->lab_next)
+	    {
+		if (sl == lab) continue;	/* don't consider self */
+		if (sl->lab_flags & PORT_DIR_MASK)
+		{
+		    // If there is another, identical label that is already
+		    // declared a port, then use its index.
+		    if (!strcmp(sl->lab_text, lab->lab_text))
+		    {
+			idx = (sl->lab_flags & PORT_NUM_MASK) - 1;
+			break;
+		    }
+		    else if ((sl->lab_flags & PORT_NUM_MASK) > idx)
+			idx = (sl->lab_flags & PORT_NUM_MASK); 
+		}
+	    }
+	    idx++;
 	}
-	idx++;
-    }
 
-    lab->lab_flags &= ~PORT_NUM_MASK;
-    lab->lab_flags |= idx;
+	lab->lab_flags &= ~PORT_NUM_MASK;
+	lab->lab_flags |= idx;
 
-    /*
-     * Find positions.
-     */
+	/*
+	 * Find positions.
+	 */
 
 parsepositions:
 
-    dirmask = 0;
-    if (cmd->tx_argc == posstart)
-    {
-	/* Get position from label */
-
-	pos = lab->lab_just;
-        switch (pos)
+	dirmask = 0;
+	if (cmd->tx_argc == posstart)
 	{
-	    case GEO_NORTH:
-		dirmask = PORT_DIR_NORTH;
-		break;
-	    case GEO_SOUTH:
-		dirmask = PORT_DIR_SOUTH;
-		break;
-	    case GEO_EAST:
-		dirmask = PORT_DIR_EAST;
-		break;
-	    case GEO_WEST:
-		dirmask = PORT_DIR_WEST;
-		break;
-	    case GEO_NORTHEAST:
-		dirmask = PORT_DIR_NORTH | PORT_DIR_EAST;
-		break;
-	    case GEO_NORTHWEST:
-		dirmask = PORT_DIR_NORTH | PORT_DIR_WEST;
-		break;
-	    case GEO_SOUTHEAST:
-		dirmask = PORT_DIR_SOUTH | PORT_DIR_EAST;
-		break;
-	    case GEO_SOUTHWEST:
-		dirmask = PORT_DIR_SOUTH | PORT_DIR_WEST;
-		break;
-	    case GEO_CENTER:
-		dirmask = PORT_DIR_MASK;
-		break;
-	}
-    }
-    else
-    {
-	/* Parse one or more positions */
+	    /* Get position from label */
 
-	for (i = posstart; i < cmd->tx_argc; i++)
-	{
-	    pos = GeoNameToPos(cmd->tx_argv[i], TRUE, TRUE);
-	    if (pos < 0)
-		return;
-            pos = GeoTransPos(&RootToEditTransform, pos);
-	    switch (pos)
+	    pos = lab->lab_just;
+            switch (pos)
 	    {
 		case GEO_NORTH:
-		    dirmask |= PORT_DIR_NORTH;
+		    dirmask = PORT_DIR_NORTH;
 		    break;
 		case GEO_SOUTH:
-		    dirmask |= PORT_DIR_SOUTH;
+		    dirmask = PORT_DIR_SOUTH;
 		    break;
 		case GEO_EAST:
-		    dirmask |= PORT_DIR_EAST;
+		    dirmask = PORT_DIR_EAST;
 		    break;
 		case GEO_WEST:
-		    dirmask |= PORT_DIR_WEST;
+		    dirmask = PORT_DIR_WEST;
+		    break;
+		case GEO_NORTHEAST:
+		    dirmask = PORT_DIR_NORTH | PORT_DIR_EAST;
+		    break;
+		case GEO_NORTHWEST:
+		    dirmask = PORT_DIR_NORTH | PORT_DIR_WEST;
+		    break;
+		case GEO_SOUTHEAST:
+		    dirmask = PORT_DIR_SOUTH | PORT_DIR_EAST;
+		    break;
+		case GEO_SOUTHWEST:
+		    dirmask = PORT_DIR_SOUTH | PORT_DIR_WEST;
+		    break;
+		case GEO_CENTER:
+		    dirmask = PORT_DIR_MASK;
 		    break;
 	    }
 	}
+	else
+	{
+	    /* Parse one or more positions */
+
+	    for (i = posstart; i < cmd->tx_argc; i++)
+	    {
+		pos = GeoNameToPos(cmd->tx_argv[i], TRUE, TRUE);
+		if (pos < 0)
+		    return;
+        	pos = GeoTransPos(&RootToEditTransform, pos);
+		switch (pos)
+		{
+		    case GEO_NORTH:
+			dirmask |= PORT_DIR_NORTH;
+			break;
+		    case GEO_SOUTH:
+			dirmask |= PORT_DIR_SOUTH;
+			break;
+		    case GEO_EAST:
+			dirmask |= PORT_DIR_EAST;
+			break;
+		    case GEO_WEST:
+			dirmask |= PORT_DIR_WEST;
+			break;
+		}
+	    }
+	}
+
+	lab->lab_flags &= ~PORT_DIR_MASK;
+	lab->lab_flags |= dirmask;
+
+	tmpArea = lab->lab_rect;
+	lab->lab_rect = editBox;
+	DBWLabelChanged(editDef, lab, DBW_ALLWINDOWS);
+	lab->lab_rect = tmpArea;
+
+	if (option == PORT_MAKEALL)
+	{
+	    /* Get the next valid label, skipping any that are not	*/
+	    /* inside the edit box or are already marked as ports.	*/
+
+	    lab = lab->lab_next;
+	    while ((lab != NULL) && (!GEO_OVERLAP(&editBox, &lab->lab_rect)
+			|| (lab->lab_flags & PORT_DIR_MASK)))
+		lab = lab->lab_next;
+
+	    if (lab == NULL) break;
+	}
+	else
+	    break;
     }
-
-    lab->lab_flags &= ~PORT_DIR_MASK;
-    lab->lab_flags |= dirmask;
-
-    tmpArea = lab->lab_rect;
-    lab->lab_rect = editBox;
-    DBWLabelChanged(editDef, lab, DBW_ALLWINDOWS);
-    lab->lab_rect = tmpArea;
     editDef->cd_flags |= (CDMODIFIED | CDGETNEWSTAMP);
 }
 

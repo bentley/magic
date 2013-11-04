@@ -195,9 +195,13 @@ lefWriteHeader(def, f)
 
 		/* Ignore obstruction-only layers */
 		if (lefl->type == -1) continue;	
+
 		/* Ignore VIA types, report only CUT types here */
 		else if ((lefl->lefClass == CLASS_VIA)
 			&& lefl->info.via.cell != NULL) continue;
+
+		/* Ignore boundary types */
+		else if (lefl->lefClass == CLASS_BOUND) continue;
 
 		fprintf(f, "LAYER %s\n", lefl->canonName);
 		if (lefl->lefClass == CLASS_VIA)
@@ -264,6 +268,7 @@ typedef struct
     TileType	*lastType;	/* last type output, so we minimize LAYER
 				 * statements.
 				 */
+    LefMapping  *lefMagicMap;	/* Layer inverse mapping table */
     TileTypeBitMask rmask;	/* mask of routing layer types */
     Point	origin;		/* origin of cell */
     float	oscale;		/* units scale conversion factor */
@@ -277,6 +282,31 @@ typedef struct
 				 * whole tile.
 				 */
 } lefClient;
+
+/*
+ * ----------------------------------------------------------------------------
+ *
+ * Callback function to find the cell boundary based on the specified
+ * boundary layer type.  Typically this will be a single rectangle on
+ * its own plane, but for completeness, all geometry in the cell is
+ * checked, and the bounding rectangle adjusted to fit that area.
+ *
+ * Return 0 to keep the search going.
+ * ----------------------------------------------------------------------------
+ */
+
+int
+lefGetBound(tile, cdata)
+    Tile *tile;
+    ClientData cdata;
+{
+    Rect *boundary = (Rect *)cdata;
+    Rect area;
+
+    TiToRect(tile, &area);
+    GeoInclude(&area, boundary);
+    return 0;
+}
 
 /*
  * ----------------------------------------------------------------------------
@@ -300,6 +330,7 @@ lefWriteGeometry(tile, cdata)
     FILE *f = lefdata->file;
     float scale = lefdata->oscale;
     TileType ttype;
+    LefMapping *lefMagicToLefLayer;
 
     /* To enumerate obstructions, we search all tiles in the	*/
     /* cell, and ignore all of those which were electrically	*/
@@ -326,26 +357,18 @@ lefWriteGeometry(tile, cdata)
     /* Output geometry only for defined routing layers */
     if (!TTMaskHasType(&lefdata->rmask, ttype)) return 0;
 
+    lefMagicToLefLayer = lefdata->lefMagicMap;
     if (ttype != *(lefdata->lastType))
     {
-	/* This is a temporary hack---avoid printing the image	*/
-	/* plane designation for contact types.  Preferably,	*/
-	/* the type names for LEF routing layers should be	*/
-	/* spelled out in the tech file, or at least in the	*/
-	/* LEF file header.					*/
-
-	char layername[100], *slashptr;
-
-	sprintf(layername, "%.99s", DBTypeLongName(ttype));
-	if ((slashptr = strchr(layername, '/')) != NULL) *slashptr = '\0';
-
-	fprintf(f, "         LAYER %s ;\n", layername);
-
+	if (lefMagicToLefLayer[ttype].lefInfo != NULL)
+	    fprintf(f, "         LAYER %s ;\n",
+				lefMagicToLefLayer[ttype].lefName);
 	*(lefdata->lastType) = ttype;
     }
 
-    if (!IsSplit(tile))
-	fprintf(f, "	    RECT %.4f %.4f %.4f %.4f ;\n",
+    if (lefMagicToLefLayer[ttype].lefInfo != NULL)
+	if (!IsSplit(tile))
+	    fprintf(f, "	    RECT %.4f %.4f %.4f %.4f ;\n",
 			scale * (float)(LEFT(tile) - lefdata->origin.p_x),
 			scale * (float)(BOTTOM(tile) - lefdata->origin.p_y),
 			scale * (float)(RIGHT(tile) - lefdata->origin.p_x),
@@ -446,7 +469,8 @@ lefWriteMacro(def, f, scale)
     bool propfound;
     char *propvalue, *class = NULL;
     Label *lab, *clab;
-    TileTypeBitMask lmask;
+    Rect boundary;
+    TileTypeBitMask lmask, boundmask;
     TileType ttype;
     lefClient lc;
     int idx, pNum;
@@ -463,16 +487,18 @@ lefWriteMacro(def, f, scale)
     lc.file = f;
     lc.lastType = &ttype;
     lc.oscale = scale;
+    lc.lefMagicMap = defMakeInverseLayerMap();
 
     TxPrintf("Diagnostic:  Scale value is %f\n", lc.oscale);
 
     /* Which layers are routing layers are defined in the tech file.	*/
 
     TTMaskZero(&lc.rmask);
+    TTMaskZero(&boundmask);
     HashStartSearch(&hs);
     while (he = HashNext(&LefInfo, &hs))
     {
-	TileTypeBitMask *lmask;
+	TileTypeBitMask *lrmask;
 	lefLayer *lefl = (lefLayer *)HashGetValue(he);
 	if (lefl && (lefl->lefClass == CLASS_ROUTE || lefl->lefClass == CLASS_VIA))
 	    if (lefl->type != -1)
@@ -480,10 +506,14 @@ lefWriteMacro(def, f, scale)
 		TTMaskSetType(&lc.rmask, lefl->type);
 		if (DBIsContact(lefl->type))
 		{
-		    lmask = DBResidueMask(lefl->type);
-		    TTMaskSetMask(&lc.rmask, lmask);
+		    lrmask = DBResidueMask(lefl->type);
+		    TTMaskSetMask(&lc.rmask, lrmask);
 		}
 	    }
+
+	if (lefl && (lefl->lefClass == CLASS_BOUND))
+	    if (lefl->type != -1)
+		TTMaskSetType(&boundmask, lefl->type);
     }
 
     /* Any layer which has a port label attached to it should by	*/
@@ -520,19 +550,36 @@ lefWriteMacro(def, f, scale)
 
     fprintf(f, "   FOREIGN %s ;\n", def->cd_name);
 
+    /* If a boundary class was declared in the LEF section, then use	*/
+    /* that layer type to define the boundary.  Otherwise, the cell	*/
+    /* boundary is defined by the magic database.  If the boundary	*/
+    /* class is used, and the boundary layer corner is not on the	*/
+    /* origin, then shift all geometry by the difference.		*/
+
+    if (!TTMaskIsZero(&boundmask))
+    {
+	for (pNum = PL_PAINTBASE; pNum < DBNumPlanes; pNum++)
+	    DBSrPaintArea((Tile *)NULL, def->cd_planes[pNum], 
+			&TiPlaneRect, &boundmask, lefGetBound,
+			(ClientData)(&boundary));
+    }
+    else
+	boundary = def->cd_bbox;
+
     /* Apparently ORIGIN is not reliable!  Assume origin must be (0,0)	*/
     /* and adjust all geometry instead of adjusting the origin.		*/
 
 /*
     fprintf(f, "   ORIGIN %.4f %.4f ;\n",
-		lc.oscale * (float)def->cd_bbox.r_xbot,
-		lc.oscale * (float)def->cd_bbox.r_ybot);
+		lc.oscale * (float)boundary.r_xbot,
+		lc.oscale * (float)boundary.r_ybot);
 */
-    lc.origin = def->cd_bbox.r_ll;
+    fprintf(f, "   ORIGIN 0.00 0.00 ;\n");
+    lc.origin = boundary.r_ll;
 
     fprintf(f, "   SIZE %.4f BY %.4f ;\n",
-		lc.oscale * (float)(def->cd_bbox.r_xtop - def->cd_bbox.r_xbot),
-		lc.oscale * (float)(def->cd_bbox.r_ytop - def->cd_bbox.r_ybot));
+		lc.oscale * (float)(boundary.r_xtop - boundary.r_xbot),
+		lc.oscale * (float)(boundary.r_ytop - boundary.r_ybot));
 
     propvalue = (char *)DBPropGet(def, "LEFsymmetry", &propfound);
     if (propfound)
@@ -673,6 +720,7 @@ lefWriteMacro(def, f, scale)
 
     fprintf(f, "END %s\n", def->cd_name);	/* end of macro */
 
+    freeMagic(lc.lefMagicMap);
     UndoEnable();
 }
 

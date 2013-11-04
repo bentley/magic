@@ -82,7 +82,8 @@ typedef struct {
 #define CLASS_VIA	1	/* via or cut layer */
 #define CLASS_MASTER	2	/* masterslice layer */
 #define CLASS_OVERLAP	3	/* overlap layer */
-#define CLASS_IGNORE	4	/* inactive layer */
+#define CLASS_BOUND	4	/* boundary-defining layer */
+#define CLASS_IGNORE	5	/* inactive layer */
 
 /* Structure defining a route or via layer and matching it to a magic	*/
 /* layer type.  This structure is saved in the LefInfo hash table.	*/

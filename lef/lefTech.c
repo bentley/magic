@@ -186,7 +186,8 @@ lefRemoveGeneratedVias()
 #define LEFTECH_CUT	5
 #define LEFTECH_CONTACT	6
 #define LEFTECH_OVERLAP 7
-#define LEFTECH_IGNORE	8
+#define LEFTECH_BOUND	8
+#define LEFTECH_IGNORE	9
 
 bool
 LefTechLine(sectionName, argc, argv)
@@ -202,7 +203,7 @@ LefTechLine(sectionName, argc, argv)
     int i, option;
     static char *keywords[] = {
 	"obstruction", "layer", "route", "routing", "masterslice",
-	"cut", "contact", "overlap", "ignore", NULL
+	"cut", "contact", "overlap", "bound", "ignore", NULL
     };
 
     option = Lookup(argv[0], keywords);
@@ -340,6 +341,9 @@ LefTechLine(sectionName, argc, argv)
 			    newlefl->info.route.spacing = DEFAULT_SPACING;
 			newlefl->info.route.pitch = 0;
 			newlefl->info.route.hdirection = TRUE;
+			break;
+		    case LEFTECH_BOUND:
+			newlefl->lefClass = CLASS_BOUND;
 			break;
 		    case LEFTECH_MASTER:
 			newlefl->lefClass = CLASS_MASTER;
