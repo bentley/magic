@@ -239,7 +239,7 @@ lefWriteHeader(def, f)
 		{
 		    fprintf(f, "   TYPE OVERLAP ;\n");
 		}
-		fprintf(f, "END %s ;\n\n", lefl->canonName);
+		fprintf(f, "END %s\n\n", lefl->canonName);
 	    }
 	}
 
