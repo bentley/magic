@@ -790,7 +790,7 @@ defNetGeometryFunc(tile, plane, defdata)
     int routeWidth, w, h, midlinex2;
     float x1, y1, x2, y2, extlen;
     lefLayer *lefType;
-    char *lefName, viaName[20];
+    char *lefName, viaName[24];
     LefMapping *MagicToLefTable = defdata->MagicToLefTbl;
 
     TiToRect(tile, &r);
@@ -1099,7 +1099,7 @@ defNetGeometryFunc(tile, plane, defdata)
 	    }
 
 	    /* Via type continues route */
-	    sprintf(viaName, "_%.10g_%.10g",
+	    snprintf(viaName, (size_t)24, "_%.10g_%.10g",
 			((float)w * oscale), ((float)h * oscale));
 	    defCheckForBreak(strlen(lefName) + strlen(viaName) + 2, defdata);
 	    fprintf(f, " %s%s ", lefName, viaName);
@@ -1149,7 +1149,7 @@ defNetGeometryFunc(tile, plane, defdata)
 		if (defdata->specialmode != DO_REGULAR)
 		    defWriteRouteWidth(defdata, routeWidth);
 		defWriteCoord(defdata, x1, y1, GEO_CENTER);
-		sprintf(viaName, "_%.10g_%.10g",
+		snprintf(viaName, (size_t)24, "_%.10g_%.10g",
 			((float)w * oscale), ((float)h * oscale));
 	        defCheckForBreak(strlen(lefName) + strlen(viaName) + 2, defdata);
 		fprintf(f, " %s%s ", lefName, viaName);
