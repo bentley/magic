@@ -112,7 +112,7 @@ efSymAddFile(name)
 	if (!efSymAdd(line))
 	    TxError("Error at line %d of %s\n", lineNum, name);
     }
-
+    fclose(f);
     return TRUE;
 }
 

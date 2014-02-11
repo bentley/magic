@@ -1804,7 +1804,7 @@ dbReadLabels(cellDef, line, len, f, scalen, scaled)
 	}
 	else	/* deprecated, retained for backward compatibility */
 	{
-	    if (sscanf(line, "label %1023s %d %d %d %99[^\n]",
+	    if (sscanf(line, "label %49s %d %d %d %99[^\n]",
 		    layername, &r.r_xbot, &r.r_ybot, &orient, text) != 5)
 	    {
 		TxError("Skipping bad \"label\" line: %s", line);

@@ -251,6 +251,7 @@ gcrDumpChannel(ch)
 	fprintf(fp, "%4d", gcrNetName(netNames, &netCount, net));
     }
     fprintf(fp, "\n");
+    fclose(fp);
 }
 
 int
