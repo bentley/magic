@@ -111,6 +111,43 @@ int	 esSpiceDevsMerged;
 
 devMerge *devMergeList = NULL ;
 
+/*
+ * ----------------------------------------------------------------------------
+ *
+ * Apply modifications to a global node name and output to file "outf"
+ *
+ * Results:
+ *	None.
+ *
+ * Side effects:
+ *	Output to file
+ * ----------------------------------------------------------------------------
+ */
+
+void
+esFormatSubs(outf, suf)
+    FILE *outf;
+    char *suf;
+{
+    char *specchar;
+    int l;
+
+    if (outf)
+    {
+	l = strlen(suf) - 1;
+	if ((EFTrimFlags & EF_TRIMGLOB ) && suf[l] == '!' ||
+	         (EFTrimFlags & EF_TRIMLOCAL) && suf[l] == '#')
+	    suf[l] = '\0' ;
+	if (EFTrimFlags & EF_CONVERTCOMMAS)
+	    while ((specchar = strchr(suf, ',')) != NULL)
+		*specchar = ';';
+	if (EFTrimFlags & EF_CONVERTEQUAL)
+	    while ((specchar = strchr(suf, '=')) != NULL)
+		*specchar = ':';
+	fprintf(outf, "%s", suf);
+    }
+}
+
 #ifdef MAGIC_WRAPPER
 
 #ifdef EXT2SPICE_AUTO
@@ -149,43 +186,6 @@ Exttospice_Init(interp)
     return TCL_OK;
 }
 #endif /* EXT2SPICE_AUTO */
-
-/*
- * ----------------------------------------------------------------------------
- *
- * Apply modifications to a global node name and output to file "outf"
- *
- * Results:
- *	None.
- *
- * Side effects:
- *	Output to file
- * ----------------------------------------------------------------------------
- */
-
-void
-esFormatSubs(outf, suf)
-    FILE *outf;
-    char *suf;
-{
-    char *specchar;
-    int l;
-
-    if (outf)
-    {
-	l = strlen(suf) - 1;
-	if ((EFTrimFlags & EF_TRIMGLOB ) && suf[l] == '!' ||
-	         (EFTrimFlags & EF_TRIMLOCAL) && suf[l] == '#')
-	    suf[l] = '\0' ;
-	if (EFTrimFlags & EF_CONVERTCOMMAS)
-	    while ((specchar = strchr(suf, ',')) != NULL)
-		*specchar = ';';
-	if (EFTrimFlags & EF_CONVERTEQUAL)
-	    while ((specchar = strchr(suf, '=')) != NULL)
-		*specchar = ':';
-	fprintf(outf, "%s", suf);
-    }
-}
 
 /*
  * ----------------------------------------------------------------------------

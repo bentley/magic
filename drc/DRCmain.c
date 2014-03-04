@@ -268,7 +268,7 @@ drcListallError (celldef, rect, cptr, area)
 
 #else
 
-#define drcListError(a,b,c,d) drcPrintError(a,b,c,d)
+#define drcListError drcPrintError
 
 #endif
 
