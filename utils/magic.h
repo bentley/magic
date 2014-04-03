@@ -272,18 +272,6 @@ extern char AbortMessage[];
 # define	FANCY_ABORT
 #endif
 
-/* 
- * Sprintf is a "char *" under BSD, and an "int" under System V. 
- */
-
-#ifndef  __STDC__
-#ifndef	SYSV
-#if !defined(ALPHA) && !defined(__APPLE__)
-    extern char* sprintf();
-#endif
-#endif
-#endif
-
 /*
  * Linux
  */
