@@ -402,7 +402,7 @@ nmwNetTermFunc(scx, label, tpath, netPtr)
 {
     char *p, *p2;
     
-    if (index(tpath->tp_first, '/') == 0) return 0;
+    if (strchr(tpath->tp_first, '/') == 0) return 0;
 
     /* Add the label name onto the end of the terminal path name. */
 

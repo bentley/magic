@@ -221,7 +221,7 @@ DBSrLabelLoc(rootUse, name, func, cdarg)
     char csave;
     Rect r;
 
-    if (cp = rindex(name, '/'))
+    if (cp = strrchr(name, '/'))
     {
 	csave = *cp;
 	*cp = '\0';

@@ -167,7 +167,7 @@ CmdCalma(w, cmd)
 
 	    if (cmd->tx_argc == 1)
 	    {
-		namep = rindex(rootDef->cd_name, '/');
+		namep = strrchr(rootDef->cd_name, '/');
 		if (namep == (char *) NULL)
 		    namep = rootDef->cd_name;
 		goto outputCalma;
@@ -976,7 +976,7 @@ CmdCif(w, cmd)
 
 	    if (argc == 1)
 	    {
-		namep = rindex(rootDef->cd_name, '/');
+		namep = strrchr(rootDef->cd_name, '/');
 		if (namep == (char *) NULL)
 		    namep = rootDef->cd_name;
 		goto outputCIF;

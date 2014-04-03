@@ -186,7 +186,7 @@ ResWriteECLFile(filename,reslist,nodelist)
      int	nodenum = 0;
 
      strcpy(newname,filename);
-     if (per = rindex(newname,'.')) *per = '\0';
+     if (per = strrchr(newname,'.')) *per = '\0';
      strcat(newname,".res");
      
      if ((fp = fopen(newname,"w")) == NULL)

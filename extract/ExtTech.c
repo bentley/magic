@@ -1783,7 +1783,7 @@ ExtTechLine(sectionName, argc, argv)
 	    nterm = atoi(argv[3]);
 	    transName = argv[4];
 	    subsName = argv[5];
-	    cp = index(subsName, '!');
+	    cp = strchr(subsName, '!');
 	    if (cp == NULL || cp[1] != '\0')
 	    {
 		TechError("Fet substrate node %s is not a global name\n",
@@ -2284,7 +2284,7 @@ ExtTechLine(sectionName, argc, argv)
 	    /* specified.						     */
 	    if (TTMaskHasType(&ov, TT_SPACE))
 	    {
-	    	if ((cp = index(argv[3],'/')) == NULL)
+	    	if ((cp = strchr(argv[3],'/')) == NULL)
 		{
 		    TechError("Must specify plane for sideoverlap to space\n");
 		}

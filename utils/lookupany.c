@@ -18,10 +18,6 @@
  * table which contains the supplied character.
  */
 
-#ifdef SYSV
-#define index strchr
-#endif
-
 
 /*
  * ----------------------------------------------------------------------------
@@ -48,10 +44,10 @@ LookupAny(c, table)
     char **table;
 {
     char **tp;
-    char *index();
+    char *strchr();
 
     for (tp = table; *tp; tp++)
-	if (index(*tp, c) != (char *) 0)
+	if (strchr(*tp, c) != (char *) 0)
 	    return (tp - table);
 
     return (-1);

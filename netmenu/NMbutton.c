@@ -149,7 +149,7 @@ nmButtonSetup()
 	return NULL;
     }
 
-    if(index(termName, '/')==0)
+    if(strchr(termName, '/')==0)
     {
 	TxPrintf("You can't route to a terminal in the Edit cell!");
 	TxPrintf("  Please select one in a subcell.\n");

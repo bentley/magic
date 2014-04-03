@@ -173,7 +173,7 @@ extMakeUnique(def, ll, lreg, lregList, labelHash, allNames)
      */
     text = ll->ll_label->lab_text;
     if (allNames) goto makeUnique;
-    cpend = index(text, '\0');
+    cpend = strchr(text, '\0');
     if (cpend > text) cpend--;
     if (*cpend == '#') goto makeUnique;
     if (*cpend == '!')

@@ -392,7 +392,7 @@ TxUseMore()
 	char *argv[100];
 	close(pipeEnds[1]);
 	dup2(pipeEnds[0], 0);
-	if ((pagername = rindex(pagerpath, '/')) != (char *) 0) 
+	if ((pagername = strrchr(pagerpath, '/')) != (char *) 0) 
 	    pagername++;
 	else
 	    pagername = pagerpath;

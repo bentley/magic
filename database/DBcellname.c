@@ -1664,7 +1664,7 @@ DBLinkCell(use, parentDef)
      * terminal naming conventions).  If the cellName has a slash,
      * just use the part of it after the last slash.
      */
-    lastName = rindex(use->cu_def->cd_name, '/');
+    lastName = strrchr(use->cu_def->cd_name, '/');
     if (lastName == NULL) lastName = use->cu_def->cd_name;
     else lastName++;
     

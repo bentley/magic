@@ -103,7 +103,7 @@ efSymAddFile(name)
 
     for (lineNum = 1; fgets(line, sizeof line, f); lineNum++)
     {
-	if (cp = index(line, '\n'))
+	if (cp = strchr(line, '\n'))
 	    *cp = '\0';
 	if (!efSymAdd(line))
 	    TxError("Error at line %d of %s\n", lineNum, name);
@@ -139,7 +139,7 @@ efSymAdd(str)
     HashEntry *he;
     char *value;
 
-    value = index(str, '=');
+    value = strchr(str, '=');
     if (value == NULL)
     {
 	TxError("Missing '=' in symbol assignment\n");

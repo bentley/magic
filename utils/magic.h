@@ -188,7 +188,7 @@ typedef unsigned char bool;
 /* ------------ Function headers of globally used functions ----------- */
 
 #ifndef __STDC__
-extern char *strcpy(), *strncpy(), *index(), *rindex();
+extern char *strcpy(), *strncpy(), *strchr(), *strrchr();
 extern char *strcat(), *strncat();
 #endif
 
@@ -236,9 +236,6 @@ extern char AbortMessage[];
 
 /* System V is missing some BSDisms. */
 #ifdef SYSV
-# ifndef index
-#  define index(x,y)		strchr((x),(int)(y))
-# endif
 # ifndef bcopy
 #  define bcopy(a, b, c)	memcpy(b, a, c)
 # endif
@@ -247,9 +244,6 @@ extern char AbortMessage[];
 # endif
 # ifndef bcmp
 #  define bcmp(a, b, c)		memcmp(b, a, c)
-# endif
-# ifndef rindex
-#  define rindex(x,y)  strrchr((x),(int)(y))
 # endif
 #endif
 

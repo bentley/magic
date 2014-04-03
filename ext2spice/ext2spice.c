@@ -1113,7 +1113,7 @@ spcmainArgs(pargc, pargv)
 
 	    if ((cp = ArgStr(&argc,&argv,"resistance class")) == NULL)
 		goto usage;
-	    if ( (rp = (char *) index(cp,':')) == NULL )
+	    if ( (rp = (char *) strchr(cp,':')) == NULL )
 		goto usage;
 	    else *rp++ = '\0';
 	    if ( sscanf(rp, "%d/%d/%s", &rClass, &rClassSub, subsNode) != 3 ) {

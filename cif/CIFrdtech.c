@@ -213,7 +213,7 @@ CIFParseReadLayers(string, mask)
 
     while (*string != 0)
     {
-	p = index(string, ',');
+	p = strchr(string, ',');
 	if (p != NULL)
 	    *p = 0;
 	

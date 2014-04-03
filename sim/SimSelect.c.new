@@ -529,7 +529,7 @@ the selection.\n");
 	    char  *name = current->tl_nodeName;
 	    bool  coord = (name[0] == '@' && name[1] == '=') ? TRUE : FALSE;
 
-	    strPtr = rindex( replyLine, '=' );
+	    strPtr = strrchr( replyLine, '=' );
 	    if( strPtr == NULL )
 		strPtr = QUESTstring;
 	    else if( coord )
