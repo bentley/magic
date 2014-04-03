@@ -3,13 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
-
-/* It is hard to get the value of MAXFLOAT in a portable manner. */
-#if defined(ibm032)
-#define MAXFLOAT        ((float)3.40282346638528860e+38)
-#elif !defined(__NetBSD__) && !defined(__FreeBSD__) && !defined(CYGWIN) && !defined(__APPLE__) && !defined(__DragonFly__) && !defined(__OpenBSD__)
-#include <values.h>
-#endif
+#include <float.h>
 
 #undef	MAXINT
 
@@ -755,7 +749,7 @@ ResCheckSimNodes(celldef, resisdata)
      	ResSortByGate(&node->firstTran);
 	/* Find largest SD transistor connected to node.	*/
 	  
-	minRes = MAXFLOAT;
+	minRes = FLT_MAX;
 	gparams.rg_tranloc = (Point *) NULL;
 	gparams.rg_status = FALSE;
 	gparams.rg_nodecap = node->capacitance;
@@ -833,7 +827,7 @@ ResCheckSimNodes(celldef, resisdata)
     	    TxError("Node %s has force label but no drive point or "
 			"driving transistor\n",node->name);
 	}
-	if (minRes == MAXFLOAT || gparams.rg_tranloc == NULL)
+	if (minRes == FLT_MAX || gparams.rg_tranloc == NULL)
 	{
 	    continue;
 	}
