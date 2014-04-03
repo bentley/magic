@@ -21,7 +21,6 @@
 #ifndef _MAGIC_H
 #define	_MAGIC_H
 
-#include <stdio.h>
 #include <sys/types.h>
 #include <errno.h>
 #include <limits.h>
