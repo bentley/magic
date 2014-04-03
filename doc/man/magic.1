@@ -1,29 +1,29 @@
 .\" rcsid "$Header"
 .\"
-.\" CONVENTIONS:  
+.\" CONVENTIONS:
 .\"	italics:  things that are substituted for
 .\"	boldface: characters that are typed as-is
 .\"
 .\"	EXAMPLE:  \fIfilename\fB.mag\fR
 .\"	     or:  \fBcif write \fR[\fIfile\fR]
 .\"
-.TH MAGIC 1 
+.TH MAGIC 1
 .UC 4
 .SH NAME
 magic \- VLSI layout editor
 .SH SYNOPSIS
 .B magic
 [
-.B \-T\ 
+.B \-T\
 .I technology
 ] [
-.B \-d\ 
+.B \-d\
 .I device_type
 ] [
-.B \-g\ 
+.B \-g\
 .I graphics_port
 ] [
-.B \-m\ 
+.B \-m\
 .I monitor_type
 ] [
 .B \-D
@@ -67,7 +67,7 @@ a graphics display, such as a batch job.  Note that the special case
 for batch processing.
 .TP
 .B X11
-X-windows, version 11.  The is the preferred interface.  
+X-windows, version 11.  The is the preferred interface.
 Magic acts as a client to the X window server
 and interfaces to all graphics terminals supported
 by the X server.
@@ -77,7 +77,7 @@ OpenGL graphics running under X11.  This is the preferred interface on
 systems having hardware-accelerated 3D graphics video cards and drivers.
 .IP
 Addition information on Magic's X11 driver, including options for .Xdefaults
-files, may be 
+files, may be
 found in ``Magic Maintainer's Manual #4:  Using Magic Under X Windows''.
 .TP
 .B XWIND
@@ -130,7 +130,7 @@ section below.
 .PP
 Magic uses a three button mouse.
 The buttons are interpreted in a way that
-depends on the current tool, as indicated by the shape of the 
+depends on the current tool, as indicated by the shape of the
 cursor (see the \fBtool\fR command).  The
 various tools are described below.
 The initial tool is \fBbox\fR.
@@ -138,7 +138,7 @@ These interpretations apply only when mouse buttons are pressed
 in the interior of a layout window.
 .TP
 .B "Box Tool"
-This is the default tool, and is indicated by a crosshair cursor.  
+This is the default tool, and is indicated by a crosshair cursor.
 It is used to position the box and to
 paint and erase:
 .RS
@@ -231,12 +231,12 @@ In addition, macros may be used to invoke commands with single
 keystrokes.  Useful default macros are set in the global \fB.magicrc\fR file
 (in \fB${CAD_ROOT}/magic/sys\fR, normally \fB/usr/local/lib/magic/sys\fR).
 You can list all current macros with the \fBmacro\fR
-command, described under ``LONG COMMANDS FOR ALL WINDOWS''.  Unique 
+command, described under ``LONG COMMANDS FOR ALL WINDOWS''.  Unique
 abbreviations are acceptable for
 all keywords in commands.  The commands are:
 .TP
 .B "addpath \fIsearchpath\fR"
-Add more directories to the end of Magic's cell search path.  See the 
+Add more directories to the end of Magic's cell search path.  See the
 documentation for the \fBpath\fR command for an explanation of the search
 path.
 .TP
@@ -372,11 +372,11 @@ name of the root cell.  The CIF file describes the entire cell
 hierarchy in the window.  \fIOption\fR and \fIargs\fR may be used
 to invoke one of several additional CIF operations:
 .RS
-.TP 
+.TP
 \fBcif arealabels \fR[\fByes \fR|\fB no]\fR
 Enables/disables the cif area-label extension.  If enabled, area
 labels are written via the \fB95\fR cif extension.  If disabled, labels
-are collapsed to points when writing cif and the \fB94\fR cif 
+are collapsed to points when writing cif and the \fB94\fR cif
 construct is used.  Area-labels are disabled by default (many programs
 don't understand cif area-labels).
 .TP
@@ -432,7 +432,7 @@ design first (e.g. creates an internal version with the cell hierarchy
 removed).  This
 is useful if one wishes to use the \fBand-not\fR
 feature of the CIF output styles, but is having problems with interactions
-of overlapping cells.  
+of overlapping cells.
 .RE
 .TP
 \fBclockwise \fR[\fIdegrees\fR]
@@ -441,7 +441,7 @@ After the rotation, the lower-left
 corner of the selection's bounding box will be in the same place
 as the lower-left corner of the bounding box before the rotation.
 \fIDegrees\fR defaults to \fB90\fR.  If the box
-is in the same window as the selection, it is rotated too.  Only 
+is in the same window as the selection, it is rotated too.  Only
 material in the edit cell is affected.
 .TP
 .B "copy \fR[\fIdirection \fR[\fIamount\fR]]"
@@ -452,7 +452,7 @@ at the point lying underneath the box lower-left
 corner, and placed so that this point lies at the cursor
 position.  If \fIdirection\fR is given,
 it must be a Manhattan direction (e.g. \fBnorth\fR, see the ``DIRECTIONS''
-section below).  The copy of the 
+section below).  The copy of the
 selection is moved in that direction by \fIamount\fR.  If the
 box is in the same window as the selection, it is moved too.
 \fIAmount\fR defaults to \fB1\fR.
@@ -530,7 +530,7 @@ will record the areas that need to be rechecked;  the command
 Turn on the background checker.  The checker will check whatever modifications
 have not already been checked.  From now on, the checker will reverify
 modified areas as they result from commands.  The checker is run
-in the background, not synchronously with commands, so it may get 
+in the background, not synchronously with commands, so it may get
 temporarily behind if massive changes are made.
 .TP
 \fBdrc printrules \fR[\fIfile\fR]
@@ -575,11 +575,11 @@ edit cell is normally displayed in brighter colors than other cells
 (see the \fBsee\fR command to change this).  If
 more than one cell is selected,
 or if the selected cell is an array, the cursor
-position is used to select one of those cells as the new 
+position is used to select one of those cells as the new
 edit cell.  Generally, Magic commands modify only the current edit cell.
 .TP
 .B "erase \fR[\fIlayers\fR]"
-For the area enclosed by the box, erase all paint in \fIlayers\fR.  
+For the area enclosed by the box, erase all paint in \fIlayers\fR.
 (See the ``LAYERS'' section for the syntax of layer lists).  If
 \fIlayers\fR is omitted it defaults to \fB*,labels\fR.  See your
 technology manual, or use the \fBlayers\fR command, to find out about
@@ -699,7 +699,7 @@ automatically append unique suffixes to node names
 when they appeared more than once.
 .TP
 \fBextract warn\fR [ [\fBno\fR] \fIoption\fR | [\fBno\fR] \fBall\fR ]
-The extractor always reports fatal errors.  This command controls 
+The extractor always reports fatal errors.  This command controls
 the types of warnings that are reported.  \fIOption\fR may be one
 of the following: \fBdup\fR, to warn about two or more unconnected
 nodes in the same cell that have the same name, \fBfets\fR, to warn
@@ -907,7 +907,7 @@ one of its ancestors.
 .TP
 .B "getnode \fR[\fBabort \fR[\fIstr\fR]]
 Getnode prints out the node names (used by the extractor) for all selected
-paint.  
+paint.
 If aliasing turned on,
 getnode prints all the names it finds for a given node.  It may not print
 every name that exists, however.  When turned off, it just prints one name.
@@ -952,21 +952,21 @@ giving each cell an initial identifier consisting of the cell
 definition name followed by an underscore and a small integer.
 .TP
 .B "iroute \fIsubcommand\fR [\fIargs\fR]"
-This command provides an interactive interface to the Magic 
+This command provides an interactive interface to the Magic
 maze-router.  Routing
-is done one connection at a time.  Three internal \fIhint\fR layers, 
-\fBmagnet\fR, \fBfence\fR, and \fBrotate\fR, allow the user to guide routing 
+is done one connection at a time.  Three internal \fIhint\fR layers,
+\fBmagnet\fR, \fBfence\fR, and \fBrotate\fR, allow the user to guide routing
 graphically.  Routes are chosen close to magnets (if possible), routing
-does not cross fence boundaries, and rotate areas reverse the 
+does not cross fence boundaries, and rotate areas reverse the
 preferred routing directions for each layer.  The maze-router
 seeks to find a lowest-cost path.  Parameters
 specifying costs for horizontal and vertical routing on
 each layer, cost for jogs and contacts, and cost (per unit area) for distance
-between a path and magnets, help determine the nature of 
-the routes.  Several \fIsearch\fR parameters permit tuning 
+between a path and magnets, help determine the nature of
+the routes.  Several \fIsearch\fR parameters permit tuning
 to achieve acceptable
-routes in as short a time as possible.  Routing can 
-always be interrupted with \fB^C\fR.  The iroute subcommands are 
+routes in as short a time as possible.  Routing can
+always be interrupted with \fB^C\fR.  The iroute subcommands are
 as follows:
 .RS
 .TP
@@ -978,7 +978,7 @@ An asterisk, \fB*\fR, can be used for \fItype\fR and \fIparameter\fR.
 This command is for setting and examining parameters related to contacts.
 .TP
 \fBiroute help \fR[\fIsubcommand\fR]
-Summarizes irouter commands.  If a \fIsubcommand\fR is given, usage 
+Summarizes irouter commands.  If a \fIsubcommand\fR is given, usage
 information for that subcommand is printed.
 .TP
 \fBiroute layers \fR[\fItype\fR] [\fIparameter\fR] [\fIvalue1\fR] ... [\fIvaluen\fR]
@@ -987,7 +987,7 @@ This command is for setting and examining parameters related to route layers.
 .TP
 \fBiroute route \fR[\fIoptions\fR]
 Invokes the router.  Options are as follows:
-.in +5 
+.in +5
 .nf
 \fB-sLayers\fI layers\fR = layers route may start on
 \fB-sCursor\fR = start route at cursor (DEFAULT)
@@ -1154,7 +1154,7 @@ generates normal black-and-white plots.
 The name of the directory in which to create raster files for
 the Versatec.  The raster files have names of the form
 \fBmagicPlotXXXXXX\fR, where \fBXXXXXX\fR is a process-specific
-identifier. 
+identifier.
 .TP
 \fBdotsPerInch\fR
 Indicates how many dots per inch there are on the Versatec printer.
@@ -1398,7 +1398,7 @@ of the technology file, is favored by the algorithm.  Note that
 an independent routing postpass that can be applied even if the routing
 was not generated by the \fBroute\fR command, provided the
 layers
-and widths agree with the \fBrouter\fR section 
+and widths agree with the \fBrouter\fR section
 of the technology file.
 .TP
 \fBroute vias \fR[\fIint\fR]
@@ -1414,7 +1414,7 @@ worthwhile to add vias to the routing.
 .RE
 .TP
 .B \fBrsim \fR[\fIoptions\fR]\fR [\fIfilename\fR]
-Runs rsim under Magic.  
+Runs rsim under Magic.
 See \fITutorial #11:  Using IRSIM and RSIM with Magic\fR for more information
 on what options and files are required by rsim.
 Normally, IRSIM requires a parameter file for the technology and a \fB.sim\fR
@@ -1451,7 +1451,7 @@ this manual page for an explanation of layer naming in Magic.
 \fBsee \fIlayers\fR
 Reenable display of the given \fIlayers\fR.
 Note that "*" expands to all mask layers, but does not include the label
-or error layers. 
+or error layers.
 See the "LAYERS" section at the end of this manual page for details.
 .TP
 \fBsee no\fR
@@ -1530,10 +1530,10 @@ Print a short synopsis of the selection commands.
 .B "select save \fIcell\fR"
 Save all the information in the selection as a Magic cell on disk.
 The selection will be saved in file \fIcell\fB.mag\fR.
-.TP 
+.TP
 .I "select and the see command"
 Select interacts with the \fBsee\fR command.
-When selecting individual pieces of material, only visible layers 
+When selecting individual pieces of material, only visible layers
 are candidates for selection.
 When selecting an entire area, however, both visible and non-visible
 material is selected.  This behavior allows entire regions of material
@@ -1676,7 +1676,7 @@ after the command.
 \fBhelp\fR [\fIpattern\fR]
 Displays a synopsis of commands that apply to the window you
 are pointing to.
-If \fIpattern\fR is given then only 
+If \fIpattern\fR is given then only
 command descriptions containing the pattern are printed.  \fIPattern\fR
 may contain '*' and '?' characters, which match a string of non-blank
 characters or a single non-blank character (respectively).
@@ -1694,13 +1694,13 @@ that typing \fIchar\fR on the keyboard is equivalent to typing
 ``:'' followed by \fIcommand\fR.  If \fIcommand\fR is omitted,
 the current macro for \fIchar\fR is printed.  If \fIchar\fR is
 also omitted, then all current macros are printed.
-If \fIcommand\fR contains spaces, tabs, or semicolons then it must be placed 
+If \fIcommand\fR contains spaces, tabs, or semicolons then it must be placed
 in quotes.  The semicolon acts as a command separator allowing multiple
 commands to be combined in a single macro.
 .TP
 .B "openwindow \fR[\fIcell\fR]"
-Open a new, empty window at the cursor position. 
-Placement, sizing, and methods of manipulation are determined by 
+Open a new, empty window at the cursor position.
+Placement, sizing, and methods of manipulation are determined by
 the conventions of the window system in use.  If
 \fIcell\fR is specified, then that cell is displayed
 in the new window.  Otherwise the area of the box will be displayed
@@ -1738,12 +1738,12 @@ of type \fItype\fR.  See \fBspecialopen\fR, below,
 for the allowable types of windows.
 .TP
 .B "setpoint [\fIx y\fR [\fIwindowID\fR]]"
-Fakes the location of the cursor up until after the 
+Fakes the location of the cursor up until after the
 next interactive command.
 Without arguments, just prints out the current point location.
 This command is normally invoked only from command scripts.
 .IP
-If \fIwindowID\fR is given, then the point is assumed to be in that 
+If \fIwindowID\fR is given, then the point is assumed to be in that
 window's screen coordinate system rather than absolute screen
 coordinates.
 .TP
@@ -1762,7 +1762,7 @@ and seldom used elsewhere.
 .B "specialopen \fR[\fIx1 y1 x2 y2\fR] \fItype\fR [\fIargs\fR]"
 Open a window of type \fItype\fR.  If the optional \fIx1 y1 x2 y2\fR
 coordinates are given, then the new window will have its lower
-left corner at screen coordinates (\fIx1\fR, \fIy1\fR) and its upper right 
+left corner at screen coordinates (\fIx1\fR, \fIy1\fR) and its upper right
 corner at screen coordinates (\fIx2\fR, \fIy2\fR).
 The \fIargs\fR arguments are interpreted
 differently depending upon the type of the window.  These
@@ -1770,7 +1770,7 @@ types are known:
 .RS
 .TP
 .B layout
-This type of window is used to edit a VLSI cell.  
+This type of window is used to edit a VLSI cell.
 The command takes a single argument
 which is used as the name of a cell to be loaded.  The command
 .ce
@@ -1812,7 +1812,7 @@ the window is visible.
 Set the flag that determines if new windows will have scroll bars.
 .TP
 .B "windowpositions \fR[\fIfile\fR]"
-Write out the positions of the windows in a format suitable 
+Write out the positions of the windows in a format suitable
 for the \fBsource\fR command.  If \fIfile\fR is specified, then write it
 out to that file instead of to the terminal.
 .TP
@@ -2094,7 +2094,7 @@ instructions, and command reference.
 .nf
 ${CAD_ROOT}/magic/sys/.magic	startup file to create default macros
 .br
-~/.magic		user-specific startup command file 
+~/.magic		user-specific startup command file
 .br
 ${CAD_ROOT}/magic/nmos/*	some standard nmos cells
 .br
@@ -2112,7 +2112,7 @@ ${CAD_ROOT}/magic/sys/*.tech	technology files, see ``Maintainer's Manual
 ${CAD_ROOT}/displays	configuration file for Magic serial-line displays
 .fi
 .PP
-\fICAD_ROOT variable.\fR  If the shell environment variable \fBCAD_ROOT\fR is set, 
+\fICAD_ROOT variable.\fR  If the shell environment variable \fBCAD_ROOT\fR is set,
 Magic uses that location instead of the installed location (/usr/local/lib, by
 default).  Normally one would change the search path (see below) rather than
 redirect the entire \fBCAD_ROOT\fR location.

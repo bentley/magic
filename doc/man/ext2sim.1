@@ -1,4 +1,4 @@
-.TH EXT2SIM 1 
+.TH EXT2SIM 1
 .UC 4
 .SH NAME
 ext2sim \- convert hierarchical \fIext\fR\|(5) extracted-circuit files
@@ -71,9 +71,9 @@ Don't produce the aliases file.
 .B \-B
 Don't output transistor or node attributes in the \fB.sim\fR file.
 This option will also disable the output of information such as
-the area and perimeter of source and drain diffusion and the 
-fet substrate. For compatibitlity reasons the latest version of ext2sim 
-outputs this information as node attibutes. 
+the area and perimeter of source and drain diffusion and the
+fet substrate. For compatibitlity reasons the latest version of ext2sim
+outputs this information as node attibutes.
 This option is necessary when preparing input for programs that
 don't know about attributes, such as \fIsim2spice\fR\|(1) (which is
 actually made obsolete by \fIext2spice\fR\|(1), anyway),
@@ -91,9 +91,9 @@ should be either "#" or "!".  The option may be used twice if both characters
 are desired.
 .TP 1.0i
 .B \-f \fIMIT|LBL|SU\fR
-Select the output format. MIT is the traditional \fIsim\fR(5) format. 
+Select the output format. MIT is the traditional \fIsim\fR(5) format.
 LBL is a variant of it understood by \fIgemini\fR(1) which includes the
-substrate connection as a fourth terminal before length and width. 
+substrate connection as a fourth terminal before length and width.
 SU is the internal Stanford format which is described also in \fIsim\fR(5)
 and includes areas and perimeters of fet sources, drains and substrates.
 .TP 1.0i
@@ -102,16 +102,16 @@ Select the precision for outputing capacitors. The default is 1 which means
 that the capacitors will be printed to a precision of .1 fF.
 .TP 1.0i
 .B \-J \fIhier|flat\fR
-Select the source/drain area and perimeter extraction algorithm. If 
-\fIhier\fR is selected then the areas and perimeters are extracted 
+Select the source/drain area and perimeter extraction algorithm. If
+\fIhier\fR is selected then the areas and perimeters are extracted
 \fIonly within each subcell\fR. For each fet in a subcell the area
-and perimeter of its source and drain within this subcell are output. 
+and perimeter of its source and drain within this subcell are output.
 If two or more fets share a source/drain node then the total area and
 perimeter will be output in only one of them and the other will have 0.
 If \fIflat\fR is selected the same rules apply only that the scope of
 search for area and perimeter is the whole netlist. In general \fIflat\fR
-(which is the default) will give accurate results (it will take into 
-account shared sources/drains) but hier is provided for backwards 
+(which is the default) will give accurate results (it will take into
+account shared sources/drains) but hier is provided for backwards
 compatibility with version 6.4.5. On top of this selection you can
 individually control how a terminal of a specific fet will be extracted
 if you put a source/drain attribute. \fIext:aph\fR makes the extraction
@@ -119,10 +119,10 @@ for that specific terminal hierarchical and \fIext:apf\fR makes the
 extraction flat (see the magic tutorial about attaching attribute labels).
 Additionaly to ease extraction of bipolar transistors the gate attribute
 \fIext:aps\fR forces the output of the substrate area and perimeter for
-a specific fet (in flat mode only). 
+a specific fet (in flat mode only).
 .TP 1.0i
 .B \-j  \fIdevice:sdRclass[/subRclass]/defaultSubstrate\fR
-Gives ext2sim information about the source/drain resistance class of the 
+Gives ext2sim information about the source/drain resistance class of the
 fet type \fIdevice\fR. Makes \fIdevice\fR to have \fIsdRclass\fR source
 drain resistance class, \fIsubRclass\fR substrate (well) resistance class
 and the node named \fIdefaultSubstrate\fR as its default substrate.
@@ -131,16 +131,16 @@ MOSIS technology file but things might vary in your site. Ask your local
 cad administrator.
 
 .PP
-The way the extraction of node area and perimeter works in magic the total 
+The way the extraction of node area and perimeter works in magic the total
 area and perimeter of the source/drain junction is summed up on a single node.
 That is why all the junction areas and perimeters are summed up on a single
 node (this should not affect simulation results however).
 .PP
 \fISpecial care must be taken when the substrate of a fet is tied to a
 node other than the default substrate\fR (eg in a bootstraping charge
-pump).  To get the correct substrate info in these cases the fet(s) with 
-separate wells should be in their own separate subcell with ext:aph attributes 
-attached to their sensitive terminals (also all the transistors which share 
+pump).  To get the correct substrate info in these cases the fet(s) with
+separate wells should be in their own separate subcell with ext:aph attributes
+attached to their sensitive terminals (also all the transistors which share
 sensistive terminals with these should be in another subcell with the same
 attributes).
 
@@ -176,4 +176,3 @@ The areas and perimeters of fet sources and drains work only with the
 simple extraction algorith and not with the extresis flow. So you have
 to model them as linear capacitors (create a special extraction style)
 if you want to extract parasitic resistances with extresis.
-
