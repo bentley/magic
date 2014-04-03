@@ -272,11 +272,10 @@ extern char AbortMessage[];
 
 
 /*
- * errno and sys_errlist
+ * errno
  */
 #ifdef CYGWIN
 #include <errno.h>
-#define sys_errlist _sys_errlist
 #elif !defined(__FreeBSD__) && !defined(__NetBSD__) && !defined(__DragonFly__) && !defined(__APPLE__)
 extern int errno;
 /* extern char *sys_errlist[]; */
