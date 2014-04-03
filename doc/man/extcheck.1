@@ -47,7 +47,8 @@ Set the capacitance threshold to \fIcthresh\fP femtofarads.
 \fIExtcheck\fR will count the number of explicit internodal capacitors
 greater than \fIcthresh\fR, the number of nodes whose capacitance
 is greater than \fIcthresh\fR, as well as the total number of
-nodes.  (Other programs such as \fIext2sim\fR\|(1) use this
+nodes.
+(Other programs such as \fIext2sim\fR\|(1) use this
 option as a threshold value below which a capacitor will not
 be output).
 The default value for \fIcthresh\fP is 10 femtofarads.
@@ -55,27 +56,33 @@ The default value for \fIcthresh\fP is 10 femtofarads.
 .B \-p\ \fIpath\fP
 Normally, the path to search for \fB.ext\fP files is determined by
 looking for \fBpath\fP commands in first ~cad/lib/magic/sys/.magic,
-then ~/.magic, then .magic in the current directory.  If \fB\-p\fP
+then ~/.magic, then .magic in the current directory.
+If \fB\-p\fP
 is specified, the colon-separated list of directories specified
-by \fIpath\fP is used instead.  Each of these directories is searched
+by \fIpath\fP is used instead.
+Each of these directories is searched
 in turn for the \fB.ext\fP files in a design.
 .TP
 .B \-r\ \fIrthresh\fP
-Set the resistance threshold to \fIrthresh\fP ohms.  Similar in function
+Set the resistance threshold to \fIrthresh\fP ohms.
+Similar in function
 to \fB\-c\fR, but for resistances.
 The default value for \fIrthresh\fP is 10 ohms.
 .TP
 .B \-s\ \fIsym\fB=\fIvalue\fP
 It's possible to use special attributes attached to transistor gates
 to control the length and width of transistors explicitly, rather than
-allowing them to be determined by the extractor.  These attributes
+allowing them to be determined by the extractor.
+These attributes
 are of the form \fBext:w=\fIwidth\fB^\fR or \fBext:l=\fIlength\fB^\fR,
 where \fIwidth\fR or \fIlength\fR can either be numeric, or textual.
 (The trailing ``\fB^\fR'' indicates that these are transistor
 gate attributes).
 If textual, they are treated as symbols which can be assigned a numeric
-value at the time \fIext2sim\fR is run.  The \fB\-s\fR flag is used to
-assign numeric values to symbols.  If a textual symbol appears in one
+value at the time \fIext2sim\fR is run.
+The \fB\-s\fR flag is used to
+assign numeric values to symbols.
+If a textual symbol appears in one
 of the above attributes, but isn't given a numeric value via \fB\-s\fR
 (or \fB\-S\fR below), then it is ignored; otherwise, the transistor's
 length or width is set to the numeric value defined for that symbol.

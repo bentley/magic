@@ -31,7 +31,8 @@ The first line in a \fB.mag\fP file is the string
 to identify this as a Magic file.
 .LP
 The next line is optional and is used to identify the technology
-in which a cell was designed.  If present, it should be of the form
+in which a cell was designed.
+If present, it should be of the form
 .(X
 \fBtech\fP \fItechname\fP
 .)X
@@ -49,9 +50,11 @@ function \fItime()\fP).
 It should be the last time this cell or any of its children changed.
 The timestamp is used to detect when a child is edited outside the
 context of its parent (the parent stores the last timestamp it saw
-for each of its children; see below).  When this occurs, the
+for each of its children; see below).
+When this occurs, the
 design-rule checker must recheck the entire area of the child for
-subcell interaction errors.  If this field is omitted in a cell, Magic
+subcell interaction errors.
+If this field is omitted in a cell, Magic
 supplies a default value that forces the rechecks.
 .LP
 Next come lines describing the contents of the cell.
@@ -65,7 +68,8 @@ Each group of mask rectangles is headed with a line of the format
 \fB<<\ \fIlayer\fB\ >>\fR
 .)X
 where \fIlayer\fP is a layername known in the current technology
-(see the \fBtech\fP line above).  Each line after this header
+(see the \fBtech\fP line above).
+Each line after this header
 has the format
 .(X
 \fBrect\fI xbot ybot xtop ytop\fR
@@ -78,13 +82,16 @@ less than \fIxtop\fP, and \fIybot\fP strictly less than \fIytop\fP.
 The smallest legal value of \fIxbot\fP or \fIybot\fP is
 \fB\(mi67108858\fP,
 and the largest legal value for \fIxtop\fP or \fIytop\fP is
-\fB67108858\fP.  Values that approach these limits (within a factor
+\fB67108858\fP.
+Values that approach these limits (within a factor
 of 100 or 1000) may cause numerical overflows in Magic even though
-they are not strictly illegal.  We recommend using coordinates around
+they are not strictly illegal.
+We recommend using coordinates around
 zero as much as possible.
 .PP
 Rectangles should be non-overlapping, although this is not
-essential.  They should also already have been merged into maximal
+essential.
+They should also already have been merged into maximal
 horizontal strips (the neighbor to the right or left of a rectangle
 should not be of the same type), but this is also not essential.
 .PP
@@ -117,7 +124,8 @@ The \fBtimestamp\fP line is optional; if present, it gives the
 last time this cell was aware that the child \fIfilename\fP changed.
 If there is no \fBtimestamp\fP line, a timestamp of 0 is assumed.
 When the subcell is read in, this value is compared to the actual value
-at the beginning of the child cell.  If there is a difference, the
+at the beginning of the child cell.
+If there is a difference, the
 ``timestamp mismatch'' message is printed, and Magic rechecks
 design-rules around the child.
 .LP
@@ -153,14 +161,18 @@ and is followed by zero or more lines of the following form:
 \fBrlabel\fI layer xbot ybot xtop ytop position text\fR
 .)X
 Here \fIlayer\fP is the name of one of the layers specified in
-the technology file for this cell.  The label is attached to material
-of this type.  \fILayer\fP may be \fBspace\fP, in which case the
+the technology file for this cell.
+The label is attached to material
+of this type.
+\fILayer\fP may be \fBspace\fP, in which case the
 label is not considered to be attached to any layer.
 .LP
-Labels are rectangular.  The lower-left corner of the label (the part
+Labels are rectangular.
+The lower-left corner of the label (the part
 attached to any geometry if \fIlayer\fP is non-\fBspace\fR) is
 at \fI(xbot,\ ybot)\fR, and the upper-right corner at \fI(xtop,\ ytop)\fR.
-The width of the rectangle or its height may be zero.  In fact, most
+The width of the rectangle or its height may be zero.
+In fact, most
 labels in Magic have a lower-left equal to their upper right.
 .LP
 The text of the label, \fItext\fP, may be any sequence of characters not
@@ -189,7 +201,8 @@ A \fB.mag\fP file is terminated by the line
 Everything following this line is ignored.
 .LP
 Any line beginning with a pound sigh (``\fB#\fR'') is considered
-to be a comment and ignored.  Beware, however, that these comments
+to be a comment and ignored.
+Beware, however, that these comments
 are discarded by Magic when it reads a cell, so if that cell is written
 again by Magic, the comments will be lost.
 
@@ -208,7 +221,8 @@ in each file:
 .)X
 This rectangle may appear anywhere a list of rectangles is allowed;
 immediately following the \fBtimestamp\fP line at the beginning of
-a \fB.mag\fP file is a good place.  The coordinates \fIxbot\fR
+a \fB.mag\fP file is a good place.
+The coordinates \fIxbot\fR
 etc. should be large enough to completely cover anything in the
 cell, and must surround all this material by at least one lambda.
 Be careful, however, not to make this area too ridiculously large.

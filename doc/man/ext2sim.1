@@ -47,7 +47,8 @@ The result is a single, flat representation of the circuit that is
 written to the file \fIroot\fB.sim\fR, a list of node aliases
 written to the file \fIroot\fB.al\fR, and a list of the locations
 of all nodenames in CIF format, suitable for plotting, to the
-file \fIroot\fB.nodes\fR.  The file \fIroot\fB.sim\fR is
+file \fIroot\fB.nodes\fR.
+The file \fIroot\fB.sim\fR is
 suitable for use with programs such as
 \fIcrystal\fP\|(1), \fIesim\fP\|(1), or \fIsim2spice\fP\|(1).
 .LP
@@ -86,8 +87,10 @@ Don't output nodes that aren't connected to fets (floating nodes).
 Don't produce the label file.
 .TP 1.0i
 .B \-t\fIchar\fR
-Trim characters from node names when writing the output file.  \fIChar\fR
-should be either "#" or "!".  The option may be used twice if both characters
+Trim characters from node names when writing the output file.
+\fIChar\fR
+should be either "#" or "!".
+The option may be used twice if both characters
 are desired.
 .TP 1.0i
 .B \-f \fIMIT|LBL|SU\fR
@@ -138,7 +141,8 @@ node (this should not affect simulation results however).
 .PP
 \fISpecial care must be taken when the substrate of a fet is tied to a
 node other than the default substrate\fR (eg in a bootstraping charge
-pump).  To get the correct substrate info in these cases the fet(s) with
+pump).
+To get the correct substrate info in these cases the fet(s) with
 separate wells should be in their own separate subcell with ext:aph attributes
 attached to their sensitive terminals (also all the transistors which share
 sensistive terminals with these should be in another subcell with the same

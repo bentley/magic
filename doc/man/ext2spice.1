@@ -50,8 +50,10 @@ Normally capacitance from these nodes is output with the comment
 **FLOATING attached on the same line.
 .TP 1.0i
 .B \-t\fIchar\fR
-Trim characters from node names when writing the output file.  \fIChar\fR
-should be either "#" or "!".  The option may be used twice if both characters
+Trim characters from node names when writing the output file.
+\fIChar\fR
+should be either "#" or "!".
+The option may be used twice if both characters
 are desired. Trimming "#" and "!" is enabled by default when the format is
 hspice.
 .TP 1.0i
@@ -121,7 +123,8 @@ node (this should not affect simulation results however).
 .PP
 \fISpecial care must be taken when the substrate of a fet is tied to a
 node other than the default substrate\fR (eg in a bootstraping charge
-pump).  To get the correct substrate info in these cases the fet(s) with
+pump).
+To get the correct substrate info in these cases the fet(s) with
 separate wells should be in their own separate subcell with ext:aph attributes
 attached to their sensitive terminals (also all the transistors which share
 sensistive terminals with these should be in another subcell with the same

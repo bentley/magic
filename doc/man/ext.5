@@ -20,8 +20,10 @@ the extracted circuit corresponding to the mask geometry of cell \fIname\fP,
 and the connections between this mask geometry and the subcells of \fIname\fP.
 .LP
 A \fB.ext\fP file consists of a series of lines, each of which begins
-with a keyword.  The keyword beginning a line determines how the remainder
-of the line is interpreted.  The following set of keywords define
+with a keyword.
+The keyword beginning a line determines how the remainder
+of the line is interpreted.
+The following set of keywords define
 the environmental information:
 .TP
 .B "tech\ \fItechname\fR"
@@ -50,7 +52,8 @@ Identifies the style that the cell has been extracted with.
 Sets the scale to be used in interpreting resistance, capacitance,
 and linear dimension values in the remainder of the \fB.ext\fP file.
 Each resistance value must be multiplied by \fIrscale\fP to give
-the real resistance in milliohms.  Each capacitance value must be
+the real resistance in milliohms.
+Each capacitance value must be
 multiplied by \fIcscale\fP to give the real capacitance in attofarads.
 Each linear dimension (e.g, width, height, transform coordinates)
 must be multiplied by \fIlscale\fP to give the real linear dimension
@@ -71,18 +74,21 @@ are not scaled by the value of \fIrscale\fR specified in the
 Each node in a \fB.ext\fR file has a perimeter and area for
 each resistance class; the values \fIr1\fR, \fIr2\fR, etc.
 are used to convert these perimeters and areas into actual
-node resistances.  See ``Magic Tutorial #8: Circuit Extraction''
+node resistances.
+See ``Magic Tutorial #8: Circuit Extraction''
 for a description of how resistances are computed from
 perimeters and areas by the program \fBext2sim\fR.
 .PP
 The following keywords define the circuit formed by
-the mask information in cell \fIname\fP.  This circuit is
+the mask information in cell \fIname\fP.
+This circuit is
 extracted independently of any subcells; its connections
 to subcells are handled by the keywords in the section after
 this one.
 .TP
 .B "node \fIname R C x y type a1 p1 a2 p2 ... aN pN\fR"
-Defines an electrical node in \fIname\fP.  This node is referred to by
+Defines an electrical node in \fIname\fP.
+This node is referred to by
 the name \fIname\fP in subsequent \fBequiv\fP lines, connections to
 the terminals of transistors in \fBfet\fP lines,
 and hierarchical connections or adjustments
@@ -122,21 +128,25 @@ are given along with the text of the label minus the trailing
 .TP
 .B "equiv\ \fInode1\ node2\fR"
 Defines two node names in cell \fIname\fP as being equivalent:
-\fInode1\fP and \fInode2\fP.  In a collection of node names
+\fInode1\fP and \fInode2\fP.
+In a collection of node names
 related by \fBequiv\fP lines, exactly one must be defined
 by a \fBnode\fP line described above.
 .TP
 .B "fet\ \fItype\ xl\ yl\ xh\ yh\ area\ perim\ sub\ GATE\ T1\ T2\ ...\fR"
-Defines a transistor in \fIname\fP.  The kind of transistor is \fItype\fP,
+Defines a transistor in \fIname\fP.
+The kind of transistor is \fItype\fP,
 a string that comes from the technology file and is intended to have
 meaning to simulation programs.
 The coordinates of a square entirely contained in
 the gate region of the transistor are \fI(xl,\ yl)\fP for its lower-left
-and \fI(xh,\ yh)\fP for its upper-right.  All four coordinates are in
+and \fI(xh,\ yh)\fP for its upper-right.
+All four coordinates are in
 the \fIname\fP's coordinate space, and are subject to scaling as described
 in \fBscale\fP above.
 The gate region of the transistor has area \fIarea\fP square centimicrons
-and perimeter \fIperim\fP centimicrons.  The substrate of the transistor
+and perimeter \fIperim\fP centimicrons.
+The substrate of the transistor
 is connected to node \fIsub\fP.
 .sp
 The remainder of a \fBfet\fP line consists of a series of triples:
@@ -170,22 +180,26 @@ node.
 .TP
 .B "killnode\ \fInode\fR"
 During resistance extraction, it is sometimes necessary to break a node
-up into several smaller nodes.  The appearance of a \fBkillnode\fR line
+up into several smaller nodes.
+The appearance of a \fBkillnode\fR line
 during the processing of a \fB.ext\fR file means that all information
 currently accumulated about \fInode\fR, along with all fets that have
 a terminal connected to \fInode\fR, should be thrown out; it will be
-replaced by information later in the \fB.ext\fR file.  The order of
+replaced by information later in the \fB.ext\fR file.
+The order of
 processing \fB.ext\fR files is important in order for this to work
 properly: children are processed before their parents, so a \fBkillnode\fR
 in a parent overrides one in a child.
 .TP
 .B "resist\ \fInode1\ node2\ R\fR"
 Defines a resistor of \fIR\fR milliohms between the two nodes
-\fInode1\fR and \fInode2\fR.  Both names are hierarchical.
+\fInode1\fR and \fInode2\fR.
+Both names are hierarchical.
 .TP
 .B "distance\ \fIname1\ name2\ dmin\ dmax\fR"
 Gives the distance between two electrical terminals \fIname1\fR
-(a driver) and \fIname2\fR (a receiver).  Note that these are
+(a driver) and \fIname2\fR (a receiver).
+Note that these are
 terminals and not nodes: the names (which are hierarchical
 label names) are used to specify two different locations on the same
 electrical node.
@@ -209,7 +223,8 @@ adjacent array elements is \fIsep\fP centimicrons.
 .sp
 \fITRANSFORM\fP is a set of six
 integers that describe how coordinates in \fIdef\fP are to be
-transformed to coordinates in the parent \fIname\fP.  It is used
+transformed to coordinates in the parent \fIname\fP.
+It is used
 by \fIext2sim\fP\|(1) in transforming transistor locations to
 coordinates in the root of a design.
 The six integers of \fITRANSFORM\fP (\fIta,\ tb,\ tc,\ td,\ te,\ tf\fR) are
@@ -243,13 +258,16 @@ of node \fIn\fP relative to \fIname\fP will be \fIsub-id/n\fP.
 Connections between adjacent elements of an array are represented
 using a special syntax that takes advantage of the regularity of arrays.
 A use-id in a path may optionally be followed by a range of the form
-\fB[\fIlo\fB:\fIhi\fB]\fR (before the following slash).  Such a use-id
+\fB[\fIlo\fB:\fIhi\fB]\fR (before the following slash).
+Such a use-id
 is interpreted as the elements \fIlo\fP through \fIhi\fP inclusive
-of a one-dimensional array.  An element of a two-dimensional array may
+of a one-dimensional array.
+An element of a two-dimensional array may
 be subscripted with two such ranges: first the y range, then the x range.
 .PP
 Whenever one \fIpath\fP in a \fBmerge\fP line contains such a subscript
-range, the other must contain one of comparable size.  For example,
+range, the other must contain one of comparable size.
+For example,
 .sp
 .ti +1i
 \fBmerge\fP\ \ sub-id[1:4,2:8]/a\ \ sub-id[2:5,1:7]/b

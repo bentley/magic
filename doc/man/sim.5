@@ -33,20 +33,24 @@ signifies the sim variant. MIT and SU are compatible and understood
 by all tools. LBL is understood only by gemini(1).
 .TP
 .I "type  g  s  d  l  w  x  y  \fBg=\fIgattrs  \fBs=\fIsattrs  \fBd=\fIdattrs"
-Defines a transistor of type \fItype\fP.  Currently, \fItype\fP may be
+Defines a transistor of type \fItype\fP.
+Currently, \fItype\fP may be
 \fBe\fP or \fBd\fP for NMOS, or \fBp\fP or \fBn\fP for CMOS.
 The name of the node to which the gate, source, and drain of the
 transistor are connected are given by \fIg\fP, \fIs\fP, and \fId\fP
 respectively.
 The length and width of the transistor are \fIl\fP and \fIw\fP.
-The next two tokens, \fIx\fP and \fIy\fP, are optional.  If present,
+The next two tokens, \fIx\fP and \fIy\fP, are optional.
+If present,
 they give the location of a point inside the gate region of the transistor.
 The last three tokens are the attribute lists for the transistor
-gate, source, and drain.  If no attributes are present for a particular
+gate, source, and drain.
+If no attributes are present for a particular
 terminal, the corresponding attribute list may be absent (i.e, there
 may be no \fBg=\fP field at all).
 The attribute lists \fIgattrs\fP, etc. are comma-separated lists of
-labels.  The label names should not include any spaces, although some
+labels.
+The label names should not include any spaces, although some
 tools can accept label names with spaces if they are enclosed
 in double quotes.
 .B "In version 6.4.5 and later"
@@ -91,16 +95,19 @@ with node \fInode\fP, polysilicon area \fIparea\fP and perimeter
 .I "This construct is technology dependent and obsolete."
 .TP
 .B "A \fInode attr\fR"
-Associates attribute \fIattr\fP for node \fInode\fP.  The string
+Associates attribute \fIattr\fP for node \fInode\fP.
+The string
 \fIattr\fP should contain no blanks.
 .TP
 .B "= \fInode1 node2\fR"
 Each node in a \fB.sim\fP file is named implicitly by having it appear in
-a transistor definition.  All node names appearing in a \fB.sim\fP file
+a transistor definition.
+All node names appearing in a \fB.sim\fP file
 are assumed to be distinct.
 Some tools, such as \fIesim\fP\|(1), recognize aliases for node names.
 The \fB=\fR construct allows the name \fInode2\fP to be
-defined as an alias for the name \fInode1\fP.  Aliases defined
+defined as an alias for the name \fInode1\fP.
+Aliases defined
 by means of this construct may not appear anywhere else in the \fB.sim\fP file.
 
 .SH "SEE ALSO"
