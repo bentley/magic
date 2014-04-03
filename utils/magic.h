@@ -149,13 +149,8 @@ typedef unsigned char bool;
 /* --------------------------- Infinities ------------------------------ */
 
 /* maximum representable positive integer */
-/* (special case vaxes to avoid compiler bug in ultrix) */
-#ifdef vax
-#define MAXINT 0x7fffffff
-#else
 #ifndef MAXINT
 #define MAXINT (((unsigned int) ~0) >> 1)
-#endif
 #endif
 
 /* ----------------------- Simple functions --------------------------- */
