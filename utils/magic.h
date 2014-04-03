@@ -34,6 +34,8 @@
 #include <sys/types.h>
 #endif
 
+#include <errno.h>
+
 /* Below is deprecated---magic from 7.2 rev. 56 is 64-bit clean! */
 #ifdef ALPHA32BIT
 /* must be before any declarations with pointers in them! */
@@ -268,19 +270,6 @@ extern char AbortMessage[];
 
 #ifdef	vax
 # define	FANCY_ABORT
-#endif
-
-
-/*
- * errno
- */
-#ifdef CYGWIN
-#include <errno.h>
-#elif !defined(__FreeBSD__) && !defined(__NetBSD__) && !defined(__DragonFly__) && !defined(__APPLE__)
-extern int errno;
-/* extern char *sys_errlist[]; */
-#elif defined(__APPLE__)
-extern int errno;
 #endif
 
 /* 
