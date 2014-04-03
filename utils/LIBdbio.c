@@ -18,9 +18,7 @@
  */
 
 #include <stdio.h>
-#ifdef __STDC__
 #include <unistd.h>
-#endif
 
 #include "utils/magic.h"
 
