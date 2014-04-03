@@ -644,17 +644,6 @@ SigInit()
       sigSetAction(SIGPOLL,  SIG_IGN);
 	}
 #endif
-
-#ifdef FANCY_ABORT
-    sigSetAction(SIGILL,  sigCrash);
-    sigSetAction(SIGTRAP, sigCrash);
-    sigSetAction(SIGIOT,  sigCrash);
-    sigSetAction(SIGEMT,  sigCrash);
-    sigSetAction(SIGFPE,  sigCrash);
-    sigSetAction(SIGBUS,  sigCrash);
-    sigSetAction(SIGSEGV, sigCrash);
-    sigSetAction(SIGSYS,  sigCrash);
-#endif /* FANCY_ABORT */
   }
 
 #if !defined(SYSV) && !defined(CYGWIN)

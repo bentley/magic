@@ -263,15 +263,6 @@ extern char AbortMessage[];
 # define	SIG_RETURNS_INT
 #endif
 
-/* We have this really fancy abort procedure in utils/niceabort.c.  However,
- * these days only vax's appear to have all the things neccessary to make it
- * work (i.e. /usr/ucb/gcore).
- */
-
-#ifdef	vax
-# define	FANCY_ABORT
-#endif
-
 /*
  * Linux
  */

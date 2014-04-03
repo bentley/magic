@@ -196,20 +196,6 @@ niceabort()
     TxPrintf("Magic has encountered a major internal inconsistency:\n\n");
     TxPrintf("     %s\n", AbortMessage);
 
-#ifdef FANCY_ABORT
-    /* If mainDebug is set, dbx is presumably being used, so don't generate
-     * core dump or ask for comment,
-     */
-    if (timesCalled == 1) {
-	if(mainDebug)
-	{
-	    TxPrintf("-D is set, so magic won't dump core.\n");
-	    return;
-	}
-	DumpCore();
-    }
-#endif
-
     if (AbortFatal) {
 	TxPrintf("Magic can't recover from this error.  Goodbye.\n\n");
     } else {
