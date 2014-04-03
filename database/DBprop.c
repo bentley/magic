@@ -27,7 +27,7 @@
 #include "database/database.h"
 #include "utils/malloc.h"
 
-
+
 /* ----------------------------------------------------------------------------
  *
  * DBPropPut --
@@ -62,7 +62,7 @@ DBPropPut(cellDef, name, value)
     entry = HashFind(htab, name);
     HashSetValue(entry, value);
 }
-
+
 /* ----------------------------------------------------------------------------
  *
  * DBPropGet --
@@ -105,7 +105,7 @@ done:
     if (found != (bool *) NULL) *found = haveit;
     return result;
 }
-
+
 /* ----------------------------------------------------------------------------
  *
  * DBPropEnum --
@@ -156,7 +156,7 @@ DBPropEnum(cellDef, func, cdata)
     return 0;
 }
 
-
+
 /* ----------------------------------------------------------------------------
  *
  * DBPropClearAll --

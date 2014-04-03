@@ -145,7 +145,7 @@ typedef struct {
 }
 
 
-
+
 /* attributes controlling the Area/Perimeter extraction of dev terminals */
 #define ATTR_FLATAP	"*[Ee][Xx][Tt]:[Aa][Pp][Ff]*"
 #define ATTR_HIERAP	"*[Ee][Xx][Tt]:[Aa][Pp][Hh]*"

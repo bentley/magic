@@ -61,7 +61,7 @@ TileTypeBitMask DBSpaceBits;
 TileTypeBitMask DBUserLayerBits;
 TileTypeBitMask DBActiveLayerBits;	/* Layers that are locked */
 
-
+
 /* Table of default, builtin planes */
 DefaultPlane dbTechDefaultPlanes[] =
 {
@@ -92,7 +92,7 @@ DefaultType dbTechDefaultTypes[] =
 /* Forward declarations */
 char *dbTechNameAdd();
 NameList *dbTechNameAddOne();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -147,7 +147,7 @@ DBTechInitPlane()
 
     DBNumPlanes = PL_TECHDEPBASE;
 }
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -389,7 +389,7 @@ DBTechAddAlias(sectionName, argc, argv)
     return TRUE;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -474,7 +474,7 @@ DBTechAddType(sectionName, argc, argv)
     return TRUE;
 }
 
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -617,7 +617,7 @@ dbTechNameLookupExact(str, table)
     return ((ClientData) -2);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -700,7 +700,7 @@ dbTechNameLookup(str, table)
 
     /*NOTREACHED*/
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -765,7 +765,7 @@ dbTechNameAdd(name, cdata, ptable)
 	primary->sn_primary = TRUE;
     return (first);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

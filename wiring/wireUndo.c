@@ -60,7 +60,7 @@ static TileType wireOldType = TT_SPACE;	/* Last type that we remembered. */
 static int wireOldWidth = 2;		/* Last width that we remembered. */
 static int wireOldDir = GEO_NORTH;		/* Last direction */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	WireUndoInit --
@@ -86,7 +86,7 @@ WireUndoInit()
     if (WireUndoClientID < (UndoType) 0)
 	TxError("Couldn't add wiring as an undo client!\n");
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	WireRememberForUndo --
@@ -121,7 +121,7 @@ WireRememberForUndo()
     wue->wue_oldDir = wireOldDir;
     wue->wue_newDir = wireOldDir = WireLastDir;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	WireUndoForw --

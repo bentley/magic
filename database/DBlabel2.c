@@ -60,7 +60,7 @@ typedef struct {
 extern void DBTreeFindUse();
 
 bool dbParseArray();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -136,7 +136,7 @@ DBSearchLabel(scx, mask, xMask, pattern, func, cdarg)
 	return 1;
     else return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -170,7 +170,7 @@ dbSrLabelFunc(scx, label, tpath, labsr)
 	    return 1;
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -249,7 +249,7 @@ DBSrLabelLoc(rootUse, name, func, cdarg)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -327,7 +327,7 @@ DBTreeFindUse(name, use, scx)
 
     scx->scx_use = use;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -447,7 +447,7 @@ dbParseArray(cp, use, scx)
     scx->scx_trans = trans2;
     return TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -527,7 +527,7 @@ DBNearestLabel(cellUse, area, point, xMask, labelArea, labelName, length)
     if (!funcData.nld_gotLabel) return FALSE;
     else return TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

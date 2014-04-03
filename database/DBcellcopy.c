@@ -221,7 +221,7 @@ DBCellCopyManhattanPaint(scx, mask, xMask, targetUse)
     (void) DBTreeSrTiles(scx, mask, xMask, dbCopyManhattanPaint, (ClientData) &arg);
 }
 
-
+
 /*
  *-----------------------------------------------------------------------------
  *
@@ -264,7 +264,7 @@ DBCellCopyAllPaint(scx, mask, xMask, targetUse)
 
     DBTreeSrTiles(scx, &locMask, xMask, dbCopyAllPaint, (ClientData) &arg);
 }
-
+
 /*
  *-----------------------------------------------------------------------------
  *
@@ -362,7 +362,7 @@ dbCopyAllLabels(scx, lab, tpath, arg)
     }
     return 0;
 }
-
+
 /*
  *-----------------------------------------------------------------------------
  *
@@ -422,7 +422,7 @@ DBCellCopyPaint(scx, mask, xMask, targetUse)
 		mask, dbCopyAllPaint, (ClientData) &cxp);
 	}
 }
-
+
 /*
  *-----------------------------------------------------------------------------
  *
@@ -548,7 +548,7 @@ dbCopyManhattanPaint(tile, cxp)
     return (0);
 }
 
-
+
 /***
  *** Filter function for paint
  ***/
@@ -731,7 +731,7 @@ splitdone:
 
     return (0);
 }
-
+
 /*
  *-----------------------------------------------------------------------------
  *
@@ -791,7 +791,7 @@ DBCellCopyAllCells(scx, xMask, targetUse, pArea)
 
     (void) DBTreeSrCells(scx, xMask, dbCellCopyCellsFunc, (ClientData) &arg);
 }
-
+
 /*
  *-----------------------------------------------------------------------------
  *
@@ -841,7 +841,7 @@ DBCellCopyCells(scx, targetUse, pArea)
 
     (void) DBCellSrArea(scx, dbCellCopyCellsFunc, (ClientData) &arg);
 }
-
+
 /*
  *-----------------------------------------------------------------------------
  *
@@ -938,7 +938,7 @@ dbCellCopyCellsFunc(scx, arg)
     }
     return 2;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -966,7 +966,7 @@ DBNewPaintTable(newTable))[NT][NT]
     dbCurPaintTbl = newTable;
     return oldTable;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

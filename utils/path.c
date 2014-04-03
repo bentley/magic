@@ -68,7 +68,7 @@ PaAppend(char **pathptr, char *newstring)
     *pathptr = new;
 }
 
-
+
 /*-------------------------------------------------------------------
  * PaExpand --
  *	This routine converts tilde notation and environment variable
@@ -279,7 +279,7 @@ noexpand:
     return size;
 }
 
-
+
 /* ----------------------------------------------------------------------------
  * nextName --
  *	This local procedure is used to step through a path, adding a
@@ -617,7 +617,7 @@ char *newWD;			/* New working directory to be used.  Must
     else newPath[NEWPATHSIZE-1] = 0;
     return newPath;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	PaEnum --

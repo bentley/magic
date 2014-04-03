@@ -36,7 +36,7 @@
 #include "utils/geometry.h"
 #include "tiles/tile.h"
 #include "gcr/gcr.h"
-
+
 /*
  * ----------------------------------------------------------------------------
  *

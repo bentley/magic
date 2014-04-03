@@ -23,7 +23,7 @@
 #include "grTkInt.h"
 #include "grTkCommon.h"
 
-
+
 /*---------------------------------------------------------
  * GrTkDisableTablet:
  *	Turns off the cursor.
@@ -39,7 +39,7 @@ GrTkDisableTablet ()
 {
 }
 
-
+
 /*---------------------------------------------------------
  * GrTkEnableTablet:
  *	This routine enables the graphics tablet.
@@ -57,7 +57,7 @@ GrTkEnableTablet ()
 {
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * grtkGetCursorPos:

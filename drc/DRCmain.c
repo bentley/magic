@@ -121,7 +121,7 @@ static int drcTotalVRulesHisto[DRC_MAXRULESHISTO];
 static int drcTotalHRulesHisto[DRC_MAXRULESHISTO];
 #endif	/* DRCRULESHISTO */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * drcPaintError --
@@ -154,7 +154,7 @@ drcPaintError(celldef, rect, cptr, plane)
     DRCErrorCount += 1;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * drcPrintError --
@@ -267,7 +267,7 @@ drcListallError (celldef, rect, cptr, area)
 #define drcListError drcPrintError
 
 #endif
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -344,7 +344,7 @@ DRCPrintStats()
     }
 #endif	/* DRCRULESHISTO */
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -637,7 +637,7 @@ drcCheckFunc(scx, cdarg)
 	return 2;
     else return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -761,7 +761,7 @@ drcCountFunc2(tile, pCount)
     if (TiGetType(tile) != (TileType) TT_SPACE) *pCount += 1;
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -789,7 +789,7 @@ DRCCatchUp()
     DRCContinuous();
     DRCBackGround = background;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

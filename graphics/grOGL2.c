@@ -34,7 +34,7 @@ char *getenv();
 
 extern char *DBWStyleType;
 
-
+
 /* GROGLSetCMap (pmap)
  *	
  *	OpenGL uses R,G,B values explicitly, so there is no
@@ -94,7 +94,7 @@ groglDrawLines(lines, nb)
 
 #endif
 }
-
+
 /*---------------------------------------------------------
  * groglDrawLine:
  *	This routine queues a line for batch drawing.
@@ -121,7 +121,7 @@ groglDrawLine (x1, y1, x2, y2)
     groglNbLines++;
 }
 
-
+
 /*---------------------------------------------------------
  * groglFillRects:
  *	This routine draws a bunch of solid rectangles.
@@ -154,7 +154,7 @@ groglFillRects(rects, nb)
 
 #endif
 }
-
+
 /*---------------------------------------------------------
  * groglFillRect:
  *	This routine queues a solid rectangle for batch drawing.

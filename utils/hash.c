@@ -41,7 +41,7 @@ static int rebuildLimit = 3;
  */
 #define NIL ((HashEntry *) (1<<29))
 
-
+
 /*---------------------------------------------------------
  *
  * HashInit --
@@ -189,7 +189,7 @@ HashInitClient(table, nBuckets, ptrKeys, compareFn, copyFn, hashFn, killFn)
     for (i = 0; i < table->ht_size; i++)
 	*ptr++ = NIL;
 }
-
+
 /*---------------------------------------------------------
  *
  * hash --
@@ -256,7 +256,7 @@ hash(table, key)
     /* Randomize! */
     return ((i*1103515245 + 12345) >> table->ht_downShift) & table->ht_mask;
 }
-
+
 /*---------------------------------------------------------
  *
  * HashLookOnly --
@@ -325,7 +325,7 @@ next:
     /* The desired entry isn't there */
     return ((HashEntry *) NULL);
 }
-
+
 /*---------------------------------------------------------
  *
  * HashFind --
@@ -451,7 +451,7 @@ next:
     *(table->ht_table + bucket) = h;
     return h;
 }
-
+
 /*---------------------------------------------------------
  *
  * rebuild --
@@ -512,7 +512,7 @@ rebuild(table)
 
     freeMagic((char *) oldTable);
 }
-
+
 /*---------------------------------------------------------
  *
  * HashStats --
@@ -553,7 +553,7 @@ HashStats(table)
 	printf("# of buckets with %d entries: %d.\n", i, count[i]);
     printf("# of buckets with >%d entries: %d.\n", MAXCOUNT-1, overflow);
 }
-
+
 /*---------------------------------------------------------
  *
  * HashStartSearch --
@@ -578,7 +578,7 @@ HashStartSearch(hs)
     hs->hs_nextIndex = 0;
     hs->hs_h = NIL;
 }
-
+
 /*---------------------------------------------------------
  *
  * HashNext --
@@ -615,7 +615,7 @@ HashNext(table, hs)
     hs->hs_h = h->h_next;
     return h;
 }
-
+
 /*---------------------------------------------------------
  *
  * HashKill --

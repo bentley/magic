@@ -68,7 +68,7 @@ extern int UndoBackward(int), UndoForward(int);
 extern void UndoDisable(void), UndoEnable(void);
 extern void UndoFlush(void);
 extern void UndoStackTrace(int);
-
+
 /*
  * ----------------------------------------------------------------------------
  *

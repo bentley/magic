@@ -34,7 +34,7 @@
 #include "utils/malloc.h"
 #include "utils/styles.h"
 #include "debug/debug.h"
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -164,7 +164,7 @@ glDensAdjust(dens, srcPin, dstPin, netid)
     dens[CZ_COL].dm_max = maxhd;
     return densChanged;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -192,7 +192,7 @@ glDMAlloc(dm, top, cap)
     dm->dm_cap = cap;
     dm->dm_value = (short *) callocMagic((unsigned) (sizeof (short) * dm->dm_size));
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -221,7 +221,7 @@ glDMCopy(dm1, dm2)
     bcopy((char *) dm1->dm_value, (char *) dm2->dm_value,
 	    sizeof (short) * dm1->dm_size);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -244,7 +244,7 @@ glDMFree(dm)
 {
     freeMagic((char *) dm->dm_value);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -280,7 +280,7 @@ glDMMaxInRange(dm, lo, hi)
 
     return (max);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

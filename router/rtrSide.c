@@ -69,7 +69,7 @@ int rtrSideMinChanWidth;	/* See comments in rtrEnumSides() */
 int rtrEnumSidesFunc();
 int rtrSideInitClient();
 int rtrSideLookCellsFunc();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -175,7 +175,7 @@ rtrEnumSides(use, area, minChannelWidth, func, cdata)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -258,7 +258,7 @@ rtrSideProcess(use, side, area, trans)
 
     return (retval);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -284,7 +284,7 @@ rtrSideInitClient(tile, client)
     tile->ti_client = client;
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -445,7 +445,7 @@ rtrEnumSidesFunc(tile)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

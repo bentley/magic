@@ -161,7 +161,7 @@ extern void plowMoveEdge();
 extern void plowMergeTop();
 extern void plowYankCreate();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -207,7 +207,7 @@ PlowSetBound(def, area, rootDef, rootArea)
     /* Redisplay the highlight we just added */
     DBWHLRedraw(rootDef, rootArea, FALSE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -238,7 +238,7 @@ PlowClearBound()
 	freeMagic((char *) pb);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -300,7 +300,7 @@ plowBoundAlways1()
 {
     return 1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -405,7 +405,7 @@ PlowStraighten(def, area, direction)
     DBWAreaChanged(def, &changedUserArea, DBW_ALLWINDOWS, &DBAllButSpaceBits);
     DRCCheckThis(def, TT_CHECKPAINT, &changedUserArea);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -458,7 +458,7 @@ PlowSelection(def, pdistance, direction)
 
     return (firstTime);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -527,7 +527,7 @@ Plow(def, userRect, layers, direction)
 #endif	/* COUNTWIDTHCALLS */
     return (firstTime);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -618,7 +618,7 @@ done:
     if (PlowDoStraighten && !SigInterruptPending)
 	PlowStraighten(def, &changedUserArea, direction);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -784,7 +784,7 @@ plowPropagateRect(def, userRect, lc, changedArea)
     /* Successful plow */
     return (FALSE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -954,7 +954,7 @@ plowPropagateSel(def, pdistance, changedArea)
     /* Successful plow */
     return (FALSE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -999,7 +999,7 @@ plowSelCellBox(selUse, realUse, transform, pSelBox)
     GeoInclude(&realUse->cu_bbox, pSelBox);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1066,7 +1066,7 @@ plowSelPaintAdd(edge)
     edge->e_flags = saveFlags;
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1127,7 +1127,7 @@ plowFindSelCell(yankUse, editUse)
     (void) plowQueueAdd(&edge);
     return (1);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1288,7 +1288,7 @@ restartbot:
 	(void) plowAtomize(edge->e_pNum, &r, plowQueueAdd, (ClientData) NULL);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1329,7 +1329,7 @@ plowSetTrans(direction)
     }
     GeoInvertTrans(&plowYankTrans, &plowInverseTrans);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1392,7 +1392,7 @@ plowPastBoundary(def, edge, pmove)
 
     return (ret);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1420,7 +1420,7 @@ plowInitialPaint(edge, xnew)
     (void) plowQueueAdd(edge);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1479,7 +1479,7 @@ plowInitialCell(cellTile, plowRect)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1624,7 +1624,7 @@ worktodo:
     /* Update edge position */
     plowMoveEdge(edge);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1706,7 +1706,7 @@ plowApplySearchRules(edge)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1785,7 +1785,7 @@ retry:
 
     return (widthRuleList);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1918,7 +1918,7 @@ plowMoveEdge(edge)
     if (DebugIsSet(plowDebugID, plowDebMove))
 	plowDebugEdge(edge, (RuleTableEntry *) NULL, "move");
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1951,7 +1951,7 @@ plowSplitY(tp, y)
 
     return (newTile);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2005,7 +2005,7 @@ plowMergeBottom(tp, plane)
 	TiJoinY(tp, tpLB, plane);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2214,7 +2214,7 @@ plowInitRule(rtePtr, rteEnd, whichRules, proc, name, ltypes, rtypes)
     rtePtr->rte_ltypes = ltypes;
     rtePtr->rte_rtypes = rtypes;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -95,7 +95,7 @@ static bool efReadDef();
 /* atoCap - convert a string to a EFCapValue */
 #define	atoCap(s)	((EFCapValue)atof(s))
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -560,7 +560,7 @@ resistChanged:
 
     return rc;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

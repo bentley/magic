@@ -25,7 +25,7 @@
 #include "database/database.h"
 #include "database/databaseInt.h"
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *

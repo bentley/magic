@@ -29,7 +29,7 @@
 #include "graphics/grTkCommon.h"
 #include "database/fonts.h"
 
-
+
 /*---------------------------------------------------------
  * grtkDrawGrid:
  *	grxDrawGrid adds a grid to the grid layer, using the current
@@ -114,7 +114,7 @@ grtkDrawGrid (prect, outline, clip)
     return TRUE;
 }
 
-
+
 /*---------------------------------------------------------
  * grtkSetCharSize:
  *	This local routine sets the character size in the display,
@@ -153,7 +153,7 @@ grtkSetCharSize (size)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrTkTextSize --
@@ -208,7 +208,7 @@ GrTkTextSize(text, size, r)
     r->r_xbot = 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrTkReadPixel --
@@ -241,7 +241,7 @@ GrTkReadPixel (w, x, y)
     return (value & (1 << grDisplay.depth) - 1);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrTkBitBlt --
@@ -269,7 +269,7 @@ GrTkBitBlt(r, p)
 	      p->p_x, grMagicToX(p->p_y));
 }
 
-
+
 
 /*
  * ----------------------------------------------------------------------------

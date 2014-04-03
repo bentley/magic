@@ -73,7 +73,7 @@ global int GeoOppositePos[] =
 global Rect  GeoNullRect = { 0, 0, 0, 0 };
 global Point GeoOrigin = { 0, 0 };
 
-
+
 /*-------------------------------------------------------------------
  *	GeoTransPoint --
  *	Transforms a point from one coordinate system to another.
@@ -183,7 +183,7 @@ GeoTransAngle(t, a)
     return a;
 }
 
-
+
 /*-------------------------------------------------------------------
  *	GeoTransRect --
  *	Transforms a rectangle from one coordinate system to another.
@@ -238,7 +238,7 @@ GeoTransRect(t, r1, r2)
 	r2->r_ytop = y1;
     }
 }
-
+
 /*-------------------------------------------------------------------
  *	GeoTranslateTrans --
  *	Translate a transform by the indicated (x, y) amount.
@@ -265,7 +265,7 @@ GeoTranslateTrans(trans1, x, y, trans2)
     trans2->t_c = trans1->t_c + x;
     trans2->t_f = trans1->t_f + y;
 }
-
+
 /*-------------------------------------------------------------------
  *	GeoTransTranslate --
  *	Transform a translation by the indicated (x, y) amount.
@@ -299,7 +299,7 @@ GeoTransTranslate(x, y, trans1, trans2)
     trans2->t_f = x*trans1->t_d + y*trans1->t_e + trans1->t_f;
 }
 
-
+
 /*-------------------------------------------------------------------
  *	GeoTransTrans --
  *	This routine transforms a transform.
@@ -327,7 +327,7 @@ GeoTransTrans(first, second, net)
     net->t_f = first->t_c*second->t_d + first->t_f*second->t_e + second->t_f;
 }
 
-
+
 /*-------------------------------------------------------------------
  *	GeoNameToPos --
  *	Map the name of a position into an integer position parameter.
@@ -438,7 +438,7 @@ GeoNameToPos(name, manhattan, verbose)
     return (pos);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -473,7 +473,7 @@ GeoPosToName(pos)
 	default:            return("*ILLEGAL*");
     }
 }
-
+
 /*-------------------------------------------------------------------
  *	GeoTransPos --
  *	This routine computes the transform of a relative position.
@@ -525,7 +525,7 @@ GeoTransPos(t, pos)
     return pos;
 }
 
-
+
 /*-------------------------------------------------------------------
  *	GeoInvertTrans --
  *	This routine computes the inverse of a transform.
@@ -559,7 +559,7 @@ GeoInvertTrans(t, inverse)
     GeoTransTrans(&t2, &t3, inverse);
 }
 
-
+
 /*-------------------------------------------------------------------
  *	GeoInclude --
  *	This routine includes one rectangle into another by expanding
@@ -611,7 +611,7 @@ GeoInclude(src, dst)
     return value;
 }
 
-
+
 /*-------------------------------------------------------------------
  *	GeoIncludeAll --
  *	This routine includes one rectangle into another by expanding
@@ -669,7 +669,7 @@ GeoIncludeAll(src, dst)
     return value;
 }
 
-
+
 /*-------------------------------------------------------------------
  *	GeoIncludePoint --
  *	This routine includes a point into a rectangle by expanding
@@ -710,7 +710,7 @@ GeoIncludePoint(src, dst)
     }
 }
 
-
+
 /*-------------------------------------------------------------------
  *	GeoClip --
  *	clips one rectangle against another.
@@ -737,7 +737,7 @@ GeoClip(r, area)
     if (r->r_xtop > area->r_xtop) r->r_xtop = area->r_xtop;
     if (r->r_ytop > area->r_ytop) r->r_ytop = area->r_ytop;
 }
-
+
 /*-------------------------------------------------------------------
  *	GeoClipPoint --
  *	Clips one point against a rectangle, moving the point into
@@ -760,7 +760,7 @@ GeoClipPoint(p, area)
     if (p->p_x > area->r_xtop) p->p_x = area->r_xtop;
     if (p->p_y > area->r_ytop) p->p_y = area->r_ytop;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	GeoDisjoint --
@@ -866,7 +866,7 @@ GeoDummyFunc(box, cdarg)
     return TRUE;
 }
 
-
+
 /*-------------------------------------------------------------------
  *	GeoCanonicalRect --
  *	Turns a rectangle into a canonical form in which the
@@ -906,7 +906,7 @@ GeoCanonicalRect(r, rnew)
 	rnew->r_ytop = r->r_ytop;
     }
 }
-
+
 /*-------------------------------------------------------------------
  *	GeoScale --
  *
@@ -963,7 +963,7 @@ GeoScaleTrans(trans1, m, trans2)
     trans2->t_f = trans1->t_f * m;
 }
 
-
+
 /*-------------------------------------------------------------------
  *	GeoRectPointSide --
  *
@@ -992,7 +992,7 @@ GeoRectPointSide(r, p)
     else
 	return(GEO_CENTER);
 }
-
+
 /*-------------------------------------------------------------------
  *	GeoRectRectSide --
  *
@@ -1024,7 +1024,7 @@ GeoRectRectSide(r0, r1)
     else
 	return(GEO_CENTER);
 }
-
+
 /* ----------------------------------------------------------------------------
  *
  * GeoDecomposeTransform --

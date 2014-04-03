@@ -39,7 +39,7 @@ extern unsigned long grPixels[256];
 extern XColor   colors[256*3];	/* Unique colors used by Magic */
 extern Colormap grXcmap;
 
-
+
 /*---------------------------------------------------------
  * GrXSetCMap:
  *
@@ -229,7 +229,7 @@ grx11DrawLines(lines, nb)
     XDrawSegments(grXdpy, grCurrent.window, grGCDraw,
 	      lines, nb);
 }
-
+
 /*---------------------------------------------------------
  * grxDrawLine:
  *	This routine draws a line.
@@ -254,7 +254,7 @@ grx11DrawLine (x1, y1, x2, y2)
     grx11NbLines++;
 }
 
-
+
 /*---------------------------------------------------------
  * grxFillRects:
  *	This routine draws a bunch of solid rectangles.
@@ -274,7 +274,7 @@ grx11FillRects(rects, nb)
     XFillRectangles(grXdpy, grCurrent.window, grGCFill, rects, nb);
 }
 
-
+
 /*---------------------------------------------------------
  * grxFillRect:
  *	This routine draws a solid rectangle.

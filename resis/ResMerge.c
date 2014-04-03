@@ -20,7 +20,7 @@ extern void ResEliminateResistor();
 extern void ResCleanNode();
 extern void ResFixBreakPoint();
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -120,7 +120,7 @@ ResDoneWithNode(resptr)
      }
 }
 
-
+
 /*
  *------------------------------------------------------------------------
  *
@@ -170,7 +170,7 @@ ResFixRes(resptr,resptr2,resptr3,elimResis,newResis)
      ResEliminateResistor(elimResis, &ResResList);     
      ResCleanNode(resptr, TRUE,&ResNodeList,&ResNodeQueue);
 }
-
+
 /*
  *------------------------------------------------------------------------
  *
@@ -210,7 +210,7 @@ ResFixParallel(elimResis,newResis)
      ResDeleteResPointer(elimResis->rr_connection2,elimResis);
      ResEliminateResistor(elimResis,&ResResList);
 }
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -394,7 +394,7 @@ ResSeriesCheck(resptr)
      return status;
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -454,7 +454,7 @@ ResParallelCheck(resptr)
      return status;
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -615,7 +615,7 @@ ResTriangleCheck(resptr)
      }
      return status;
 }
-
+
 /* 
  *--------------------------------------------------------------------------
  *
@@ -800,7 +800,7 @@ ResMergeNodes(node1,node2,pendingList,doneList)
       freeMagic((char *)node2);
  }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -854,7 +854,7 @@ ResDeleteResPointer(node,resistor)
      }
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -894,7 +894,7 @@ ResEliminateResistor(resistor,homelist)
      freeMagic((char *)resistor);
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -990,7 +990,7 @@ ResCleanNode(resptr,junk,homelist1,homelist2)
      }
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *

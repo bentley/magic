@@ -207,7 +207,7 @@ typedef struct chan
     ClientData	 gcr_client;	/* For hire */
     int		 gcr_orient;	/* Channel orientation */
 } GCRChannel;
-
+
 /* Macros that look like procedures */
 
 /************************************************************************

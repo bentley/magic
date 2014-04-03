@@ -34,7 +34,7 @@ extern int gcrStandalone;
 void gcrRouteCol();
 void gcrExtend();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -126,7 +126,7 @@ bottom:
 
     return (gcrRouterErrors);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -196,7 +196,7 @@ gcrRouteCol(ch, indx)
     gcrCheckCol(ch, indx, "After widen and extend");
     gcrPrintCol(ch, indx, GcrShowResult);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -56,7 +56,7 @@ FILE *extFileOpen();
 void extCellFile();
 void extHeader();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -122,7 +122,7 @@ ExtCell(def, outName, doLength)
 	TxPrintf("\n");
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -186,7 +186,7 @@ extFileOpen(def, file, mode, prealfile)
     name = def->cd_name;
     return (PaOpen(name, mode, ".ext", Path, CellLibPath, prealfile));
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -242,7 +242,7 @@ extCellFile(def, f, doLength)
 
     UndoEnable();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -306,7 +306,7 @@ extHeader(def, f)
     /* Output all calls on subcells */
     (void) DBCellEnum(def, extOutputUsesFunc, (ClientData) f);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

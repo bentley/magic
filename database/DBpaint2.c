@@ -25,7 +25,7 @@
 #include "utils/hash.h"
 #include "database/database.h"
 #include "database/databaseInt.h"
-
+
 /*
  * ----------------------------------------------------------------------------
  * DBPaint --
@@ -130,7 +130,7 @@ dbResolveImages(tile, cellDef)
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * DBErase --
@@ -203,7 +203,7 @@ DBErase (cellDef, rect, type)
 	    }
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * DBPaintMask --

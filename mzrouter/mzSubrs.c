@@ -44,7 +44,7 @@
 #include "mzrouter/mzInternal.h"
 
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -386,7 +386,7 @@ mzMarkConnectedTiles(rect, type, expandType)
     return;
 }
 
-
+
 /*
  * ---------------------------------------------------------------------
  *
@@ -488,7 +488,7 @@ mzConnectedTileFunc(tile, cxp)
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -645,7 +645,7 @@ mzPaintContact(path, prev)
     return cWidth;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -690,7 +690,7 @@ RoutePage *mzFirstPage = NULL;
 RoutePage *mzLastPage = NULL;
 RoutePage *mzCurPage = NULL;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -734,7 +734,7 @@ mzAllocRPath()
 
     return (&mzCurPage->rpp_array[mzCurPage->rpp_free++]);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -771,7 +771,7 @@ mzFreeAllRPaths()
     /* Start allocating again from the first page on the list */
     mzCurPage = mzFirstPage;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

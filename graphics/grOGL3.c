@@ -48,7 +48,7 @@ static XFontStruct *grXFonts[4];
 GLuint	grXBases[4];
 
 
-
+
 /*---------------------------------------------------------
  * groglDrawGrid:
  *	groglDrawGrid adds a grid to the grid layer, using the current
@@ -120,7 +120,7 @@ groglDrawGrid (prect, outline, clip)
     return TRUE;
 }
 
-
+
 /*---------------------------------------------------------
  * groglPreLoadFont
  *	This local routine loads the X fonts used by Magic.
@@ -170,7 +170,7 @@ groglPreLoadFont()
     return TRUE;
 }
 
-
+
 /*---------------------------------------------------------
  * groglLoadFont
  *	This local routine transfers the X font bitmaps
@@ -206,7 +206,7 @@ groglLoadFont()
     return TRUE;
 }
 
-
+
 /*---------------------------------------------------------
  * groglSetCharSize:
  *	This local routine sets the character size in the display,
@@ -246,7 +246,7 @@ groglSetCharSize (size)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrOGLTextSize --
@@ -301,7 +301,7 @@ GrOGLTextSize(text, size, r)
     r->r_xbot = -overall.lbearing - 1;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrOGLReadPixel --
@@ -326,7 +326,7 @@ GrOGLReadPixel (w, x, y)
    return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrOGLBitBlt --
@@ -745,7 +745,7 @@ groglPutBackingStore(MagWindow *w, Rect *area)
     /* TxPrintf("groglPutBackingStore %d %d %d %d\n",
 		area->r_xbot, area->r_ybot, area->r_xtop, area->r_ytop); */
 }
-
+
 
 /*---------------------------------------------------------
  * groglPutText:

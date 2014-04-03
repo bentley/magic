@@ -125,7 +125,7 @@ extern int dbwTileFunc(), dbwWatchFunc(), dbwLabelFunc();
 extern int dbwPaintFunc(), dbwBBoxFunc();
 extern int dbwWindowFunc(), dbwChangedFunc();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * DBWredisplay --
@@ -545,7 +545,7 @@ DBWredisplay(w, rootArea, clipArea)
     if (GrPutBackingStorePtr != NULL)
 	(*GrPutBackingStorePtr)(w, &rootClip);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -640,7 +640,7 @@ dbwPaintFunc(tile, cxp)
     GrBox(dbwWindow, &scx->scx_trans, tile);
     return 0;
 }
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -887,7 +887,7 @@ DBWDrawFontLabel(label, window, trans, style)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -972,7 +972,7 @@ dbwLabelFunc(scx, label, tpath)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1024,7 +1024,7 @@ dbwBBoxFunc(scx)
         GR_TEXT_LARGE, TRUE, &r, (Rect *)NULL);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1234,7 +1234,7 @@ dbwTileFunc(tile)
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	DBWAreaChanged --
@@ -1387,7 +1387,7 @@ DBWAreaChanged(cellDef, defArea, expandMask, layers)
     SigEnableInterrupts();
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1462,7 +1462,7 @@ dbwChangedFunc(w, area)
     else WindAreaChanged(w, &screenArea);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1590,13 +1590,13 @@ dbwLabelChangedFunc(w, lab)
     WindAreaChanged(w, &screenArea);
     return 0;
 }
-
+
 /*
  * Technology initialization for the display module.
  */
 
 global TileTypeBitMask	*DBWStyleToTypesTbl = NULL;
-
+
 /*
  * ----------------------------------------------------------------------------
  * DBWTechInitStyles --
@@ -1631,7 +1631,7 @@ DBWTechInitStyles()
     for (i = 0; i < DBWNumStyles; i++)
 	TTMaskZero(DBWStyleToTypesTbl + i);
 }
-
+
 
 /*
  * ----------------------------------------------------------------------------

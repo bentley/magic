@@ -50,7 +50,7 @@ struct inarg
     int		 ina_incursion;		/* Height of biggest DRC error */
     bool	 ina_cantMove;		/* TRUE if couldn't fix some error */
 };
-
+
 /*
  * ----------------------------------------------------------------------------
  *

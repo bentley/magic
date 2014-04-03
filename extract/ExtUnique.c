@@ -40,7 +40,7 @@
 #include "dbwind/dbwind.h"
 #include "utils/main.h"
 #include "utils/undo.h"
-
+
 /*
  * ----------------------------------------------------------------------------
  *

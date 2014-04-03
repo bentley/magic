@@ -142,7 +142,7 @@ extern int drcCheckTile();
 extern CellDef *DRCErrorDef;
 extern TileType DRCErrorType;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * DRCCheckThis --
@@ -264,7 +264,7 @@ DRCCheckThis (celldef, operation, area)
 	DRCCheckThis (cu->cu_parent, TT_CHECKSUBCELL, &transRect);
     }
 }
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -546,7 +546,7 @@ checkDone:
 #endif
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * drcCheckTile --
@@ -760,7 +760,7 @@ drcPutBackFunc(tile, cellDef)
 	(PaintUndoInfo *) NULL);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

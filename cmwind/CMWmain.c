@@ -126,7 +126,7 @@ char *cmwCurrentColorText = "Color Being Edited";
 /* Bounding rectangle for entire window */
 
 Rect colorWindowRect = {{0, 1500}, {24000, 17000}};
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -167,7 +167,7 @@ CMWcreate(window, argc, argv)
     CMWloadWindow(window, color);
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -196,7 +196,7 @@ CMWdelete(window)
     freeMagic((char *) cr);
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -223,7 +223,7 @@ CMWreposition(window, newScreenArea, final)
 	WindMove(window, &colorWindowRect);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -349,7 +349,7 @@ CMWredisplay(w, rootArea, clipArea)
 
     GrUnlock(w);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -385,7 +385,7 @@ CMWloadWindow(w, color)
     /* move the contents of the window so the color bars show */
     WindMove(w, &colorWindowRect);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

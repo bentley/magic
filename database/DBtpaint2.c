@@ -53,7 +53,7 @@ extern void dbComposeSavedRules();
 extern void dbComposeCompose();
 extern void dbComposeDecompose();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -119,7 +119,7 @@ DBTechFinalCompose()
     /* dbTechPrintPaint("DBTechFinalCompose", TRUE, FALSE); */
     /* dbTechPrintPaint("DBTechFinalCompose", FALSE, FALSE); */
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -218,7 +218,7 @@ dbComposePaintAllImages()
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -336,7 +336,7 @@ dbComposeContacts()
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * dbComposePaintContact --
@@ -609,7 +609,7 @@ dbComposeSubsetResidues(lpImage, lpErase, outMask)
     return rval;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * dbComposeEraseContact --
@@ -838,7 +838,7 @@ dbComposeSavedRules()
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * dbComposeDecompose --
@@ -882,7 +882,7 @@ dbComposeDecompose(imageType, componentType, remainingType)
     dbSetEraseEntry(imageType, componentType, pNum, resultType);
     TTMaskSetType(&dbNotDefaultEraseTbl[imageType], componentType);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * dbComposeCompose --

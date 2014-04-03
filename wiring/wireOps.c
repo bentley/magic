@@ -49,7 +49,7 @@ int WireLastDir;		/* Last direction in which a wire was run. */
  */
 
 static CellDef *wireDesiredDef;
-
+
 /*
  * ----------------------------------------------------------------------------
  *	wireFindRootUse --
@@ -100,7 +100,7 @@ wireFindRootFunc(window, cellUsePtr)
     *cellUsePtr = use;
     return 1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	WirePickType --
@@ -835,7 +835,7 @@ WireAddContact(newType, newWidth)
     GEO_EXPAND(&tmp, newOverlap, &tmp2);
     DBWSetBox(EditRootDef, &tmp2);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -880,7 +880,7 @@ WireButtonProc(w, cmd)
 	    break;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

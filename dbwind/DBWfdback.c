@@ -78,7 +78,7 @@ static CellDef *dbwfbRootDef;		/* To pass root cell definition from
 					 * DBWFeedbackAdd.
 					 */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -237,7 +237,7 @@ dbwFeedbackAlways1()
 {
     return 1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -520,7 +520,7 @@ dbwFeedbackInit()
     DBWHLAddClient(DBWFeedbackRedraw);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -569,7 +569,7 @@ DBWFeedbackShow()
 	DBWHLRedraw(currentRoot, &area, FALSE);
     dbwfbNextToShow = DBWFeedbackCount;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

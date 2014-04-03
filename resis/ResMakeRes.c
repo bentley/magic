@@ -25,7 +25,7 @@ bool ResCalcNearTransistor();
 bool ResCalcNorthSouth();
 bool ResCalcEastWest();
 
-
+
 /*
  *--------------------------------------------------------------------------
  *
@@ -98,7 +98,7 @@ ResCalcTileResistance(tile, junk, pendingList, doneList)
     return(merged);
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -268,7 +268,7 @@ ResCalcEastWest(tile, pendingList, doneList, resList)
     return(merged);
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -434,7 +434,7 @@ ResCalcNorthSouth(tile, pendingList, doneList, resList)
     return(merged);
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -754,7 +754,7 @@ ResCalcNearTransistor(tile, pendingList, doneList, resList)
      }
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *

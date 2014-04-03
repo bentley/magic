@@ -32,7 +32,7 @@
 #include "utils/styles.h"
 #include "utils/main.h"
 #include "textio/textio.h"
-
+
 
 #ifdef ROUTE_MODULE
 
@@ -97,7 +97,7 @@ NMCmdMeasure(w, cmd)
 
 #endif
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -135,7 +135,7 @@ NMCmdNetlist(w, cmd)
 	NMNewNetlist(EditCellUse->cu_def->cd_name);
     else NMNewNetlist(cmd->tx_argv[1]);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -340,7 +340,7 @@ NMCmdSavenetlist(w, cmd)
 	NMWriteNetlist((char *) NULL);
     else NMWriteNetlist(cmd->tx_argv[1]);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -376,7 +376,7 @@ NMCmdShownet(w, cmd)
     }
     NMShowUnderBox();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -455,7 +455,7 @@ nmShowtermsFunc2(rect, name, label, cdarg)
 	    1, STYLE_PALEHIGHLIGHTS);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -491,7 +491,7 @@ NMCmdTrace(w, cmd)
 	NMShowRoutedNet((char *) NULL);
     else NMShowRoutedNet(cmd->tx_argv[1]);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -531,7 +531,7 @@ NMCmdVerify(w, cmd)
     }
     NMVerify();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -82,7 +82,7 @@ char *CIFPathPrefix = NULL;
 bool CIFHierWriteDisable = FALSE;
 bool CIFArrayWriteDisable = FALSE;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -174,7 +174,7 @@ CIFWrite(rootDef, f)
     good = !ferror(f);
     return (good);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -199,7 +199,7 @@ cifWriteInitFunc(def)
     def->cd_client = (ClientData) 0;
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -226,7 +226,7 @@ cifWriteMarkFunc(use)
     StackPush((ClientData) use->cu_def, cifStack);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -273,7 +273,7 @@ cifOutPreamble(outf, cell)
     fprintf(outf,"( @@style : %s );\n", CIFCurStyle->cs_name);
     fprintf(outf,"( @@date : %s );\n", now);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -323,7 +323,7 @@ cifOut(outf)
 	cifOutFunc(def, outf);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -445,7 +445,7 @@ cifOutFunc(def, f)
     (void) DBCellEnum(def, cifWriteUseFunc, (ClientData) f);
     fprintf(f, "DF;\n");
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -542,7 +542,7 @@ cifWriteUseFunc(use, f)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -610,7 +610,7 @@ cifWritePaintFunc(tile, f)
     CIFRects += 1;
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

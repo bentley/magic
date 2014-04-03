@@ -28,7 +28,7 @@
 struct debugClient debugClients[MAXDEBUGCLIENTS];
 int debugNumClients = 0;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -80,7 +80,7 @@ DebugAddClient(name, maxflags)
 
     return ((ClientData) debugNumClients++);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -133,7 +133,7 @@ DebugAddFlag(clientID, name)
     dc->dc_flags[dc->dc_nflags].df_value = FALSE;
     return (dc->dc_nflags++);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -169,7 +169,7 @@ DebugShow(clientID)
 	TxPrintf("%-5.5s %s\n", dc->dc_flags[n].df_value ? "TRUE" : "FALSE",
 		dc->dc_flags[n].df_name);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

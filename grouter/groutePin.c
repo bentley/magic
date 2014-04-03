@@ -35,7 +35,7 @@
 #include "grouter/grouter.h"
 #include "textio/textio.h"
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -96,7 +96,7 @@ glPointToPin(ch, side, point)
     ASSERT(FALSE, "Pin not on side of channel in glPointToPin");
     return &ch->gcr_lPins[0];
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -239,7 +239,7 @@ glPinArrayInit(ch, side, pins, nPins)
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -328,7 +328,7 @@ glPinArrayBlock(ch, pins, opins, nPins)
 
     return changed;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -425,7 +425,7 @@ glShowPin(pin)
     nrShowRect(EditCellUse->cu_def, &r, STYLE_ERASEHIGHLIGHTS);
 #endif	/* notdef */
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

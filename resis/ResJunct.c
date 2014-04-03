@@ -22,7 +22,7 @@
 #include "resis/resis.h"
 
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -91,7 +91,7 @@ ResNewSDTransistor(tile,tp,xj,yj,direction,PendingList)
 	}
 	NEWBREAK(resptr,tile,xj,yj,NULL);
 }
-
+
 /*
  *-------------------------------------------------------------------------
  *

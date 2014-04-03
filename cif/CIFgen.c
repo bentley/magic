@@ -510,7 +510,7 @@ cifGrowFunc(tile, table)
     CIFTileOps += 1;
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2646,7 +2646,7 @@ cifSquareGridFunc(area, op, rows, columns, cut)
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2726,7 +2726,7 @@ cifSrTiles(cifOp, area, cellDef, temps, func, cdArg)
 	    (void) DBSrPaintArea((Tile *) NULL, *temps, &TiPlaneRect,
 		&CIFSolidBits, func, (ClientData) cdArg);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -3069,7 +3069,7 @@ CIFGenLayer(op, area, cellDef, temps, clientdata)
 
     return curPlane;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -3186,7 +3186,7 @@ CIFGen(cellDef, area, planes, layers, replace, genAllPlanes, clientdata)
 	else planes[i] = new[i];
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -3235,7 +3235,7 @@ cifClipPlane(plane, clip)
 	DBPaintPlane(plane, &r, CIFEraseTable, (PaintUndoInfo *) NULL);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -3290,7 +3290,7 @@ cifGenClip(area, expanded, clip)
     }
     else clip->r_ytop = expanded->r_ytop = area->r_ytop;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -54,7 +54,7 @@ static int drcArrayCount;		/* Count of number of errors found. */
 static void (*drcArrayErrorFunc)();	/* Function to call on violations. */
 static ClientData drcArrayClientData;	/* Extra parameter to pass to func. */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -236,7 +236,7 @@ drcArrayFunc(scx, area)
     
     return 2;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * DRCArrayCheck --
@@ -304,7 +304,7 @@ DRCArrayCheck(def, area, func, cdarg)
     return drcArrayCount;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -340,7 +340,7 @@ drcArrayYankFunc(use, transform, x, y, yankArea)
     (void) DBCellCopyAllPaint(&scx, &DBAllButSpaceBits, 0, DRCuse);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

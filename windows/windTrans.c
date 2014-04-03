@@ -24,7 +24,7 @@
 #include "graphics/glyphs.h"
 #include "windows/windInt.h"
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindScreenToSurface --
@@ -58,7 +58,7 @@ WindScreenToSurface(w, screen, surface)
     surface->r_ur = r.r_ur;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindPointToSurface --
@@ -131,7 +131,7 @@ WindPointToSurface(w, screenPoint, surfacePoint, surfaceBox)
 	surfacePoint->p_y = w->w_surfaceArea.r_ybot + tmp/w->w_scale;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -282,7 +282,7 @@ WindSurfaceToScreenNoClip(w, surface, screen)
     screen->r_ytop = (int)(dval >> SUBPIXELBITS);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -329,7 +329,7 @@ WindPointToScreen(w, surface, screen)
     if (tmp < 0) tmp = 0;
     screen->p_y = (w->w_origin.p_y + (tmp*w->w_scale)) >> SUBPIXELBITS;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

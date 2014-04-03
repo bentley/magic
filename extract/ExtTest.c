@@ -80,7 +80,7 @@ void extShowMask(TileTypeBitMask *, FILE *);
 void extShowPlanes(PlaneMask, FILE *);
 void extShowConnect(char *, TileTypeBitMask *, FILE *);
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -305,7 +305,7 @@ extShowInter(tile)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -541,7 +541,7 @@ extShowPlanes(m, out)
 	    fprintf(out, "%s", DBPlaneShortName(pNum));
 	}
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -569,7 +569,7 @@ extDispInit(def, w)
     extScreenClip = w->w_screenArea;
     GeoClip(&extScreenClip, &GrScreenRect);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -630,7 +630,7 @@ extShowEdge(s, bp)
     GrUnlock(extDebugWindow);
     (void) GrFlush();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

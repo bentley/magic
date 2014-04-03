@@ -42,7 +42,7 @@
 
 void glMultiAddStart();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -217,7 +217,7 @@ glMultiSteiner(rootUse, net, routeProc, markProc, cdRoute, cdMark)
     glPathFreePerm(startList);
     return nterms;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -250,7 +250,7 @@ glMultiStemCost(loc)
 
     return cost;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -790,7 +790,7 @@ static void		ImgLayerConfigureInstance _ANSI_ARGS_((
 static int		ImgLayerConfigureMaster _ANSI_ARGS_((
 			    LayerMaster *masterPtr, int argc, Tcl_Obj *CONST objv[],
 			    int flags));
-
+
 /*
  *----------------------------------------------------------------------
  *
@@ -841,7 +841,7 @@ ImgLayerCreate(interp, name, argc, argv, typePtr, master, clientDataPtr)
     *clientDataPtr = (ClientData) masterPtr;
     return TCL_OK;
 }
-
+
 /*
  *----------------------------------------------------------------------
  *
@@ -932,7 +932,7 @@ grDrawOffScreenBox(rect)
 			rect->r_ytop - 1);
 }
 
-
+
 /*
  *----------------------------------------------------------------------
  *
@@ -1162,7 +1162,7 @@ error:
     Tcl_BackgroundError(masterPtr->interp);
 }
 
-
+
 /*
  *--------------------------------------------------------------
  *
@@ -1229,7 +1229,7 @@ ImgLayerCmd(clientData, interp, objc, objv)
     }
     return TCL_OK;
 }
-
+
 /*
  *----------------------------------------------------------------------
  *
@@ -1298,7 +1298,7 @@ ImgLayerGet(tkwin, masterData)
 
     return (ClientData) instancePtr;
 }
-
+
 /*
  *----------------------------------------------------------------------
  *
@@ -1341,7 +1341,7 @@ ImgLayerDisplay(clientData, display, drawable, imageX, imageY, width,
 	    imageX, imageY, (unsigned) width, (unsigned) height,
 	    drawableX, drawableY);
 }
-
+
 /*
  *----------------------------------------------------------------------
  *
@@ -1400,7 +1400,7 @@ ImgLayerFree(clientData, display)
     }
     Tcl_Free((char *) instancePtr);
 }
-
+
 /*
  *----------------------------------------------------------------------
  *
@@ -1435,7 +1435,7 @@ ImgLayerDelete(masterData)
     Tk_FreeOptions(configSpecs, (char *) masterPtr, (Display *) NULL, 0);
     Tcl_Free((char *) masterPtr);
 }
-
+
 /*
  *----------------------------------------------------------------------
  *

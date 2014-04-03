@@ -60,7 +60,7 @@ TileTypeBitMask	ResSubsTypeBitMask;
 /* Forward declarations */
 extern void ResCalcPerimOverlap();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -319,7 +319,7 @@ dbcConnectFuncDCS(tile, cx)
     return 0;
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -390,7 +390,7 @@ ResCalcPerimOverlap(trans, tile)
     trans->overlap = overlap;
 }
 	
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -490,7 +490,7 @@ DBTreeCopyConnectDCS(scx, mask, xMask, connect, area, destUse)
     DBReComputeBbox(def);
     return(TransList);
 }
-
+
 
 #ifdef ARIEL
 /*

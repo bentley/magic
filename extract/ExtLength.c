@@ -119,7 +119,7 @@ void extPathPairDistance();
 void extPathFlood();
 void extPathFloodTile();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -157,7 +157,7 @@ ExtSetReceiver(name)
     he = HashFind(&extReceiverHash, name);
     HashSetValue(he, 0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -181,7 +181,7 @@ ExtLengthClear()
     HashKill(&extReceiverHash);
     extLengthInit();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -205,7 +205,7 @@ extLengthInit()
     HashInit(&extDriverHash, INITHASHSIZE, 0);
     HashInit(&extReceiverHash, INITHASHSIZE, 0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -310,7 +310,7 @@ extLength(rootUse, f)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -398,7 +398,7 @@ extLengthYank(use, labList)
 
     return (extLengthLabelList);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -445,7 +445,7 @@ extLengthLabels(tile, rootUse)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -509,7 +509,7 @@ extLengthLabelsFunc(scx, label, tpath)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -543,7 +543,7 @@ extPathLabel(use, text)
 	TxError("Can't find terminal \"%s\"\n", text);
     return (lab);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -588,7 +588,7 @@ extPathLabelFunc(rect, text, childLab, pLabList)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -686,7 +686,7 @@ extPathResetClient(tile)
     tile->ti_client = (ClientData) CLIENTDEFAULT;
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -734,7 +734,7 @@ extPathPairFunc(tile, epa)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -931,7 +931,7 @@ extPathFloodFunc(dstTile, epfa)
     extPathFlood(dstTile, p, dstDist, epfa->epfa_epa);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -981,7 +981,7 @@ extPathFloodTile(srcTile, srcPoint, srcDist, dstTile, epa)
     /* Recurse */
     extPathFlood(dstTile, &dstPoint, dstDist, epa);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

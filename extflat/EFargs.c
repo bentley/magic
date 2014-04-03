@@ -76,7 +76,7 @@ bool efScaleChanged = FALSE;	/* TRUE if .ext scales mismatch */
 extern int  efLoadPathFunc();
 extern void efLoadSearchPath();
 #endif
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -324,7 +324,7 @@ usage:
 }
 
 #ifndef MAGIC_WRAPPER
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -812,7 +812,7 @@ spcdevHierMergeVisit(hc, dev, scale)
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -854,7 +854,7 @@ spccapHierVisit(hc, hierName1, hierName2, cap)
                 nodeSpiceHierName(hc, hierName2), cap);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

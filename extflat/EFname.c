@@ -55,7 +55,7 @@ extern void EFHNFree();
 extern void efHNInit();
 extern void efHNRecord();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -93,7 +93,7 @@ EFHNIsGlob(hierName)
 #endif
     return hierName->hn_name[strlen(hierName->hn_name) - 1] == '!';
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -131,7 +131,7 @@ EFHNIsGND(hierName)
 
     return (strcmp(hierName->hn_name, "GND!") == 0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -176,7 +176,7 @@ EFHNConcat(prefix, suffix)
 
     return firstNew;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -239,7 +239,7 @@ EFStrToHN(prefix, suffixStr)
 
     return hierName;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -310,7 +310,7 @@ efHNToStrFunc(hierName, dstp)
 
     return --dstp;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -370,7 +370,7 @@ EFHNLook(prefix, suffixStr, errorStr)
 
     return he;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -422,7 +422,7 @@ EFHNConcatLook(prefix, suffix, errorStr)
     hn->hn_parent = (HierName *) NULL;
     return he;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -460,7 +460,7 @@ EFHNFree(hierName, prefix, type)
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -527,7 +527,7 @@ EFHNBest(hierName1, hierName2)
 
     return (efHNLexOrder(hierName1, hierName2) > 0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -565,7 +565,7 @@ efHNLexOrder(hierName1, hierName2)
 
     return strcmp(hierName1->hn_name, hierName2->hn_name);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -655,7 +655,7 @@ efHNFromUse(hc, prefix)
 
     return hierName;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -698,7 +698,7 @@ efHNUseHash(hierName)
 {
     return hierName->hn_hash + (spointertype) hierName->hn_parent;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -746,7 +746,7 @@ efHNInit(hierName, cp, endp)
 
     hierName->hn_hash = hashsum;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -806,7 +806,7 @@ efHNHash(hierName)
 
     return n;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -876,7 +876,7 @@ efHNDistKill(dist)
 
     freeMagic((char *) dist);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -918,7 +918,7 @@ efHNBuildDistKey(prefix, dist, distKey)
     distKey->dist_min = dist->dist_min;
     distKey->dist_max = dist->dist_max;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

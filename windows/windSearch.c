@@ -24,7 +24,7 @@
 #include "graphics/glyphs.h"
 #include "windows/windInt.h"
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * windSearchPoint --
@@ -124,7 +124,7 @@ WindSearchData(grdata)
     }
     return NULL;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindSearch --

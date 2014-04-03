@@ -79,7 +79,7 @@ struct	rtrTileStack
     struct rtrTileStack *ts_link;	/* Pointer to previous stack entry */
     struct conSrArg *ts_csa;		/* Pointer to search arguments */
 };
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -219,7 +219,7 @@ rtrSrTraverseStartFunc(tile, pTile)
     *pTile = tile;
     return 1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -394,7 +394,7 @@ rtrSrTraverseFunc(tile, ts)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -429,7 +429,7 @@ rtrExamineTile(tile, cdata)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

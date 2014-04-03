@@ -32,7 +32,7 @@
 #include "cif/CIFint.h"
 #include "cif/CIFread.h"
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -142,7 +142,7 @@ CIFParseBox()
     DBPaintPlane(cifReadPlane, &r2, CIFPaintTable, (PaintUndoInfo *) NULL);
     return TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -570,7 +570,7 @@ PaintWireList(pointlist, number, width, endcap, plane, ptable, ui)
     CIFPaintWirePath(cifpath, width, endcap, plane, ptable, ui);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -631,7 +631,7 @@ CIFParseWire()
     return TRUE;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -694,7 +694,7 @@ CIFParseLayer()
     CIFSkipToSemi();
     return TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

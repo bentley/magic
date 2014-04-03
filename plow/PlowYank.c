@@ -68,7 +68,7 @@ extern CellUse *plowDummyUse;
 int plowYankUpdateCell();
 int plowYankUpdatePaint();
 int plowCheckLabel();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -195,7 +195,7 @@ plowYankMore(area, halo, back)
 
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -253,7 +253,7 @@ plowYankUpdateCell(yankChildUse)
     TxError("Couldn't find use %s in spare yank buffer\n", yankChildUse->cu_id);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -318,7 +318,7 @@ plowYankUpdatePaint(yankTp, pNum)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -416,7 +416,7 @@ plowCheckLabel(tile, lu)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -505,7 +505,7 @@ plowUpdateCell(use, origDef)
 			DBW_ALLWINDOWS, (TileTypeBitMask *) NULL);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

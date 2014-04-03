@@ -88,7 +88,7 @@ GlNetHisto *glNetHistoList = NULL;
 void GlInit();
 void glShowCross();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -229,7 +229,7 @@ glDebugSides(side)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -287,7 +287,7 @@ GlInit()
     for (n = 0; dflags[n].di_name; n++)
 	*(dflags[n].di_id) = DebugAddFlag(glDebugID, dflags[n].di_name);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -316,7 +316,7 @@ glShowPath(dest, root, kind)
     for (temp = dest; temp != root; temp = temp->gl_path)
 	glShowCross(temp->gl_pin, dummyId, kind);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -377,7 +377,7 @@ glShowCross(pin, netId, kind)
     r.r_ytop += RtrMetalWidth;
     ShowRect(EditCellUse->cu_def, &r, style);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -409,7 +409,7 @@ glHistoAdd(heapPtsBefore, frontierPtsBefore, startPtsBefore)
     gh->glh_next = glNetHistoList;
     glNetHistoList = gh;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -507,7 +507,7 @@ glHistoDump()
     /* Done */
     (void) fclose(fp);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -550,7 +550,7 @@ glStatsInit()
 	    perror(logFileName);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

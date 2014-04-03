@@ -1012,7 +1012,7 @@ main(argc, argv)
 
 #endif	/* MAGIC_WRAPPER */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1193,7 +1193,7 @@ HierName *suffix;
     if (nn == NULL) return NULL;
     return(nn->efnn_node);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2322,7 +2322,7 @@ int spcnAPHier(dterm, hierName, resClass, scale, sterm, m, outf)
 	    ((float)node->efnode_pa[resClass].pa_perim*scale)*esScale);
 	return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2364,7 +2364,7 @@ spcdevOutNode(prefix, suffix, name, outf)
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2404,7 +2404,7 @@ spccapVisit(hierName1, hierName2, cap)
                                           nodeSpiceName(hierName2), cap);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2443,7 +2443,7 @@ spcresistVisit(hierName1, hierName2, res)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2536,7 +2536,7 @@ nodeVisitDebug(node, res, cap)
     ((nodeClient *)node->efnode_client)->m_w.widths);
    return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

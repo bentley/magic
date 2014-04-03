@@ -77,7 +77,7 @@ CellUse *mzEstimateUse = (CellUse *) NULL;
 /* Forward declarations */
 extern void mzBuildPlanes();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -166,7 +166,7 @@ MZAttachHintPlanes()
     mzVBoundsPlane = mzVBoundsDef->cd_planes[PL_M_HINT];
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *

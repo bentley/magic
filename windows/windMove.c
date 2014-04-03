@@ -55,7 +55,7 @@ int windWindowMask = 0;  /* One bit per window ID */
 int windMaxWindows = 32; /* May be decreased via the WIND_MAX_WINDOWS() macro */
 int windCurNumWindows = 0;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * windUnlink --
@@ -104,7 +104,7 @@ windUnlink(w)
     w->w_nextWindow = (MagWindow *) NULL;
     w->w_prevWindow = (MagWindow *) NULL;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -193,7 +193,7 @@ windSetWindowPosition(w)
     MagWindow *w;
 {
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindDelete --
@@ -231,7 +231,7 @@ WindDelete(w)
 	return FALSE;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindCreate --
@@ -356,7 +356,7 @@ WindCreate(client, frameArea, isHint, argc, argv)
 
     return w;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -412,7 +412,7 @@ void WindInToOut(w, in, out)
     out->r_ytop += TOP_BORDER(w);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindUnder --
@@ -469,7 +469,7 @@ WindUnder(w)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindOver --
@@ -526,7 +526,7 @@ WindOver(w)
 	    windReClip();
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -569,7 +569,7 @@ windFindUnobscured(area, okArea)
 	windFindUnobscured, (ClientData) okArea);
     return FALSE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindReframe --
@@ -723,7 +723,7 @@ windReframeFunc(area, w)
     WindAreaChanged(w, area);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -39,7 +39,7 @@ struct expandArg
 				 */
     ClientData	ea_arg;		/* Argument to pass to func. */
 };
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -90,7 +90,7 @@ DBExpand(cellUse, expandMask, expandFlag)
     else
 	cellUse->cu_expandMask &= ~expandMask;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -254,7 +254,7 @@ dbUnexpandFunc(scx, arg)
 	return 1;
     return 2;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

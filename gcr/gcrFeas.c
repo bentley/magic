@@ -32,7 +32,7 @@ extern int gcrRouterErrors;
 
 /* Forward declarations */
 void gcrMakeFeasible();
-
+
 /*
  * ----------------------------------------------------------------------------
  *	gcrFeasible --
@@ -186,7 +186,7 @@ gcrFeasible(ch, col)
 	gcrRouterErrors++;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	gcrMakeFeasible --

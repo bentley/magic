@@ -53,7 +53,7 @@ void cmwUndoStart(), cmwUndoDone();
  * of an undo/redo command.
  */
 bool cmwColorsChanged[256];
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -79,7 +79,7 @@ CMWundoInit()
 				cmwUndoForw, cmwUndoBack, "color map");
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -112,7 +112,7 @@ cmwUndoBack(up)
     (void) GrPutColor(up->cue_color, up->old_r, up->old_g, up->old_b);
     cmwColorsChanged[up->cue_color] = TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -149,7 +149,7 @@ cmwUndoColor(color, oldr, oldg, oldb, newr, newg, newb)
     up->new_g = newg;
     up->new_b = newb;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -174,7 +174,7 @@ cmwUndoStart()
     for (i = 0; i < 256; i++)
 	cmwColorsChanged[i] = FALSE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

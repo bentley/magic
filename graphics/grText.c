@@ -82,7 +82,7 @@ GrFontText(str, style, p, font, size, rotate, clip)
 
 #define TEXTOFFSET 5
 
-
+
 /*---------------------------------------------------------
  * GrPutText:
  *	This routine puts a chunk of text on the screen in the given

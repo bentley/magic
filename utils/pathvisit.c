@@ -28,7 +28,7 @@
 #include "utils/pathvisit.h"
 #include "utils/utils.h"
 
-
+
 /*
  * -------------------------------------------------------------------
  *
@@ -56,7 +56,7 @@ PaVisitInit()
     pv->pv_first = pv->pv_last = (PaVisitClient *) NULL;
     return (pv);
 }
-
+
 /*
  * -------------------------------------------------------------------
  *
@@ -88,7 +88,7 @@ PaVisitFree(pv)
 
     freeMagic((char *) pv);
 }
-
+
 /*
  * -------------------------------------------------------------------
  *
@@ -143,7 +143,7 @@ PaVisitAddClient(pv, keyword, proc, cdata)
 	pv->pv_first = pv->pv_last = pvc;
     }
 }
-
+
 /*
  * -------------------------------------------------------------------
  *

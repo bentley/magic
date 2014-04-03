@@ -110,7 +110,7 @@ int  extCountTiles();
 
 extern int extDefInitFunc();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -256,7 +256,7 @@ ExtTimes(rootUse, f)
 
     (void) fclose(extDevNull);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -304,7 +304,7 @@ extTimesInitFunc(use)
     (void) DBCellEnum(def, extTimesInitFunc, (ClientData) 0);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -390,7 +390,7 @@ extCountTiles(tile, cs)
     cs->cs_rects++;
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -445,7 +445,7 @@ extTimesIncrFunc(cs)
      */
     (void) extTimesFlatFunc(cs->cs_def, cs);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -552,7 +552,7 @@ extTimesSummaryFunc(cs, f)
     extCumAdd(&cumClippedArea, (double) cs->cs_cliparea);
     extCumAdd(&cumIncrTime, tincr);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -605,7 +605,7 @@ extTimesParentFunc(def, cs)
 	if (parent->cu_parent)
 	    extTimesParentFunc(parent->cu_parent, cs);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -669,7 +669,7 @@ extTimesHierUse(use, cs)
 {
     return (extTimesHierFunc(use->cu_def, cs));
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -736,7 +736,7 @@ extTimesFlatUse(use, cs)
     cs->cs_frects += dummyCS.cs_frects * nel;
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -805,7 +805,7 @@ extTimeProc(proc, def, tv)
     }
 #endif
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -832,7 +832,7 @@ extPaintOnly(def)
     if (reg) ExtFreeLabRegions((LabRegion *) reg);
     ExtResetTiles(def, extUnInit);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -856,7 +856,7 @@ extHierCell(def)
 {
     extCellFile(def, extDevNull, FALSE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -883,7 +883,7 @@ extCumInit(cum)
     cum->cums_sos = 0.0;
     cum->cums_n = 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -926,7 +926,7 @@ extCumOutput(str, cum, f)
 	fprintf(f, "   <none>");
     fprintf(f, " %8.2f %8.2f\n", mean, sqrt(var));
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -955,7 +955,7 @@ extCumAdd(cum, v)
     cum->cums_sos += v*v;
     cum->cums_n++;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -984,7 +984,7 @@ extGetStats(def)
 
     return ((struct cellStats *) HashGetValue(he));
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

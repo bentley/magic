@@ -37,7 +37,7 @@ extern Display *grXdpy;
 
 GLuint  grXBases[4];
 
-
+
 /*---------------------------------------------------------
  * grtoglDrawGrid:
  *	grxDrawGrid adds a grid to the grid layer, using the current
@@ -106,7 +106,7 @@ grtoglDrawGrid (prect, outline, clip)
     return TRUE;
 }
 
-
+
 /*---------------------------------------------------------
  * grtoglLoadFont
  *	This local routine transfers the X font bitmaps
@@ -138,7 +138,7 @@ grtoglLoadFont()
     return TRUE;
 }
 
-
+
 /*---------------------------------------------------------
  * grtoglSetCharSize:
  *	This local routine sets the character size in the display,
@@ -177,7 +177,7 @@ grtoglSetCharSize (size)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrTOGLTextSize --
@@ -397,7 +397,7 @@ grtoglPutBackingStore(MagWindow *w, Rect *area)
     glDrawBuffer(GL_FRONT);	/* Return to normal front rendering */
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrTOGLReadPixel --
@@ -421,7 +421,7 @@ GrTOGLReadPixel (w, x, y)
     return 0;		/* OpenGL has no such function, so return 0 */
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrTOGLBitBlt --

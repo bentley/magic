@@ -43,7 +43,7 @@
 
 #define MAXCLIENTS 10
 static int (*(dbwhlClients[MAXCLIENTS]))();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -94,7 +94,7 @@ DBWHLAddClient(redisplayProc)
     TxError("Magic error:  ran out of space in highlight client table.\n");
     TxError("Tell your system maintainer to enlarge the table.\n");
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -131,7 +131,7 @@ DBWHLRemoveClient(redisplayProc)
     }
     ASSERT(FALSE, "DBWHLRemoveClient");
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -403,7 +403,7 @@ dbwhlEraseFunc(tile, window)
     if (needErase) GrClipBox(&area, STYLE_ERASEHIGHLIGHTS);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * DBWHLUpdate --

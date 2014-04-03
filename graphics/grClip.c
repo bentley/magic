@@ -118,7 +118,7 @@ grInformDriver()
     grDriverInformed = TRUE;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * grClipAgainst --
@@ -216,7 +216,7 @@ grObsBox(r)
     }
 }
 
-
+
 /*---------------------------------------------------------
  * grClipPoints:
  *	This routine computes the 0, 1, or 2 intersection points
@@ -356,7 +356,7 @@ grClipPoints(line, box, p1, p1OK, p2, p2OK)
 	    && (y1 <= box->r_ytop));
 }
 
-
+
 #define NEWAREA(lr,x1,y1,x2,y2)	{LinkedRect *tmp; \
     tmp = (LinkedRect *) mallocMagic((unsigned) (sizeof (LinkedRect))); \
     tmp->r_r.r_xbot = x1; tmp->r_r.r_xtop = x2; \
@@ -1547,7 +1547,7 @@ GrFillPolygon(polyp, np)
     }
 }
 
-
+
 /*---------------------------------------------------------
  * GrClipBox:
  *	GrClipBox will draw a rectangle on the screen in one
@@ -1573,7 +1573,7 @@ GrClipBox(prect, style)
     GrFastBox(prect);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	GrDisjoint --

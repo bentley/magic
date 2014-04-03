@@ -29,7 +29,7 @@
 #include "utils/utils.h"
 #include "utils/malloc.h"
 #include "utils/undo.h"
-
+
 /* ------------------------------------------------------------------------ */
 
 /*
@@ -182,7 +182,7 @@ extern internalUndoEvent *undoGetForw();
 extern internalUndoEvent *undoGetBack();
 extern void undoFreeHead();
 extern void undoMemTruncate();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -245,7 +245,7 @@ UndoInit(logFileName, mode)
 
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -340,7 +340,7 @@ UndoAddClient(init, done, readEvent, writeEvent, forwEvent, backEvent, name)
 
     return (undoNumClients++);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -375,7 +375,7 @@ UndoFlush()
     undoNumCommands = 0;
     undoNumRecentEvents = 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -400,7 +400,7 @@ UndoDisable()
 {
     UndoDisableCount++;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -424,7 +424,7 @@ UndoEnable()
     if (UndoDisableCount > 0)
 	UndoDisableCount--;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -618,7 +618,7 @@ UndoBackward(n)
 	    (*undoClientTable[client].uc_done)();
     return (count);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -682,7 +682,7 @@ done:
 	    (*undoClientTable[client].uc_done)();
     return (count);
 }
-
+
 /*
  * ============================================================================
  *
@@ -692,7 +692,7 @@ done:
  * ============================================================================
  */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -742,7 +742,7 @@ undoGetForw(iup)
 
     return ((internalUndoEvent *) NULL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -771,7 +771,7 @@ undoGetBack(iup)
     if (iup->iue_back != (internalUndoEvent *) NULL) return (iup->iue_back);
     return ((internalUndoEvent *) NULL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -820,7 +820,7 @@ undoFreeHead()
     undoLogHead = undoLogHead->iue_forw;
     undoLogHead->iue_back = (internalUndoEvent *) NULL;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

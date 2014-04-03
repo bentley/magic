@@ -84,7 +84,7 @@ void extExtractStack();
 bool extContainsGeometry();
 bool extContainsCellFunc();
 bool extTimestampMisMatch();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -149,7 +149,7 @@ ExtInit()
     /* Initialize the hash tables used in ExtLength.c */
     extLengthInit();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -224,7 +224,7 @@ extDefPushFunc(use)
     (void) DBCellEnum(def, extDefPushFunc, (ClientData) 0);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -281,7 +281,7 @@ ExtUnique(rootUse, allNames)
     if (nwarn)
 	TxError("%d uncorrected errors (see the feedback info)\n", nwarn);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -359,7 +359,7 @@ extDefParentFunc(def)
 	if (parent->cu_parent)
 	    extDefParentFunc(parent->cu_parent);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -500,7 +500,7 @@ extContainsPaintFunc()
 {
     return (1);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -599,7 +599,7 @@ closeit:
     (void) fclose(extFile);
     return (ret);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

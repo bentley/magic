@@ -107,7 +107,7 @@ typedef struct
 
 UndoType SelUndoNetClientID;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -145,7 +145,7 @@ SelUndoInit()
     if (SelUndoNetClientID < (UndoType) 0)
 	TxError("Couldn't add net selection as an undo client!\n");
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -218,7 +218,7 @@ SelRememberForUndo(before, def, area)
 	beforeEvent = NULL;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

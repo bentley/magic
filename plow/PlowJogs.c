@@ -71,7 +71,7 @@ int plowJogBotProc();
 
 extern void plowProcessJog();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -135,7 +135,7 @@ plowCleanupJogs(area, changedArea)
     plowQueueDone();
     *changedArea = plowJogChangedArea;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -193,7 +193,7 @@ plowProcessJog(edge, area)
     (void) plowSrShadowBack(edge->e_pNum, &r, DBAllButSpaceBits,
 		plowJogPropagateLeft, (ClientData) NULL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -225,7 +225,7 @@ plowJogPropagateLeft(edge)
 	(void) plowQueueAdd(edge);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -393,7 +393,7 @@ plowProcessJogFunc(edge, area)
     plowJogEraseList = (LinkedRect *) NULL;
     return (ret);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -507,7 +507,7 @@ plowJogBotProc(outline)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -558,7 +558,7 @@ plowJogDragLHS(edge, newx)
     /* Keep going */
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

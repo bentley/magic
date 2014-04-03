@@ -103,7 +103,7 @@ extern bool GrTkInit();
 extern bool GrTkEventPending(), GrTkCreate(), grtkGetCursorPos();
 extern int  GrTkWindowId();
 extern char *GrTkWindowName();
-
+
 
 /*---------------------------------------------------------
  * grtkSetWMandC:
@@ -147,7 +147,7 @@ grtkSetWMandC (mask, c)
     oldM = mask;
 }
 
-
+
 /*---------------------------------------------------------
  * grtkSetLineStyle:
  *	This local routine sets the current line style.
@@ -242,7 +242,7 @@ grtkSetLineStyle (style)
 #endif
 }
 
-
+
 /*---------------------------------------------------------
  * grtkSetSPattern:
  *	xSetSPattern associates a stipple pattern with a given
@@ -295,7 +295,7 @@ grtkSetSPattern (sttable, numstipples)
     }
 }
 
-
+
 /*---------------------------------------------------------
  * grtkSetStipple:
  *	This routine sets the Xs current stipple number.
@@ -325,7 +325,7 @@ grtkSetStipple (stipple)
     }
 }
 
-
+
 /*---------------------------------------------------------
  * GrTkInit:
  *
@@ -656,7 +656,7 @@ GrTkInit(dispType)
     rstatus = grTkLoadFont();
     return rstatus;
 }
-
+
 /*---------------------------------------------------------
  * GrTkClose:
  *
@@ -685,7 +685,7 @@ GrTkClose ()
 				  /* do XCloseDisplay()			*/
 }
 
-
+
 /*---------------------------------------------------------
  * GrTkFlush:
  * 	Flush output to display.
@@ -705,7 +705,7 @@ GrTkFlush ()
     GR_TK_FLUSH_BATCH();
 }
 
-
+
 /*
  * ---------------------------------------------------------------------------
  *
@@ -1154,7 +1154,7 @@ keys_and_buttons:
     }
 }
 
-
+
 /*---------------------------------------------------------
  * x11SetDisplay:
  *	This routine sets the appropriate parameters so that
@@ -1261,7 +1261,7 @@ x11SetDisplay (dispType, outFileName, mouseFileName)
 
 extern void MakeWindowCommand();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1486,7 +1486,7 @@ GrTkCreate(w, name)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1517,7 +1517,7 @@ GrTkDelete(w)
 
     Tk_DestroyWindow(xw);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1544,7 +1544,7 @@ GrTkConfigure(w)
 		w->w_frameArea.r_xtop - w->w_frameArea.r_xbot,
 		    w->w_frameArea.r_ytop - w->w_frameArea.r_ybot);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1572,7 +1572,7 @@ GrTkRaise(w)
     tkwind = (Tk_Window)w->w_grdata;
     Tk_RestackWindow(tkwind, Above, NULL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1600,7 +1600,7 @@ GrTkLower(w)
     tkwind = (Tk_Window)w->w_grdata;
     Tk_RestackWindow(tkwind, Below, NULL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1639,7 +1639,7 @@ GrTkLock(w, flag)
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1663,7 +1663,7 @@ GrTkUnlock(w)
     GR_TK_FLUSH_BATCH();
     grSimpleUnlock(w);
 }
-
+
 
 /*
  *-------------------------------------------------------------------------

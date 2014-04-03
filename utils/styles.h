@@ -150,7 +150,7 @@
 
 #define TECHBEGINSTYLES		52
 
-
+
 /*
  * Here are the cursors defined in the standard styles file.
  *

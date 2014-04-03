@@ -156,7 +156,7 @@ GrOGLDrawGlyph (gl, p)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * groglDefineCursor:
@@ -273,7 +273,7 @@ groglDefineCursor(glyphs)
     GrUnlock(GR_LOCK_SCREEN);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrOGLSetCursor:

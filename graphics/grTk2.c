@@ -28,7 +28,7 @@ extern unsigned long grPlanes[256];
 extern XColor colors[256 * 3];
 extern Colormap grXcmap;
 
-
+
 /*---------------------------------------------------------------------
  * GrXSetCMap:
  *
@@ -200,7 +200,7 @@ grtkDrawLines(lines, nb)
 	      lines, nb);
 }
 
-
+
 /*---------------------------------------------------------
  * grtkDrawLine:
  *	This routine draws a line.
@@ -226,7 +226,7 @@ grtkDrawLine (x1, y1, x2, y2)
     grtkNbLines++;
 }
 
-
+
 /*---------------------------------------------------------
  * grtkFillRects:
  *	This routine draws a bunch of solid rectangles.
@@ -246,7 +246,7 @@ grtkFillRects(rects, nb)
     XFillRectangles(grXdpy, grCurrent.windowid, grGCFill, rects, nb);
 }
 
-
+
 /*---------------------------------------------------------
  * grtkFillRect:
  *	This routine draws a solid rectangle.

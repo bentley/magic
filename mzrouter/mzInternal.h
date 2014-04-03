@@ -121,7 +121,7 @@ typedef struct mazestyle
     struct mazestyle *ms_next;  
 } MazeStyle;
 
-
+
 /* ----- TileTypes, Paint Tables, and Paint Planes, and Internal Cells  ---- */
 /* RESULT CELL */
 extern CellDef *mzResultDef;

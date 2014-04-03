@@ -59,7 +59,7 @@ void efNodeMerge();
 bool efConnBuildName();
 bool efConnInitSubs();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -199,7 +199,7 @@ efBuildNode(def, nodeName, nodeCap, x, y, layerName, av, ac)
     def->def_firstn.efnode_next->efnhdr_prev = (EFNodeHdr *) newnode;
     def->def_firstn.efnode_next = (EFNodeHdr *) newnode;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -248,7 +248,7 @@ efBuildAttr(def, nodeName, r, layerName, text)
     ap->efa_next = nn->efnn_node->efnode_attrs;
     nn->efnn_node->efnode_attrs = ap;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -331,7 +331,7 @@ efBuildDist(def, driver, receiver, min, max)
 	HashSetValue(he, (ClientData) he->h_key.h_ptr);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -361,7 +361,7 @@ efBuildKill(def, name)
     kill->kill_next = def->def_kills;
     def->def_kills = kill;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -433,7 +433,7 @@ efBuildEquiv(def, nodeName1, nodeName2)
     efNodeAddName(nn2->efnn_node, he1,
 			EFStrToHN((HierName *) NULL, nodeName1));
 }
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -914,7 +914,7 @@ efBuildDevNode(def, name, isSubsNode)
     }
     return nn->efnn_node;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -958,7 +958,7 @@ efBuildAddStr(table, pMax, size, str)
 
     return max;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1028,7 +1028,7 @@ efBuildUse(def, subDefName, subUseId, ta, tb, tc, td, te, tf)
 		    &newuse->use_xlo, &newuse->use_xhi, &newuse->use_xsep,
 		    &newuse->use_ylo, &newuse->use_yhi, &newuse->use_ysep);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1077,7 +1077,7 @@ efBuildConnect(def, nodeName1, nodeName2, deltaC, av, ac)
 	def->def_conns = conn;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1114,7 +1114,7 @@ efBuildResistor(def, nodeName1, nodeName2, resistance)
 	def->def_resistors = conn;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1151,7 +1151,7 @@ efBuildCap(def, nodeName1, nodeName2, cap)
 	def->def_caps = conn;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1206,7 +1206,7 @@ bad:
     freeMagic((char *) conn);
     return FALSE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1312,7 +1312,7 @@ again:
     cnp->cn_nsubs = nsubs;
     return TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1365,7 +1365,7 @@ efNodeAddName(node, he, hn)
 	oldnn->efnn_next = newnn;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1521,7 +1521,7 @@ efNodeMerge(node1, node2)
     /* Get rid of node2 */
     freeMagic((char *) node2);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1563,7 +1563,7 @@ efFreeNodeTable(table)
 	    freeMagic((char *) nn);
 	}
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1597,7 +1597,7 @@ efFreeNodeList(head)
 	freeMagic((char *) node);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -177,7 +177,7 @@ calmaReadPoint(p, iscale)
     p->p_y /= calmaReadScale2;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -296,7 +296,7 @@ calmaElementBoundary()
 	DBPlaceCell(use, cifReadCellDef);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -844,7 +844,7 @@ calmaElementText()
     /* done with textbody */
     if (textbody != NULL) freeMagic(textbody);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -951,7 +951,7 @@ calmaReadPath(pathheadpp, iscale)
     }
     return (*pathheadpp != NULL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -206,7 +206,7 @@ extern void grNullProc();
 void (*GrStopPtr)() = grNullProc;
 void (*GrResumePtr)() = grNullProc;
 
-
+
 /*---------------------------------------------------------
  * GrSetDisplay --
  *	This routine sets a display type, opens files,  and initializes the
@@ -343,7 +343,7 @@ GrIsDisplay(disp1, disp2)
     return FALSE;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrGuessDisplayType --
@@ -407,7 +407,7 @@ GrGuessDisplayType(graphics, mouse, display, monitor)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * grFgets --

@@ -182,7 +182,7 @@ static RasterFont *cellNameFont; /* Font to use when rendering cell names. */
 static RasterFont *cellIdFont;	 /* Font to use when rendering cell ids. */
 
 #endif /* VERSATEC */
-
+
 /*
  * ----------------------------------------------------------------------------
  *	PlotVersTechInit --
@@ -233,7 +233,7 @@ PlotVersTechInit()
 
 #endif /* VERSATEC */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	PlotColorVersTechInit --
@@ -284,7 +284,7 @@ PlotColorVersTechInit()
 
 #endif /* VERSATEC */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	PlotVersTechLine --
@@ -512,7 +512,7 @@ plotTransToSwath(src, dst)
     dst->r_ybot = (((src->r_ybot - plotLL.p_y)*scale) >> scaleShift) - swathY;
     dst->r_ytop = (((src->r_ytop - plotLL.p_y)*scale) >> scaleShift) - swathY;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -559,7 +559,7 @@ plotVersLine(area, widen, raster)
     else
     PlotRastFatLine(raster, &swathArea.r_ll, &swathArea.r_ur, widen);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -628,7 +628,7 @@ plotVersRect(area, widen, raster)
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -815,7 +815,7 @@ searchright:
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -950,7 +950,7 @@ plotVersLabel(scx, label, tpath, raster)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1015,7 +1015,7 @@ plotVersCell(scx, raster)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

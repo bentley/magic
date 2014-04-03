@@ -56,7 +56,7 @@ GlPoint *glCrossAdjust();
 int glCrossChoose();
 void glCrossTakePin();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -137,7 +137,7 @@ glCrossMark(rootUse, path, pNetId)
 	glCrossTakePin(rootUse, dstPin, markNetId);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -208,7 +208,7 @@ glCrossTakePin(rootUse, pin, netid)
 	else TxError("%s\n", c);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -249,7 +249,7 @@ glCrossUnreserve(net)
 	    pin->gcr_pSeg = 0;
         }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -426,7 +426,7 @@ glCrossEnum(inPt, tp, func, cdata)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -544,7 +544,7 @@ glCrossAdjust(lookAhead, path)
 
     return newPath;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -605,7 +605,7 @@ glCrossChoose(newRest, tp, pin, newPath)
     /* Keep looking at more crossing points */
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -756,7 +756,7 @@ glCrossCost(lookAhead, exitPt, entryPt)
 
     return cost;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

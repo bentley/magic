@@ -22,11 +22,11 @@
 #include "windows/windows.h"
 #include "utils/magic.h"
 
-
+
 extern int grNumBitPlanes;
 extern int grBitPlaneMask;
 
-
+
 /* procedures */
 extern void (*grPutTextPtr)();
 extern void (*grFontTextPtr)();		/* Vector-drawn text */

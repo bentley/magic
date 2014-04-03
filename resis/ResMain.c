@@ -40,7 +40,7 @@ extern int			ResLaplaceTile();
 
 extern HashTable	ResNodeTable;
 
-
+
 /*
  *--------------------------------------------------------------------------
  *
@@ -115,7 +115,7 @@ ResGetReCell()
     ResUse->cu_expandMask = CU_DESCEND_SPECIAL;
 
 }
- 
+ 
 /*
  *--------------------------------------------------------------------------
  *
@@ -239,7 +239,7 @@ ResAddBreakpointFunc(tile, node)
     return 0;
 }
 
-
+
 /*
  *---------------------------------------------------------------------------
  *
@@ -299,7 +299,7 @@ ResFindNewContactTiles(contacts)
 #endif
      }
 }
-
+
 /*
  *--------------------------------------------------------------------------
  *
@@ -495,7 +495,7 @@ ResProcessTiles(goodies, origin)
      }
      return(0);
 }
-
+
 /*-------------------------------------------------------------------------
  *
  * ResExtractNet-- extracts the resistance net at the specified 
@@ -679,7 +679,7 @@ ResExtractNet(startlist,goodies,cellname)
     return FALSE;
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -744,7 +744,7 @@ ResCleanUpEverything()
 }
 
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -893,7 +893,7 @@ FindStartTile(goodies, SourcePoint)
     }
     return((Tile *) NULL);
 }
-
+
 /*
  *-------------------------------------------------------------------------
  *

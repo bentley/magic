@@ -160,7 +160,7 @@ static keydesc keyTable[] = {
 
     0
 };
-
+
 
 /*
  * Table used for parsing the "device" keyword types
@@ -497,7 +497,7 @@ ExtSetStyle(name)
     TxError("\"%s\" is not one of the extraction styles Magic knows.\n", name);
     ExtPrintStyle(FALSE, TRUE, TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -656,7 +656,7 @@ extTechStyleInit(style)
     doConvert = FALSE;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2484,7 +2484,7 @@ diffplane:
 		"\tdifferent plane from intypes and outtypes.\n");
     return (TRUE);
 }
-
+
 
 /*
  * ----------------------------------------------------------------------------

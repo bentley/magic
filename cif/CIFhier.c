@@ -78,7 +78,7 @@ static CIFLayer *CurCifLayer;
     (dst)->r_ybot = (src)->r_ybot * scale; \
     (dst)->r_xtop = (src)->r_xtop * scale; \
     (dst)->r_ytop = (src)->r_ytop * scale;
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -144,7 +144,7 @@ CIFInitCells()
     CIFDummyUse = DBCellNewUse(CIFTotalDef, (char *) NULL);
     DBSetTrans (CIFDummyUse, &GeoIdentityTransform);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -194,7 +194,7 @@ cifHierCleanup()
 
     SigEnableInterrupts();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -270,7 +270,7 @@ cifHierCopyFunc(tile, cxp)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -325,7 +325,7 @@ cifHierCellFunc(scx)
 	    &CIFCurStyle->cs_hierLayers, FALSE, TRUE);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -366,7 +366,7 @@ cifHierErrorFunc(tile, checkArea)
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -449,7 +449,7 @@ cifHierPaintFunc(tile, plane)
     CIFTileOps += 1;
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -488,7 +488,7 @@ cifCheckAndErase(style)
 	    (ClientData) CIFTotalPlanes[i]);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -619,7 +619,7 @@ CIFGenSubcells(def, area, output)
     CIFHierTileOps += CIFTileOps - oldTileOps;
     UndoEnable();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -680,7 +680,7 @@ cifHierElementFunc(use, transform, x, y, checkArea)
 
     return 0;
 }
-
+
 
 /*
  * ---------------------------------------------------------------------------
@@ -740,7 +740,7 @@ cifGrowSliver(tile, area)
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -790,7 +790,7 @@ cifHierPaintArrayFunc(tile)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1077,7 +1077,7 @@ cifHierArrayFunc(scx, output)
     return 2;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *

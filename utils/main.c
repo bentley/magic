@@ -72,7 +72,7 @@
 #include "graphics/wind3d.h"
 #endif
 
-
+
 /*
  * Global data structures
  *
@@ -104,7 +104,7 @@ global CellDef	*EditRootDef = NULL;
 global Transform EditToRootTransform;
 global Transform RootToEditTransform;
 
-
+
 /*
  * data structures local to main.c
  *
@@ -139,7 +139,7 @@ global char *MainCopyright = "\n--- MAGIC: Copyright (C) 1985, 1990 "
 /* Forward declarations */
 char *mainArg();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * MainExit:
@@ -371,7 +371,7 @@ badfopt:
 exitnow:
     return 1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -412,7 +412,7 @@ mainArg(pargc, pargv, mesg)
     return cp;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * mainInitBeforeArgs:
@@ -462,7 +462,7 @@ mainInitBeforeArgs(argc, argv)
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * mainInitAfterArgs:
@@ -858,7 +858,7 @@ mainInitFinal()
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * mainFinish:
@@ -916,5 +916,5 @@ magicMain(argc, argv)
     mainFinished();
 }
 
-
+
 

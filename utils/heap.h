@@ -58,7 +58,7 @@
  *	    HeapKill(&h, NULL);
  *	}
  */
-
+
 
 #ifndef _HEAP_H
 #define _HEAP_H

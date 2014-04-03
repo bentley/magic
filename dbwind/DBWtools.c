@@ -65,7 +65,7 @@ int DBWSnapToGrid = DBW_SNAP_LAMBDA;
 
 extern int DBWToolDraw();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -116,7 +116,7 @@ toolFindPoint(p, rootPoint, rootArea)
     
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	ToolGetPoint --
@@ -155,7 +155,7 @@ ToolGetPoint(rootPoint, rootArea)
 	return toolFindPoint(&WindCurrentCmd->tx_p, rootPoint, rootArea);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * ToolGetBox --
@@ -187,7 +187,7 @@ ToolGetBox(rootDef, rootArea)
     return TRUE;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * ToolGetBoxWindow --
@@ -256,7 +256,7 @@ toolWindowSave(window, clientData)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -297,7 +297,7 @@ ToolGetEditBox(rect)
     return TRUE;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	ToolGetCorner --
@@ -555,7 +555,7 @@ dbwRecordBoxArea(erase)
 	DBWHLRedraw(boxRootDef, &side, erase);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -687,7 +687,7 @@ dbwBoxAlways1()
 {
     return 1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	DBWSetBox --
@@ -727,7 +727,7 @@ DBWSetBox(rootDef, rect)
 
     dbwRecordBoxArea(FALSE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	ToolMoveBox --
@@ -828,7 +828,7 @@ ToolMoveBox(corner, point, screenCoords, rootDef)
     DBWSetBox(newDef, &newArea);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	ToolMoveCorner --
@@ -950,7 +950,7 @@ ToolMoveCorner(corner, point, screenCoords, rootDef)
 
     DBWSetBox(newDef, &newArea);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

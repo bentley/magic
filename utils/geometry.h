@@ -96,7 +96,7 @@ typedef struct
 #define GEO_WEST	7
 #define GEO_NORTHWEST	8
 
-
+
 /* See if two points are equal */
 #define GEO_SAMEPOINT(p1, p2) ((p1).p_x == (p2).p_x && (p1).p_y == (p2).p_y)
 

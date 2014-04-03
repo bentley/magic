@@ -99,7 +99,7 @@ static unsigned int singleBit[32] =
 RasterFont *PlotFontList;	/* Linked list of all fonts that have
 				 * been read in so far.
 				 */
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -131,7 +131,7 @@ PlotRastInit()
     }
 #endif /* WORDS_BIGENDIAN */
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -169,7 +169,7 @@ PlotNewRaster(height, width)
 
     return new;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -195,7 +195,7 @@ PlotFreeRaster(raster)
     freeMagic((char *) raster->ras_bits);
     freeMagic((char *) raster);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -486,7 +486,7 @@ PlotFillRaster(raster, area, stipple)
 	right += raster->ras_intsPerLine;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -524,7 +524,7 @@ PlotDumpRaster(raster, file)
     rasFileByteCount += count;
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -668,7 +668,7 @@ PlotLoadFont(name)
     PlotFontList = new;
     return new;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -719,7 +719,7 @@ PlotTextSize(font, string, area)
     }
     area->r_ybot = -area->r_ybot;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -833,7 +833,7 @@ PlotRasterText(raster, clip, font, string, point)
 	xOrig += d->width;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -866,7 +866,7 @@ PlotRastPoint(raster, x, y)
     raster->ras_bits[((y*raster->ras_intsPerLine) + (x>>5))]
 	    |= singleBit[x&037];
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -963,7 +963,7 @@ PlotRastLine(raster, src, dst)
     }
     PlotRastPoint(raster, x, y);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1034,7 +1034,7 @@ PlotRastFatLine(raster, src, dst, widen)
 	PlotRastLine(raster, &newSrc, &newDst);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1091,7 +1091,7 @@ PlotSwapShort(value)
 }
 
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *

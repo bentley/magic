@@ -37,7 +37,7 @@ int plowSliverBotExtent(), plowSliverBotMove();
 int plowApplyRule();
 int plowPenumbraRule();
 bool plowSliverApplyRules();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -85,7 +85,7 @@ prClearUmbra(edge)
     (void) plowSrShadow(edge->e_pNum, &edge->e_rect,
 		rhsTypes, plowApplyRule, (ClientData) &ar);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -137,7 +137,7 @@ prUmbra(edge, rules)
 			pr->pr_oktypes, plowApplyRule, (ClientData) &ar);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -258,7 +258,7 @@ prPenumbraBot(edge, rules)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -452,7 +452,7 @@ plowPenumbraRule(impactedEdge, ar)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -582,7 +582,7 @@ prSliverBot(edge, rules)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -677,7 +677,7 @@ plowSliverBotMove(outline, ar)
     /* Keep going */
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -918,7 +918,7 @@ plowSliverBotExtent(outline, ar)
 	ar->ar_mustmove = xmove;
     return (ret);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -969,7 +969,7 @@ plowSliverApplyRules(ar, far, farDist)
 	    return (TRUE);
     return (FALSE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

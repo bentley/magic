@@ -34,7 +34,7 @@
 static colorEntry *colorMap = NULL;	/* Storage for the color map. */
 int GrNumColors = 0;			/* Number of colors */
 
-
+
 /*-----------------------------------------------------------------------------
  *
  * GrResetCMap --
@@ -70,7 +70,7 @@ GrResetCMap()
     GrNumColors = 0;
 }
 
-
+
 /*-----------------------------------------------------------------------------
  * GrReadCmap:
  *
@@ -217,7 +217,7 @@ char *libPath;			/* a library search path */
     return TRUE;
 }
 
-
+
 /*-----------------------------------------------------------------------------
  * GrSaveCMap
  *
@@ -358,7 +358,7 @@ GrGetColor(color, red, green, blue)
     return TRUE;
 }
 
-
+
 /*-----------------------------------------------------------------------------
  *  GrPutColor --
  *	 modifies the color map values for a single layer spec.
@@ -394,7 +394,7 @@ GrPutColor(color, red, green, blue)
     return TRUE;
 }
 
-
+
 /*-----------------------------------------------------------------------------
  * GrPutManyColors --
  *

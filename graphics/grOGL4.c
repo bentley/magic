@@ -34,7 +34,7 @@
 extern Display	*grXdpy;
 extern int	*grXscrn;
 
-
+
 /*---------------------------------------------------------
  * GrOGLDisableTablet:
  *	Turns off the cursor.
@@ -50,7 +50,7 @@ GrOGLDisableTablet()
 {
 }
 
-
+
 /*---------------------------------------------------------
  * GrOGLEnableTablet:
  *	This routine enables the graphics tablet.
@@ -68,7 +68,7 @@ GrOGLEnableTablet()
 {
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * groglGetCursorPos:

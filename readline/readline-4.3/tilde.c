@@ -377,7 +377,7 @@ tilde_expand_word (filename)
   return (dirname);
 }
 
-
+
 #if defined (TEST)
 #undef NULL
 #include <stdio.h>

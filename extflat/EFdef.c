@@ -42,7 +42,7 @@ HashTable efFreeHashTable;
 
 /* Hash table used for keeping subcircuit parameter names for a device */
 HashTable efDevParamTable;
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -70,7 +70,7 @@ EFInit()
     HashInit(&efDevParamTable, 8, HT_STRINGKEYS);
     efSymInit();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -176,7 +176,7 @@ EFDone()
     /* Final cleanup */
     HashKill(&efDefHashTable);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -208,7 +208,7 @@ efDefLook(name)
 
     return ((Def *) HashGetValue(he));
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

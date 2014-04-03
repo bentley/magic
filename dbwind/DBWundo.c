@@ -80,7 +80,7 @@ typedef struct
     Rect bue_newArea;
 } BoxUndoEvent;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -114,7 +114,7 @@ dbwUndoInit()
 	    (UndoEvent *(*)()) NULL, (int (*)()) NULL, dbwUndoBoxForw,
 	    dbwUndoBoxBack, "box change");
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -175,7 +175,7 @@ DBWUndoNewEdit(editUse, editRootDef, editToRootTrans, rootToEditTrans)
     ep->e_parentDef = editUse->cu_parent;
     (void) strcpy(ep->e_useId, useid);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -240,7 +240,7 @@ dbwUndoChangeEdit(ep)
     DBWAreaChanged(EditRootDef, &area, DBW_ALLWINDOWS, &DBAllButSpaceBits);
     CmdSetWindCaption(EditCellUse, EditRootDef);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -274,7 +274,7 @@ DBWUndoBox(oldDef, oldArea, newDef, newArea)
     bue->bue_newDef = newDef;
     bue->bue_newArea = *newArea;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

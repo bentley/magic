@@ -53,7 +53,7 @@ static CellDef *selDisRoot = NULL;	/* Name of a root cell in a window,
  */
 
 static Plane *selRedisplayPlane;
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -331,7 +331,7 @@ selRedisplayCellFunc(scx, window)
         GR_TEXT_LARGE, TRUE, &screen, (Rect *) NULL);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -110,7 +110,7 @@ point_to_segment(px, py, s1x, s1y, s2x, s2y)
 #define RADIAL_SW	0x2000
 #define RADIAL_SE	0x4000
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -263,7 +263,7 @@ areaCheck(tile, arg)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -346,7 +346,7 @@ DRCBasicCheck (celldef, checkRect, clipRect, function, cdata)
     if (arg.dCD_rlist != NULL) freeMagic(arg.dCD_rlist);
     return (errors);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

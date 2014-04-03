@@ -252,7 +252,7 @@ calmaExact()
 }
 
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -435,7 +435,7 @@ syntaxerror:
     return (calmaSkipTo(CALMA_ENDSTR));
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -885,7 +885,7 @@ calmaElementSref()
     if (useid != NULL) freeMagic(useid);
     if (arraystr != NULL) freeMagic(arraystr);
 }
-
+
 
 /* Callback function for copying paint from one CIF cell into another */
 

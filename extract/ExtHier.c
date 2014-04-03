@@ -53,7 +53,7 @@ int extHierOneNameSuffix = 0;
 int extHierConnectFunc1();
 int extHierConnectFunc2();
 Node *extHierNewNode();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -292,7 +292,7 @@ extHierConnectFunc2(cum, ha)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -402,7 +402,7 @@ extHierAdjustments(ha, cumFlat, oneFlat, lookFlat)
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -479,7 +479,7 @@ extOutputConns(table, outf)
 	freeMagic((char *) nfirst);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -524,7 +524,7 @@ extHierNewNode(he)
 
     return (node);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -580,7 +580,7 @@ extHierLabEach(tile, pNum, arg)
     extSetNodeNum(reg, pNum, tile);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -632,7 +632,7 @@ extHierNewOne()
 	HashInit(&et->et_coupleHash, 32, HashSize(sizeof (CoupleKey)));
     return (et);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

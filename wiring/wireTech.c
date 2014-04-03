@@ -34,7 +34,7 @@
 /* Linked list to store contact information collected by this module: */
 Contact *WireContacts;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	WireTechInit --
@@ -62,7 +62,7 @@ WireTechInit()
 	WireContacts = WireContacts->con_next;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	WireTechLine --
@@ -134,7 +134,7 @@ WireTechLine(sectionName, argc, argv)
 
     return TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	WireTechFinal --

@@ -60,7 +60,7 @@ int RtrPaintSepsUp[TT_MAXTYPES], RtrPaintSepsDown[TT_MAXTYPES];
 
 int RtrMetalSeps[TT_MAXTYPES], RtrPolySeps[TT_MAXTYPES];
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -103,7 +103,7 @@ RtrTechInit()
 	RtrPaintSepsDown[i] = 0;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -282,7 +282,7 @@ RtrTechLine(sectionName, argc, argv)
     TechError("Unknown router statement \"%s\".\n", argv[0]);
     return TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

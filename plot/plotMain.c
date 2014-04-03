@@ -122,7 +122,7 @@ bool PlotShowCellNames = TRUE;		/* TRUE if cell names and use-ids
 					 * drawn.
 					 */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	PlotTechInit --
@@ -153,7 +153,7 @@ PlotTechInit()
 	    (*(plotInitProcs[i]))();
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	PlotTechLine --
@@ -226,7 +226,7 @@ PlotTechLine(sectionName, argc, argv)
 	return TRUE;
     return (*(plotLineProcs[plotCurStyle]))(sectionName, argc, argv);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	PlotTechFinal --
@@ -254,7 +254,7 @@ PlotTechFinal()
 	    (*(plotFinalProcs[i]))();
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -321,7 +321,7 @@ PlotPrintParams()
     TxPrintf("    pixwidth:         %d\n", PlotPixWidth);
 #endif /* LLNL */
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

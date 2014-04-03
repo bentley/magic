@@ -257,7 +257,7 @@ CmdInit()
     CmdYMAllButSpace = DBAllButSpaceBits;
     TTMaskClearType(&CmdYMAllButSpace, L_CELL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -319,7 +319,7 @@ cmdFlushCell(def)
 	    &parentUse->cu_bbox);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -505,7 +505,7 @@ printTypes:
 
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -544,7 +544,7 @@ cmdMaskToType(mask)
 	return (TT_SPACE);
     return (type);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -655,7 +655,7 @@ cmdSaveCell(cellDef, newName, noninteractive, tryRename)
 		cmdSaveWindSet, (ClientData) cellDef);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -752,7 +752,7 @@ again:
 
     return (newName);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -793,7 +793,7 @@ cmdSaveWindSet(window, def)
     WindCaption(window, caption);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -842,7 +842,7 @@ CmdSetWindCaption(newEditUse, rootDef)
     (void) WindSearch(DBWclientID, (ClientData) NULL, (Rect *) NULL, 
 	    cmdWindSet, (ClientData) 0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -893,7 +893,7 @@ cmdWindSet(window)
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -930,7 +930,7 @@ CmdGetRootPoint(point, rect)
 
     return (window);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -970,7 +970,7 @@ CmdGetEditPoint(point, rect)
 
     return (window);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1020,7 +1020,7 @@ cmdWarnWriteFunc(cellDef, pcount)
 	(*pcount)++;
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * cmdExpandOneLevel --
@@ -1061,7 +1061,7 @@ cmdExpand1func(cu, bitmask)
     DBExpand(cu, (int) bitmask, FALSE);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1113,7 +1113,7 @@ cmdGetSelFunc(selUse, realUse, transform, pResult)
 	*cmdSelTrans = *transform;
     return 1;			/* Skip any other selected cells. */
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

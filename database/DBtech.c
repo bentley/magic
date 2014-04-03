@@ -76,7 +76,7 @@ DBTechInit()
     /* Initialization of bezier coefficients for font vectors */
     DBFontInitCurves();
 }
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -205,7 +205,7 @@ usage:
     TechError("Badly formed version line\nUsage: {version text}|{description text}\n");
     return FALSE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -234,7 +234,7 @@ DBTechInitConnect()
 	DBAllConnPlanes[i] = 0;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -283,7 +283,7 @@ DBTechAddConnect(sectionName, argc, argv)
 
     return TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

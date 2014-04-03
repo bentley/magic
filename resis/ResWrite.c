@@ -114,7 +114,7 @@ ResPrintCurrents(filename,extension,node)
 }
 	
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -156,7 +156,7 @@ resCurrentPrintFunc(node,resistor,filename)
 	  }
      }
 
-}
+}
 
 void
 ResDeviceCounts()
@@ -172,7 +172,7 @@ ResDeviceCounts()
          TxError("n=%d t=%d r=%d\n",i,j,k);
 	 TxFlushErr();
 }
-
+
 
 void
 ResWriteECLFile(filename,reslist,nodelist)

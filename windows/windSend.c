@@ -58,7 +58,7 @@ extern void WindGrabInput();
 extern void WindReleaseInput();
 extern void windHelp();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindSendCommand --
@@ -299,7 +299,7 @@ WindSendCommand(w, cmd)
 
 
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindGrabInput --
@@ -325,7 +325,7 @@ WindGrabInput(client)
 }
 
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindReleaseInput --
@@ -348,7 +348,7 @@ WindReleaseInput(client)
       windGrabber = (WindClient) StackPop(windGrabberStack);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * windHelp --

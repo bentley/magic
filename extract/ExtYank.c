@@ -41,7 +41,7 @@ Rect extSubcellArea;		/* Area of currently processed subcell, clipped
 /* Forward declarations of filter functions */
 int extHierYankFunc();
 int extHierLabelFunc();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -89,7 +89,7 @@ extHierCopyLabels(sourceDef, targetDef)
 	targetDef->cd_labels = firstLab;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -120,7 +120,7 @@ extHierFreeLabels(def)
 	freeMagic((char *) lab);
     def->cd_labels = (Label *) NULL;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

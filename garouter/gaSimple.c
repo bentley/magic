@@ -52,7 +52,7 @@ extern int gaMetalClear;
 extern int gaPolyClear;
 extern int gaContactClear;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -507,7 +507,7 @@ gaStemSimpleInit(routeUse, term, pinPoint, pinSide, simple)
     return (TRUE);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -575,7 +575,7 @@ gaIsClearFunc(tile, cxp)
     return 1;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -50,7 +50,7 @@ static CellDef *nmscRootDef = NULL;	/* NULL means no cell currently
 
 static CellUse *nmscShowUse = NULL;
 static CellDef *nmscShowDef = NULL;
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -138,7 +138,7 @@ nmscAlways1()
 {
     return 1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -167,7 +167,7 @@ NMUnsetCell()
     nmscRootDef = NULL;
     DBWHLRedraw(oldDef, &nmscUse->cu_def->cd_bbox, TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -205,7 +205,7 @@ NMShowCell(use, rootDef)
     nmscUse = use;
     DBWHLRedraw(nmscRootDef, &nmscUse->cu_def->cd_bbox, FALSE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -240,7 +240,7 @@ nmGetShowCell()
     DBSetTrans(nmscShowUse, &GeoIdentityTransform);
     nmscShowUse->cu_expandMask = CU_DESCEND_SPECIAL;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -295,7 +295,7 @@ NMShowUnderBox()
 	&DBAllButSpaceBits);
     NMShowCell(nmscShowUse, rootDef);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -350,7 +350,7 @@ NMShowRoutedNet(netName)
     NMShowCell(nmscShowUse, EditCellUse->cu_def);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -376,7 +376,7 @@ nmShowRoutedNetFunc(name, clientData)
     (void) DBSrLabelLoc((CellUse *) clientData, name, nmSRNFunc, clientData);
     return(0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

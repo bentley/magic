@@ -267,7 +267,7 @@ DBCellDelete(cellname, force)
 }
 
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -355,7 +355,7 @@ dbGetUseName(celluse)
     return (newID);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -545,7 +545,7 @@ dbCellPrintInfo(StartDef, who, dolist)
     }  /* endswitch */
 }
 
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -1184,7 +1184,7 @@ DBCellLookDef(cellName)
     return ((CellDef *) HashGetValue(entry));
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1239,7 +1239,7 @@ DBCellNewDef(cellName, cellFileName)
 	cellDef->cd_file = StrDup((char **) NULL, cellFileName);
     return (cellDef);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1297,7 +1297,7 @@ DBCellDefAlloc()
 
     return (cellDef);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1353,7 +1353,7 @@ DBCellNewUse(cellDef, useName)
     DBComputeUseBbox(cellUse);
     return (cellUse);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1398,7 +1398,7 @@ DBCellRenameDef(cellDef, newName)
 
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1441,7 +1441,7 @@ DBCellDeleteDef(cellDef)
     DBCellDefFree(cellDef);
     return TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1498,7 +1498,7 @@ DBCellDefFree(cellDef)
 
     freeMagic((char *) cellDef);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1555,7 +1555,7 @@ DBCellDeleteUse(cellUse)
     freeMagic((char *) cellUse);
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1610,7 +1610,7 @@ DBCellSrDefs(pattern, func, cdata)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1730,7 +1730,7 @@ dbLinkFunc(cellUse, defname)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1775,7 +1775,7 @@ DBReLinkCell(cellUse, newName)
     if (UndoIsEnabled()) DBUndoCellUse(cellUse, UNDO_CELL_SETID);
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1806,7 +1806,7 @@ DBFindUse(id, parentDef)
 
     return (CellUse *) HashGetValue(he);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1850,7 +1850,7 @@ DBGenerateUniqueIds(def, warn)
     HashKill(&dbUniqueDefTable);
     HashKill(&dbUniqueNameTable);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1892,7 +1892,7 @@ dbFindNamesFunc(use, parentDef)
     }
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1955,7 +1955,7 @@ setHash:
     DBSetUseIdHash(use, parentDef);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1983,7 +1983,7 @@ DBSetUseIdHash(use, parentDef)
     he = HashFind(&parentDef->cd_idHash, use->cu_id);
     HashSetValue(he, (ClientData) use);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2012,7 +2012,7 @@ DBUnLinkCell(use, parentDef)
 	HashSetValue(he, (ClientData) NULL);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -55,7 +55,7 @@ int extInterSubtreePaint();
 
 #define	BLOATBY(r, h) ( (r)->r_xbot -= (h), (r)->r_ybot -= (h), \
 			(r)->r_xtop += (h), (r)->r_ytop += (h) )
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -140,7 +140,7 @@ extInterSubtreePaint(scx, def)
 
     return (2);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -204,7 +204,7 @@ extInterSubtreeClip(overlapScx, scx)
 		(ClientData) &r);
     return (2);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -242,7 +242,7 @@ extInterSubtreeElement(use, trans, x, y, r)
 		extInterSubtreeTile, (ClientData) NULL);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -285,7 +285,7 @@ extInterSubtreeTile(tile, cxp)
     (void) extCellSrArea(&newscx, extInterOverlapSubtree, (ClientData) NULL);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -316,7 +316,7 @@ extInterOverlapSubtree(scx)
     (void) extTreeSrPaintArea(scx, extInterOverlapTile, (ClientData) NULL);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -358,7 +358,7 @@ extInterOverlapTile(tile, cxp)
 
     return (0);
 }
-
+
 /*
  *-----------------------------------------------------------------------------
  *
@@ -475,7 +475,7 @@ extTreeSrFunc(scx, fp)
     /* Visit our children recursively */
     return (extCellSrArea(scx, extTreeSrFunc, (ClientData) fp));
 }
-
+
 /*
  *-----------------------------------------------------------------------------
  *

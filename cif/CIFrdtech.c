@@ -58,7 +58,7 @@ CIFOp *cifCurReadOp;			/* Last geometric operation seen. */
 void cifReadStyleInit();
 void CIFReadLoadStyle();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -125,7 +125,7 @@ CIFReadNameToType(name, newOK)
     cifNReadLayers += 1;
     return cifNReadLayers-1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -178,7 +178,7 @@ CIFCalmaLayerToCifLayer(layer, datatype, calmaStyle)
     /* No luck */
     return (-1);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -238,7 +238,7 @@ CIFParseReadLayers(string, mask)
 	for (string = p; *string == ','; string += 1) /* do nothing */;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -317,7 +317,7 @@ cifReadStyleInit()
 	cifCurReadStyle->crs_layers[i] = NULL;
     }
 }
-
+
 /*
  *
  * ----------------------------------------------------------------------------
@@ -382,7 +382,7 @@ CIFReadTechStyleInit()
     cifCurReadOp = NULL;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -908,7 +908,7 @@ CIFReadTechLine(sectionName, argc, argv)
     return TRUE;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1091,7 +1091,7 @@ CIFPrintReadStyle(dolist, doforall, docurrent)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1149,7 +1149,7 @@ CIFSetReadStyle(name)
     TxError("\"%s\" is not one of the CIF input styles Magic knows.\n", name);
     CIFPrintReadStyle(FALSE, TRUE, TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

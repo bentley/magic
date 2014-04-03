@@ -80,7 +80,7 @@
 
 extern void heapify();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -150,7 +150,7 @@ HeapInitType(heap, size, descending, stringIds, keyType)
 		* sizeof (HeapEntry)));
     ASSERT(heap->he_list != NULL, "Malloc failed in HeapInit");
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -186,7 +186,7 @@ HeapKill(heap, func)
     freeMagic((char *) heap->he_list);
     heap->he_list = NULL;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -212,7 +212,7 @@ HeapFreeIdFunc(heap, i)
     if (heap->he_stringId)
 	freeMagic(heap->he_list[i].he_id);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -252,7 +252,7 @@ HeapRemoveTop(heap, entry)
     heapify(heap, 1);
     return entry;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -286,7 +286,7 @@ HeapLookAtTop(heap)
     heap->he_built = heap->he_used;
     return &heap->he_list[1];
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -344,7 +344,7 @@ heapify(heap, root)
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -508,7 +508,7 @@ HeapAddDouble(heap, data, id)
     HeapAdd(heap, &pKey, id);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *

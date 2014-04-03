@@ -125,7 +125,7 @@ static RasterFont *cellIdPixFont;   /* Font to use when rendering cell ids. */
 
 #endif /* LLNL */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	PlotPixTechInit --
@@ -148,7 +148,7 @@ PlotPixTechInit()
      * plot directory, default font names, etc.
      */
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	PlotPixTechLine --
@@ -178,7 +178,7 @@ PlotPixTechLine(sectionName, argc, argv)
 
 #ifdef LLNL
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -215,7 +215,7 @@ PlotPixPoint(raster, x, y, style)
 	   (GrStyleTable[style].color & GrStyleTable[style].mask);
 
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -313,7 +313,7 @@ PlotPixArbLine(raster, src, dst, style)
     }
     PlotPixPoint(raster, x, y, style);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -362,7 +362,7 @@ plotPixLine(area, widen, style)
 		     &swathArea.r_ll, &swathArea.r_ur, 
 		     widen, curStyle);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -434,7 +434,7 @@ PlotPixFatLine(raster, src, dst, widen, style)
 	PlotPixArbLine(raster, &newSrc, &newDst, style);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -502,7 +502,7 @@ plotPixRect(area, widen, style)
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -580,7 +580,7 @@ plotPixTile(tile, cxp)
     plotFillPixRaster(pixRasterSwath, &swathArea, curStyle, -1);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -714,7 +714,7 @@ plotPixLabel(scx, label)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -775,7 +775,7 @@ plotPixCell(scx)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1068,7 +1068,7 @@ PlotPixels(scx, layers, xMask, width)
 }
 
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1098,7 +1098,7 @@ PlotNewPixRaster(height, width)
     new->pix_pixels = (char *) mallocMagic((unsigned) (height * width));
     return new;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1125,7 +1125,7 @@ PixRaster *pr;		/* PixRaster whose memory is to be freed.
     freeMagic((char *) pr->pix_pixels);
     freeMagic((char *) pr);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1182,7 +1182,7 @@ Rect *area;				/* Area to be cleared, in PixRaster
 	right += pr->pix_width;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1315,7 +1315,7 @@ PixRaster *pr;		/* Pointer to PixRaster whose bits are
 	break;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1368,7 +1368,7 @@ PlotDumpPixRaster(pr, file)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

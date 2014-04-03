@@ -34,7 +34,7 @@ typedef struct touchingfuncparms
     TileTypeBitMask	tfp_types;
 } TouchingFuncParms;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -115,7 +115,7 @@ TouchingTypes(cellUse, expansionMask, point)
     return(parms.tfp_types);
 }
 
-
+
 /*
  * ---------------------------------------------------------------------
  *
@@ -154,7 +154,7 @@ touchingTypesFunc(tile, cxp)
     return(0);
 }
 
-
+
 /*
  * ---------------------------------------------------------------------
  *

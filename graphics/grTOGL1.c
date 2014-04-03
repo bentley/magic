@@ -70,7 +70,7 @@ extern char *GrTkWindowName();
 
 extern void toglSetProjection();
 
-
+
 /*---------------------------------------------------------
  * grtoglSetWMandC:
  *	This is a local routine that resets the value of the current
@@ -134,7 +134,7 @@ grtoglSetWMandC (mask, c)
     oldMask = mask;
 }
 
-
+
 /*---------------------------------------------------------
  * grtoglSetLineStyle:
  *	This local routine sets the current line style.
@@ -172,7 +172,7 @@ grtoglSetLineStyle (style)
     }
 }
 
-
+
 /*---------------------------------------------------------
  * grtoglSetSPattern:
  *	toglSetSPattern associates a stipple pattern with a given
@@ -209,7 +209,7 @@ grtoglSetSPattern (sttable, numstipples)
     }
 }
 
-
+
 /*---------------------------------------------------------
  * grtoglSetStipple:
  *	This routine sets the Xs current stipple number.
@@ -239,7 +239,7 @@ grtoglSetStipple (stipple)
     }
 }
 
-
+
 /*------------------------------------------------------------------------
  * GrTOGLInit:
  *	GrTOGLInit initializes the graphics display and clears its screen.
@@ -321,7 +321,7 @@ GrTOGLInit ()
 
     return grTkLoadFont();
 }
-
+
 /*---------------------------------------------------------
  * GrTOGLClose:
  *
@@ -343,7 +343,7 @@ GrTOGLClose ()
     /* do XCloseDisplay()		 */
 }
 
-
+
 /*---------------------------------------------------------
  * GrTOGLFlush:
  * 	Flush output to display.
@@ -424,7 +424,7 @@ toglSetProjection(llx, lly, width, height)
     glLoadIdentity();
 }
 
-
+
 /*
  * ---------------------------------------------------------------------------
  *
@@ -862,7 +862,7 @@ keys_and_buttons:
     }
 }
 
-
+
 
 /*---------------------------------------------------------
  * oglSetDisplay:
@@ -982,7 +982,7 @@ oglSetDisplay (dispType, outFileName, mouseFileName)
 }
 
 extern void MakeWindowCommand();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1132,7 +1132,7 @@ GrTOGLCreate(w, name)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1162,7 +1162,7 @@ GrTOGLDelete(w)
     Tcl_DeleteCommand(magicinterp, Tk_PathName(xw));
     Tk_DestroyWindow(xw);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1189,7 +1189,7 @@ GrTOGLConfigure(w)
 		w->w_frameArea.r_xtop - w->w_frameArea.r_xbot,
 		    w->w_frameArea.r_ytop - w->w_frameArea.r_ybot);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1217,7 +1217,7 @@ GrTOGLRaise(w)
     tkwind = (Tk_Window)w->w_grdata;
     Tk_RestackWindow(tkwind, Above, NULL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1245,7 +1245,7 @@ GrTOGLLower(w)
     tkwind = (Tk_Window)w->w_grdata;
     Tk_RestackWindow(tkwind, Below, NULL);
 }
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -1291,7 +1291,7 @@ GrTOGLLock(w, flag)
 			w->w_allArea.r_ytop - w->w_allArea.r_ybot);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1321,7 +1321,7 @@ GrTOGLUnlock(w)
 
     grSimpleUnlock(w);
 }
-
+
 
 /*           
  *-------------------------------------------------------------------------

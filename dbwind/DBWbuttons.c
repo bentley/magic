@@ -67,7 +67,7 @@ void (*DBWButtonCurrentProc)();
 static int buttonCorner = TOOL_ILG;	/* Nearest corner when button went
 					 * down.
 					 */
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -134,7 +134,7 @@ DBWAddButtonHandler(name, proc, cursor, doc)
     TxError("    table.  Get your Magic wizard to increase the size of\n");
     TxError("    MAXBUTTONHANDLERS in DBWbuttons.c\n");
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -231,7 +231,7 @@ DBWChangeButtonHandler(name)
     DBWButtonCurrentProc = dbwButtonProcs[dbwButtonCurrentIndex];
     return oldName;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -256,7 +256,7 @@ DBWPrintButtonDoc()
     TxPrintf("%s", dbwButtonDoc[dbwButtonCurrentIndex]);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	dbwButtonSetCursor --
@@ -308,7 +308,7 @@ dbwButtonSetCursor(button, corner)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *

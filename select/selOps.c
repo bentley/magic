@@ -65,7 +65,7 @@ typedef struct stretchArea
 } StretchArea;
 
 static StretchArea *selStretchList;	/* List of areas to paint. */
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -188,7 +188,7 @@ selDelLabelFunc(label)
 		label->lab_text);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -755,7 +755,7 @@ SelectShort(char *lab1, char *lab2)
     return rlist;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -896,7 +896,7 @@ selTransLabelFunc(label, cellUse, defTransform, transform)
 	    label->lab_text, label->lab_type, label->lab_flags);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -933,7 +933,7 @@ SelectTransform(transform)
     SelectDelete("modified", TRUE);
     SelectAndCopy2(EditRootDef);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1003,7 +1003,7 @@ selExpandFunc(selUse, use, transform, mask)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1735,7 +1735,7 @@ selStretchFillFunc3(tile, area)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

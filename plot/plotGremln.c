@@ -94,7 +94,7 @@ static Rect bbox;		/* Bounding box, in root coordinates, of
 				 */
 #endif /* GREMLIN */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	PlotGremlinTechInit --
@@ -131,7 +131,7 @@ PlotGremlinTechInit()
 {}
 
 #endif /* GREMLIN */
-
+
 /*
  * ----------------------------------------------------------------------------
  *	PlotGremlinTechLine --
@@ -303,7 +303,7 @@ plotGremlinLine(p1, p2, lineStyle)
     fprintf(file, "%.3f %.3f\n%.3f %.3f\n", x1, y1, x2, y2);
     fprintf(file, "*\n%d 0\n0 \n", lineStyle);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -337,7 +337,7 @@ plotGremlinRect(rect, lineStyle)
     plotGremlinLine(&rect->r_ur, &p, lineStyle);
     plotGremlinLine(&p, &rect->r_ll, lineStyle);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -489,7 +489,7 @@ plotGremlinPaint(tile, cxp)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -649,7 +649,7 @@ plotGremlinLabel(scx, label)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -722,7 +722,7 @@ plotGremlinCell(scx)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

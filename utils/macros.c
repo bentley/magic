@@ -212,7 +212,7 @@ MacroSubstitute(macrostr, searchstr, replacestr)
 	return macrostr;
 }
 
-
+
 /*---------------------------------------------------------
  * MacroDelete:
  *	This procedure deletes a macro.
@@ -257,7 +257,7 @@ MacroDelete(client, xc)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * MacroName --
@@ -343,7 +343,7 @@ MacroName(xc)
     return(vis);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * MacroKey:
@@ -483,7 +483,7 @@ MacroKey(str, verbose)
     return(0);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * CommandLineTranslate

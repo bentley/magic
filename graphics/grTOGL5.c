@@ -29,7 +29,7 @@ extern Display	*grXdpy;
 extern int	 grXscrn;
 extern HashTable grTOGLWindowTable;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrTOGLDrawGlyph --
@@ -146,7 +146,7 @@ GrTOGLDrawGlyph (gl, p)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrTOGLSetCursor:

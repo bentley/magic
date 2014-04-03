@@ -29,7 +29,7 @@
 
 extern char *maskToPrint();
 extern char *DBTypeShortName();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -59,7 +59,7 @@ drcGetName(layer, string)
     return string;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * DRCPrintRulesTable --

@@ -28,7 +28,7 @@
 #include "utils/malloc.h"
 
 Histogram * hist_list = (Histogram *) NULL;
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -59,7 +59,7 @@ histFind(name, ptrKeys)
 	    return(h);
     return((Histogram *) NULL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -112,7 +112,7 @@ HistCreate(name, ptrKeys, low, step, bins)
     new->hi_next=hist_list;
     hist_list=new;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -153,7 +153,7 @@ HistAdd(name, ptrKeys, value)
     if(value > h->hi_max)
 	h->hi_max=value;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

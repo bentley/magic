@@ -73,7 +73,7 @@ DBIsSubcircuit(cellDef)
     return FALSE;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -220,7 +220,7 @@ DBPutFontLabel(cellDef, rect, font, size, rot, offset, align, text, type, flags)
     cellDef->cd_flags |= CDMODIFIED|CDGETNEWSTAMP;
     return lab;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -309,7 +309,7 @@ DBEraseLabel(cellDef, area, mask, areaReturn)
 	cellDef->cd_flags |= CDMODIFIED|CDGETNEWSTAMP;
     return (erasedAny);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -375,7 +375,7 @@ DBEraseLabelsByContent(def, rect, type, text)
 	else goto nextCheck;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -436,7 +436,7 @@ DBEraseLabelsByFunction(def, func)
 	else goto nextCheck;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -478,7 +478,7 @@ DBReOrientLabel(cellDef, area, newPos)
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -602,7 +602,7 @@ DBAdjustLabelsNew(def, area, noreconnect)
     if (modified) DBCellSetModified(def, TRUE);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *

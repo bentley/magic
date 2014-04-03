@@ -241,7 +241,7 @@ success:
 done:
     return (ret);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -355,7 +355,7 @@ extHardSetLabel(scx, reg, arg)
 	TxPrintf("Hard way: found label = \"%s\"\n", newlab->lab_text);
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -427,7 +427,7 @@ extHardGenerateLabel(scx, reg, arg)
 	TxPrintf("Hard way: generated label = \"%s\"\n", newlab->lab_text);
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

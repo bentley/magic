@@ -79,7 +79,7 @@
 
 int timestamp;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	DBFixMismatch --
@@ -180,7 +180,7 @@ DBFixMismatch()
     if (redisplay) WindAreaChanged((MagWindow *) NULL, (Rect *) NULL);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	DBUpdateStamps --
@@ -244,7 +244,7 @@ dbStampFunc(cellDef)
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	DBStampMismatch --

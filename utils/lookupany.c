@@ -18,7 +18,7 @@
  * table which contains the supplied character.
  */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * LookupAny --

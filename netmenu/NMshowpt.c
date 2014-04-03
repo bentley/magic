@@ -48,7 +48,7 @@ static int nmspArrayUsed = 0;		/* Number of entries actually used. */
 #define MAXPIXELS 14
 #define THICKNESS 3
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -147,7 +147,7 @@ nmspAlways1()
 {
     return 1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -213,7 +213,7 @@ NMAddPoint(point)
     area.r_ytop = point->p_y + MAXLAMBDAS/2;
     DBWHLRedraw(EditRootDef, &area, FALSE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -262,7 +262,7 @@ NMDeletePoint(point)
     area.r_ytop = area.r_ybot + MAXLAMBDAS;
     DBWHLRedraw(EditRootDef, &area, TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

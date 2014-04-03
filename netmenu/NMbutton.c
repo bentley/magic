@@ -41,7 +41,7 @@ char *NMCurNetName = NULL;
 /* Maximimum amount of storage to hold terminal name: */
 
 #define MAXTERMLENGTH 200
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -80,7 +80,7 @@ NMButtonNetList(window, cmd, nmButton, point)
 	NMNewNetlist(newName);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -157,7 +157,7 @@ nmButtonSetup()
     }
     return termName;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -320,7 +320,7 @@ nmNewRefFunc(name, oldRef)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -378,7 +378,7 @@ nmSelNetFunc(name)
     if (!exists) TxPrintf("%s: not in circuit!\n", name);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -416,7 +416,7 @@ NMButtonLeft(w, cmd)
     if (NMTermInList(name) == NULL) (void) NMAddTerm(name, name);
     NMSelectNet(name);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -464,7 +464,7 @@ NMButtonMiddle(w, cmd)
 
     TxPrintf("Merging net \"%s\" into current net.\n", name);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

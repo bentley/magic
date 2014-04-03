@@ -105,7 +105,7 @@ HashTable calmaDefInitHash;
 
 /* Common stuff to ignore */
 int calmaElementIgnore[] = { CALMA_ELFLAGS, CALMA_PLEX, -1 };
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -312,7 +312,7 @@ calmaParseUnits()
 
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -366,7 +366,7 @@ calmaReadError(format, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
         TxError("Error limit set:  Remaining errors will not be reported.\n");
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -409,7 +409,7 @@ calmaUnexpected(wanted, got)
 	    }
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -458,7 +458,7 @@ calmaRecordName(rtype)
 
     return (calmaRecordNames[rtype]);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

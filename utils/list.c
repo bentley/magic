@@ -24,7 +24,7 @@
 #include "utils/malloc.h"
 #include "utils/list.h"
 
-
+
 /* ----------------------------------------------------------------------------
  *	ListPop --
  *	Returns top data item on list, deallocates top list element, and
@@ -51,7 +51,7 @@ ListPop(listPP)
     return result;
 }
 
-
+
 /* ----------------------------------------------------------------------------
  *	ListContainsP --
  * 	Check if list contains given element.
@@ -74,7 +74,7 @@ ListContainsP(element,list)
 
     return list!=NULL;
 }
-
+
 /* ----------------------------------------------------------------------------
  *	ListDealloc --
  * 	Deallocate list strucs in list.
@@ -100,7 +100,7 @@ ListDealloc(list)
     return;
 }
 
-
+
 /* ----------------------------------------------------------------------------
  *	ListDeallocC --
  * 	Deallocate list strucs in list AND CONTENTS of list.
@@ -128,7 +128,7 @@ ListDeallocC(list)
 
     return;
 }
-
+
 /* ----------------------------------------------------------------------------
  *	ListLength --
  * 	Count number of elements in list.
@@ -152,7 +152,7 @@ ListLength(list)
 
     return count;
 }
-
+
 /* ----------------------------------------------------------------------------
  *	ListReverse --
  * 	Make reversed copy of list.

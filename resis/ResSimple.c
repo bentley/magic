@@ -46,7 +46,7 @@ extern void ResMoveTransistors();
 extern void ResAddResistorToList();
 
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -373,7 +373,7 @@ ResSimplifyNet(nodelist,biglist,reslist,tolerance)
 }
 
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -436,7 +436,7 @@ ResMoveTransistors(node1,node2)
      node1->rn_te = NULL;
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -593,7 +593,7 @@ ResScrunchNet(reslist,pendingList,biglist,tolerance)
      }
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -653,7 +653,7 @@ ResAddResistorToList(resistor,locallist)
     }
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -703,7 +703,7 @@ ResDistributeCapacitance(nodelist,totalcap)
      }
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -776,7 +776,7 @@ ResCalculateChildCapacitance(me)
      return(myC->rc_Cdownstream);
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -826,7 +826,7 @@ ResCalculateTDi(node,resistor,resistorvalue)
 	  }
      }
 }
-
+
 /*
  *-------------------------------------------------------------------------
  *
@@ -886,7 +886,7 @@ ResPruneTree(node,minTdi,nodelist1,nodelist2,resistorlist)
 	  }
      }
 }
-
+
 int
 ResDoSimplify(tolerance,rctol,goodies)
 	float	tolerance;
@@ -1054,7 +1054,7 @@ ResDoSimplify(tolerance,rctol,goodies)
     return(0);
      
 }
-
+
 void
 ResSetPathRes()
 
@@ -1096,7 +1096,7 @@ ResSetPathRes()
 	  resPathRes((resResistor *) he.he_id);
      }
 }
-
+
 void
 resPathNode(node)
 	resNode	*node;

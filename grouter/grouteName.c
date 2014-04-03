@@ -35,7 +35,7 @@ char **glNameTable;
 int glNameTableSize = 0, glNameTableUsed = 0;
 
 static bool glNameDidInit = FALSE;
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -91,7 +91,7 @@ glNetNameInit(netList, numNets)
 	    glNameTableUsed = (int) net->nnet_cdata;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

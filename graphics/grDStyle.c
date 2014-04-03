@@ -72,7 +72,7 @@ char *fillStyles[] = {
 	"grid",
 	NULL };
 
-
+
 
 /* Internal constants for each section of the style file. */
 /* These are bitmask-mapped so the display style reader	  */
@@ -92,7 +92,7 @@ char *fillStyles[] = {
 int GrStyleNames[128];		/* short names for styles */
 GR_STYLE_LINE *GrStyleTable;
 
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -158,7 +158,7 @@ GrResetStyles()
     DBWNumStyles = 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * styleBuildDisplayStyle:
@@ -238,7 +238,7 @@ styleBuildDisplayStyle(line, version)
     return(res);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * styleBuildStippleStyle:
@@ -309,7 +309,7 @@ styleBuildStipplesStyle(line, version)
     return(res);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrLoadCursors --
@@ -353,7 +353,7 @@ char *libPath;
     return TRUE;  
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrLoadStyles:

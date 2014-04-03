@@ -143,7 +143,7 @@ dbCopyDefFunc(tile, def)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -216,7 +216,7 @@ DBCellClearDef(cellDef)
     cellDef->cd_lastLabel = (Label *) NULL;
     SigEnableInterrupts();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -251,7 +251,7 @@ DBClearCellPlane(plane)
     TiSetBody(newCenterTile, NULL);
     dbSetPlaneTile(plane, newCenterTile);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -285,7 +285,7 @@ DBClearPaintPlane(plane)
     TiSetBody(newCenterTile, TT_SPACE);
     dbSetPlaneTile(plane, newCenterTile);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -330,7 +330,7 @@ dbSetPlaneTile(plane, newCenterTile)
     LEFT(newCenterTile) = TiPlaneRect.r_xbot;
     BOTTOM(newCenterTile) = TiPlaneRect.r_ybot;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

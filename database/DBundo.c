@@ -103,7 +103,7 @@ bool dbUndoUndid;
 
 extern void dbUndoEdit();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -200,7 +200,7 @@ DBUndoReset(celldef)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -225,7 +225,7 @@ dbUndoInit()
     dbUndoAreaChanged.r_xbot = dbUndoAreaChanged.r_xtop = 0;
     dbUndoAreaChanged.r_ybot = dbUndoAreaChanged.r_ytop = 0;
 }
-
+
 /*
  * ============================================================================
  *
@@ -409,7 +409,7 @@ endPaintBack:
     (void) GeoInclude(&up->pue_rect, &dbUndoAreaChanged);
     (void) DRCCheckThis(dbUndoLastCell, TT_CHECKPAINT, &up->pue_rect);
 }
-
+
 /*
  * ============================================================================
  *
@@ -481,7 +481,7 @@ DBUndoPutLabel(cellDef, lab)
     lup->lue_offset = lab->lab_offset;
     strcpy(lup->lue_text, lab->lab_text);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -524,7 +524,7 @@ DBUndoEraseLabel(cellDef, lab)
     lup->lue_offset = lab->lab_offset;
     strcpy(lup->lue_text, lab->lab_text);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -581,7 +581,7 @@ dbUndoLabelBack(up)
     if (up->lue_type == TT_SPACE)
 	dbUndoUndid = TRUE;
 }
-
+
 /*
  * ============================================================================
  *
@@ -666,7 +666,7 @@ DBUndoCellUse(use, action)
     up->cue_flags = use->cu_flags;
     strcpy(up->cue_id, use->cu_id);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -823,7 +823,7 @@ dbUndoCellBack(up)
 	    break;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -870,7 +870,7 @@ findUse(up, matchName)
     ASSERT(FALSE, "findUse: use == NULL");
     return (CellUse *) NULL;
 }
-
+
 /*
  * ============================================================================
  *
@@ -937,7 +937,7 @@ dbUndoEdit(new)
     strcpy(up->eue_name, new->cd_name);
     dbUndoLastCell = new;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -964,7 +964,7 @@ dbUndoOpenCell(eup)
     ASSERT(newDef != (CellDef *) NULL, "dbUndoOpenCell");
     dbUndoLastCell = newDef;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

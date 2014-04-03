@@ -22,7 +22,7 @@
 #include "utils/magic.h"
 #include "utils/utils.h"
 
-
+
 /*---------------------------------------------------------
  * Lookup --
  *	Searches a table of strings to find one that matches a given
@@ -121,7 +121,7 @@ char *(table[]);		/* Pointer to an array of string pointers
     return(match);
 }
 
-
+
 /*---------------------------------------------------------
  *
  * LookupStruct --

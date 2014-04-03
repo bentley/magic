@@ -76,7 +76,7 @@ MagWindow *windTopWindow = NULL;		/* the topmost window */
 MagWindow *windBottomWindow = NULL;	/* ...and the bottom window */
 extern Plane *windRedisplayArea;	/* See windDisplay.c for details. */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindInit --
@@ -113,7 +113,7 @@ WindInit()
     WindAreaChanged((MagWindow *) NULL, (Rect *) NULL);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindAddClient --
@@ -263,7 +263,7 @@ WindAddClient(clientName, create, delete, redisplay, command, update,
     return (WindClient) res;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * WindGetClient --

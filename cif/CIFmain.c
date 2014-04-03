@@ -72,7 +72,7 @@ static int cifTotalHierRects = 0;
 global CellDef *CIFErrorDef;	/* Definition in which to record errors. */
 global int CIFErrorLayer;	/* Index of CIF layer associated with errors.*/
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -208,7 +208,7 @@ CIFPrintStyle(dolist, doforall, docurrent)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -265,7 +265,7 @@ CIFSetStyle(name)
     TxError("\"%s\" is not one of the CIF output styles Magic knows.\n", name);
     CIFPrintStyle(FALSE, TRUE, TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -342,7 +342,7 @@ CIFNameToMask(name, result, depend)
     TxError(".\n");
     return FALSE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -381,7 +381,7 @@ CIFError(area, message)
     DBWFeedbackAdd(area, msg, CIFErrorDef, CIFCurStyle->cs_scaleFactor,
 	STYLE_PALEHIGHLIGHTS);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

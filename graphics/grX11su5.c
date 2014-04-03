@@ -37,7 +37,7 @@ extern XColor colors[];
 
 Cursor grCursors[MAX_CURSORS];
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrXDrawGlyph --
@@ -144,7 +144,7 @@ GrX11DrawGlyph (gl, p)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * grxDefineCursor:
@@ -278,7 +278,7 @@ grx11DefineCursor(glyphs)
     GrUnlock(GR_LOCK_SCREEN);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrXSetCursor:

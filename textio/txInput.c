@@ -345,7 +345,7 @@ TxDialog(prompt, responses, deflt)
     return code;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * TxSetPrompt --
@@ -369,7 +369,7 @@ TxSetPrompt(ch)
 
 #endif
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * TxPrompt --
@@ -405,7 +405,7 @@ TxPrompt()
     lastPromptChar = txPromptChar;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * TxRestorePrompt --
@@ -430,7 +430,7 @@ TxRestorePrompt()
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * TxUnPrompt --
@@ -1073,7 +1073,7 @@ TxGetLinePrompt(dest, maxChars, prompt)
 
 #ifndef MAGIC_WRAPPER
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * TxGetLinePfix:
@@ -1186,7 +1186,7 @@ TxGetLine(dest, maxChars)
     return TxGetLinePfix(dest, maxChars, NULL);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * txGetTermState:
@@ -1224,7 +1224,7 @@ txGetTermState(buf)
 }
 #endif /* SYSV */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * txSetTermState:
@@ -1257,7 +1257,7 @@ txSetTermState(buf)
 }
 
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * txInitTermRec:
@@ -1295,7 +1295,7 @@ txInitTermRec(buf)
 #endif /* SYSV */
 }
 
-
+
 
 #if defined(SYSV) || defined(CYGWIN)
 struct termio closeTermState;
@@ -1347,7 +1347,7 @@ txSaveTerm()
 #endif /* SYSV */
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * TxSetTerminal:
@@ -1386,7 +1386,7 @@ TxSetTerminal()
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * TxResetTerminal:

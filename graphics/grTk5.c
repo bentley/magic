@@ -26,7 +26,7 @@
 extern HashTable	grTkWindowTable;
 extern XColor colors[];
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrTkDrawGlyph --
@@ -133,7 +133,7 @@ GrTkDrawGlyph (gl, p)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrTkSetCursor:

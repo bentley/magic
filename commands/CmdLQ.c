@@ -46,7 +46,7 @@
 
 void CmdPaintEraseButton();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -121,7 +121,7 @@ CmdLabelProc(text, font, size, rotate, offx, offy, pos, sticky, type)
     DBWLabelChanged(EditCellUse->cu_def, lab, DBW_ALLWINDOWS);
     lab->lab_rect = tmpArea;
 }
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -305,7 +305,7 @@ CmdLabel(w, cmd)
     CmdLabelProc(p, font, size, rotate, offx, offy, pos, sticky, type);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -618,7 +618,7 @@ moveToPoint:
     
     SelectTransform(&t);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -689,7 +689,7 @@ CmdPaint(w, cmd)
     DBReComputeBbox(EditCellUse->cu_def);
     DRCCheckThis (EditCellUse->cu_def, TT_CHECKPAINT, &editRect);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

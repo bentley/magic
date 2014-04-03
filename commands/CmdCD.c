@@ -61,7 +61,7 @@ struct cmdCornerArea
 int cmdDumpFunc();
 bool cmdDumpParseArgs();
 #ifdef CALMA_MODULE
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1371,7 +1371,7 @@ CmdCif(w, cmd)
     (void) fclose(f);
 }
 #endif
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2028,7 +2028,7 @@ CmdCorner(w, cmd)
     DBWAreaChanged(EditCellUse->cu_def, &editBox, DBW_ALLWINDOWS, &maskBits);
     DBReComputeBbox(EditCellUse->cu_def);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2800,7 +2800,7 @@ CmdCrosshair(w, cmd)
 	TxError("Usage: %s off|x y \n", cmd->tx_argv[0]);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2834,7 +2834,7 @@ CmdDelete(w, cmd)
     badusage:
     TxError("Usage: %s\n", cmd->tx_argv[0]);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -2948,7 +2948,7 @@ cmdDownEnumFunc(selUse, use, transform, area)
     if (!GEO_OVERLAP(&useArea, &use->cu_bbox)) return 0;
     return 1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -3403,7 +3403,7 @@ CmdDrc(w, cmd)
     }
     return;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -3441,7 +3441,7 @@ CmdDump(w, cmd)
     if (cmdDumpParseArgs("dump", w, cmd, &dummy, &scx))
 	SelectDump(&scx);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

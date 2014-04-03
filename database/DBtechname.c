@@ -35,7 +35,7 @@
 #include "textio/textio.h"
 #include "utils/malloc.h"
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -199,7 +199,7 @@ DBTechNameTypes(typename, bitmask)
     return (type < DBNumUserLayers) ? type : -2;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -263,7 +263,7 @@ DBTechNamePlane(planename)
 {
     return ((spointertype) dbTechNameLookup(planename, &dbPlaneNameLists));
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -300,7 +300,7 @@ DBTechNoisyNamePlane(planename)
 
     return (pNum);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -361,7 +361,7 @@ DBPlaneShortName(pNum)
 	return (DBPlaneLongNameTbl[pNum]);
     return ("???");
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -405,7 +405,7 @@ DBTechTypesToPlanes(mask)
     retMask = planeMask & noCellMask;
     return retMask;
 }
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -557,7 +557,7 @@ DBTechPrintCanonicalType(layername)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -59,7 +59,7 @@ int glNumTries;		/* Debugging too -- # calls to glProcessLoc() */
 void glClientInit();
 void glClientFree();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -145,7 +145,7 @@ GlGlobalRoute(chanList, netList)
     glChanFreeMap();
     glStatsDone(netList->nnl_numNets, numTerms);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -194,7 +194,7 @@ glClientInit(chanList, netList)
     for (net = netList->nnl_nets; net; net = net->nnet_next)
 	net->nnet_cdata = (ClientData) callocMagic((unsigned) (sizeof (NetClient)));
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -243,7 +243,7 @@ glClientFree(chanList, netList)
 	net->nnet_cdata = (ClientData) NULL;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

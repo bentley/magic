@@ -77,7 +77,7 @@ typedef struct pa
 } PaintArea;
 
 PaintArea *glChanPaintList;
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -251,7 +251,7 @@ glChanFeedFunc(tile)
     DBWFeedbackAdd(&r, mesg, EditCellUse->cu_def, 1, STYLE_OUTLINEHIGHLIGHTS);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -282,7 +282,7 @@ glChanFreeMap()
     TiSetBody(newCenterTile, CHAN_BLOCKED);
     dbSetPlaneTile(glChanPlane, newCenterTile);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -371,7 +371,7 @@ glChanCheckFunc(tile, ch)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -476,7 +476,7 @@ glChanShowFunc(tile)
     ShowRect(EditCellUse->cu_def, &ch->gcr_area, STYLE_ERASEHIGHLIGHTS);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -539,7 +539,7 @@ glChanClipFunc(tile, area)
 
     return ret;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -622,7 +622,7 @@ glChanMergeFunc(tile)
 
     return ret;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -791,7 +791,7 @@ glChanPaintFunc(tile, type)
     TiSetBody(tile, changeTable[TiGetType(tile)][type]);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -901,7 +901,7 @@ glChanFloodHFunc(tile, area)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -981,7 +981,7 @@ glChanSplitRiver(tile)
 
     return ret;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1048,7 +1048,7 @@ glChanRiverBlock(tile)
     TiSetBody(tile, CHAN_BLOCKED);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -57,7 +57,7 @@ int nmNum2 = -1;
 char nmNum1String[12];		/* String equivalents of nmNum1 and nmNum2. */
 char nmNum2String[12];
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -111,7 +111,7 @@ nmGetNums(string, num1, num2)
 	if (*p == 0) return;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -214,7 +214,7 @@ nmPutNums(src, num1, num2)
     while (TRUE)
 	if ((*pResult++ = *pSrc++) == 0) return result;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -255,7 +255,7 @@ nmSetCurrentLabel()
 	(void) NMredisplay(NMWindow, &NMNum2Button.nmb_area, (Rect *) NULL);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -309,7 +309,7 @@ NMGetLabels()
     nmCurLabel = 0;
     nmSetCurrentLabel();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -358,7 +358,7 @@ NMPrevLabel()
     else nmCurLabel -= 1;
     nmSetCurrentLabel();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -418,7 +418,7 @@ NMChangeNum(window,cmd, nmButton, point)
 	nmPutNums(nmLabelArray[nmCurLabel], nmNum1, nmNum2));
     nmSetCurrentLabel();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -469,7 +469,7 @@ nmGetPos(button, point)
     return GeoTransPos(&RootToEditTransform, pos[3*y + x]);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -511,7 +511,7 @@ NMPutLabel(window, cmd, nmButton, point)
     pos = nmGetPos(nmButton, point);
     CmdLabelProc(text, -1, 1, 0, 0, 0, pos, 0, (TileType)-1);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -547,7 +547,7 @@ NMReOrientLabel(window, cmd, nmButton, point)
     pos = nmGetPos(nmButton, point);
     DBReOrientLabel(EditCellUse->cu_def, &editArea, pos);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -578,7 +578,7 @@ NMFindLabel()
     }
     NMShowLabel(pattern, (TileTypeBitMask *) NULL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

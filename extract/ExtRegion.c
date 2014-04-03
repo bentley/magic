@@ -31,7 +31,7 @@
 #include "extract/extract.h"
 #include "extract/extractInt.h"
 #include "utils/signals.h"
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -122,7 +122,7 @@ ExtFindRegions(def, area, mask, connectsTo, uninit, first, each)
 
     return (arg.fra_region);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -163,7 +163,7 @@ extRegionAreaFunc(tile, arg)
     (void) ExtFindNeighbors(tile, arg->fra_pNum, arg);
     return (0);
 }
-
+
 
 /*
  * ----------------------------------------------------------------------------
@@ -277,7 +277,7 @@ ExtLabelRegions(def, connTo, nodeList)
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -345,7 +345,7 @@ ExtLabelOneRegion(def, connTo, reg)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -378,7 +378,7 @@ ExtResetTiles(def, resetTo)
     for (pNum = PL_TECHDEPBASE; pNum < DBNumPlanes; pNum++)
 	DBResetTilePlane(def->cd_planes[pNum], resetTo);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

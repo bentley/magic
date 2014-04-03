@@ -37,7 +37,7 @@ int      *	gcrNthSplit=(int *) NULL;
 /* Forward declarations */
 void gcrEvalPat();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *	gcrCollapse  --
@@ -114,7 +114,7 @@ gcrCollapse(col, width, bot, top, freed)
     gcrEvalPat( col, freed, width);
     *col=(GCRColEl *) NULL;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -151,7 +151,7 @@ gcrInitCollapse(size)
 	gcrBestCol = (GCRColEl *) NULL;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	gcrEvalPat --
@@ -244,7 +244,7 @@ gcrEvalPat(col, freed, size)
     freeMagic((char *) *col);
     return;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	gcrNextSplit --
@@ -273,7 +273,7 @@ gcrNextSplit(col, size, i)
 	    return(i);
     return(size+1);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	gcrPickBest --
@@ -298,7 +298,7 @@ gcrPickBest(ch)
     ch->gcr_lCol=gcrBestCol;
     gcrBestCol=(GCRColEl *) NULL;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *	gcrReduceRange --

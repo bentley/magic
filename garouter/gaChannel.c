@@ -56,7 +56,7 @@ void gaInitRiverBlockages();
 
 int gaTotNormCross, gaTotRiverCross, gaClearNormCross, gaClearRiverCross;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -82,7 +82,7 @@ GAChannelInitOnce()
     RtrChannelPlane = gaChannelDef->cd_planes[PL_DRC_ERROR];
     GAClearChannels();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -119,7 +119,7 @@ GAClearChannels()
     gaChannelList = (GCRChannel *) NULL;
     SigEnableInterrupts();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -209,7 +209,7 @@ GADefineChannel(chanType, r)
 
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -413,7 +413,7 @@ gaPinStats(pins, nPins, pTot, pClear)
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -450,7 +450,7 @@ gaPropagateBlockages(list)
 		changed = TRUE;
     } while (changed);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -476,7 +476,7 @@ gaSetClient(tile, cdata)
     tile->ti_client = (ClientData) cdata;
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -531,7 +531,7 @@ gaSplitTile(tile, r)
     }
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -47,7 +47,7 @@ int ecNumNodeResists;
 
 /* Forward declarations */
 int nodeVisit(), devVisit(), capVisit(), resistVisit();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -101,7 +101,7 @@ main(argc, argv)
 	    ecNumResists, ecNumThreshResists);
     exit (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

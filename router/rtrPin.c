@@ -41,7 +41,7 @@
 bool rtrPinArrayBlock();
 void rtrPinShow(GCRPin *);
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -185,7 +185,7 @@ rtrPinArrayInit(ch, side, pins, nPins)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -246,7 +246,7 @@ RtrPointToPin(ch, side, point)
     ASSERT(FALSE, "Pin not on side of channel in RtrPointToPin");
     return &ch->gcr_lPins[0];
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -335,7 +335,7 @@ rtrPinArrayBlock(ch, pins, opins, nPins)
 
     return changed;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -433,7 +433,7 @@ void rtrPinShow(pin)
     ShowRect(EditCellUse->cu_def, &r, STYLE_ERASEHIGHLIGHTS);
 #endif	/* notdef */
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -60,7 +60,7 @@ extern void dbTechBitTypeInit();
 
 bool dbTechAddPaintErase();
 bool dbTechSaveCompose();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -241,7 +241,7 @@ DBTechInitCompose()
 
     for (s = 0; s < DBNumTypes; s++) DBSpecialResultTbl[s] = TT_CHECKSUBCELL;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -317,7 +317,7 @@ dbIsPrimary(n)
     return (bitCount==1);
 }
       
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -436,7 +436,7 @@ DBTechAddCompose(sectionName, argc, argv)
 
     return TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -516,7 +516,7 @@ dbTechSaveCompose(ruleType, t, argc, argv)
 
     return TRUE;
 }
-
+
 
 #if 0	/* deprecated function (5/11/04) */
 /*
@@ -567,7 +567,7 @@ dbTechCheckImages(t, r, s)
 }
 #endif	/* 0 */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -678,7 +678,7 @@ dbTechAddPaintErase(type, sectionName, argc, argv)
     return TRUE;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -729,7 +729,7 @@ dbTechCheckPaint(where)
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

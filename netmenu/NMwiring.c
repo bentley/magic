@@ -94,7 +94,7 @@ static int nmVCount= 0;
 
 #define TERMLENGTH 200
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -130,7 +130,7 @@ nmwRipTileFunc(tile, plane, listHead)
     *listHead = new;
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -188,7 +188,7 @@ NMRipup()
     DBReComputeBbox(EditCellUse->cu_def);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -245,7 +245,7 @@ nmRipLocFunc(rect, name, label, area)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -277,7 +277,7 @@ nmRipNameFunc(name, firstInNet, area)
     (void) DBSrLabelLoc(EditCellUse, name, nmRipLocFunc, (ClientData) area);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -316,7 +316,7 @@ NMRipupList()
     DRCCheckThis(EditCellUse->cu_def, TT_CHECKPAINT, &area);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -342,7 +342,7 @@ nmwNetCellFunc(scx)
 	scx->scx_use->cu_id);
     return 2;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -369,7 +369,7 @@ nmwCheckFunc(name, otherName)
     if (strcmp(name, otherName) == 0) return 1;
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -440,7 +440,7 @@ nmwNetTermFunc(scx, label, tpath, netPtr)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -509,7 +509,7 @@ nmwNetTileFunc(tile, plane, netPtr)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -553,7 +553,7 @@ NMExtract()
     NMSelectNet(net);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -685,7 +685,7 @@ nmwVerifyLabelFunc2(scx, label, tpath, cd)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -729,7 +729,7 @@ nmwVerifyTileFunc(tile, plane, func)
 	0, &tpath, TF_LABEL_ATTACH, nmwVerifyLabelFunc2, (ClientData) func);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -793,7 +793,7 @@ nmwVerifyLabelFunc(rect, name, label, cd)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -834,7 +834,7 @@ nmwVErrorLabelFunc(rect, name, label)
     nmwVerifyErrors += 1;
     return 1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -890,7 +890,7 @@ nmwVerifyTermFunc(name, report)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -996,7 +996,7 @@ nmwVerifyNetFunc(name, first)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1048,7 +1048,7 @@ NMVerify()
 	TxPrintf("%d feedback areas generated.\n", nmwVerifyErrors);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1087,7 +1087,7 @@ NMCull()
 		nmwCullDone);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1167,7 +1167,7 @@ nmwCullNetFunc(name, first)
 
     return 0;
 }
-
+
 
 #ifdef ROUTE_MODULE
 
@@ -1225,7 +1225,7 @@ nmMeasureFunc(r, type, clientData)
 	nmVCount++;
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1297,7 +1297,7 @@ nmAllFunc(name, firstInNet, fp)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

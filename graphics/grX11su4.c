@@ -31,7 +31,7 @@
 #include "textio/txcommands.h"
 #include "grX11Int.h"
 
-
+
 /*---------------------------------------------------------
  * GrXDisableTablet:
  *	Turns off the cursor.
@@ -47,7 +47,7 @@ GrX11DisableTablet()
 {
 }
 
-
+
 /*---------------------------------------------------------
  * GrXEnableTablet:
  *	This routine enables the graphics tablet.
@@ -65,7 +65,7 @@ GrX11EnableTablet()
 {
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * grxGetCursorPos:

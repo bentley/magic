@@ -40,7 +40,7 @@
 #include "utils/netlist.h"
 #include "select/select.h"
 
-
+
 /* ---------------------------------------------------------------------------
  *
  * CmdAddPath --
@@ -76,7 +76,7 @@ CmdAddPath( w, cmd )
     }
     PaAppend(&Path, cmd->tx_argv[1]);
 }
-
+
 
 /* Linked-list structure for returning information about arrayed cells */
 
@@ -426,7 +426,7 @@ selGetArrayFunc(selUse, use, trans, arg)
     return 0;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *

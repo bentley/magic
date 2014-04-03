@@ -101,7 +101,7 @@ techSection *techSectionFree;		/* Pointer to next free section */
 techSection *techCurrentSection;	/* Pointer to current section */
 
 techSection *techFindSection();
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -224,7 +224,7 @@ TechAddAlias(primaryName, alias)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -317,7 +317,7 @@ TechAddClient(sectionName, init, proc, final, prevSections, pSectionID, opt)
 	tcl->tc_next = tcp;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * TechLoad --
@@ -583,7 +583,7 @@ skipsection:
     if (fstack) fclose(fstack->file);
     return (retval);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -626,7 +626,7 @@ TechError(char *fmt, ...)
     va_end(args);
 }
 
-
+
 /* ================== Functions local to this module ================== */
 
 /*
@@ -664,7 +664,7 @@ techFindSection(sectionName)
     }
     return ((techSection *) NULL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

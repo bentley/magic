@@ -61,7 +61,7 @@ extern void GrOGLLock(), GrOGLUnlock(), GrOGLIconUpdate();
 extern bool GrOGLInit(), GrOGLCreate();
 extern void grOGLWStdin();
 
-
+
 /*---------------------------------------------------------
  * groglSetWMandC:
  *	This is a local routine that resets the value of the current
@@ -117,7 +117,7 @@ groglSetWMandC (mask, c)
     oldColor = c;
 }
 
-
+
 /*---------------------------------------------------------
  * groglSetLineStyle:
  *	This local routine sets the current line style.
@@ -154,7 +154,7 @@ groglSetLineStyle (style)
     }
 }
 
-
+
 /*---------------------------------------------------------
  * groglSetSPattern:
  *	xSetSPattern associates stipple patterns with
@@ -191,7 +191,7 @@ groglSetSPattern (sttable, numstipples)
     }
 }
 
-
+
 /*---------------------------------------------------------
  * groglSetStipple:
  *	This routine sets the Xs current stipple number.
@@ -221,7 +221,7 @@ groglSetStipple (stipple)
     }
 }
 
-
+
 /*---------------------------------------------------------
  * GrOGLInit:
  *	GrOGLInit initializes the graphics display and clears its screen.
@@ -294,7 +294,7 @@ GrOGLInit()
     if (grVisualInfo != NULL) XFree(grVisualInfo);
     return groglPreLoadFont();
 }
-
+
 /*---------------------------------------------------------
  * GrOGLClose:
  *
@@ -322,7 +322,7 @@ GrOGLClose()
 #endif
 }
 
-
+
 /*---------------------------------------------------------
  * GrOGLFlush:
  * 	Flush output to display.
@@ -904,7 +904,7 @@ GrOGLDelete(w)
 
     XDestroyWindow(grXdpy, xw);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -952,7 +952,7 @@ GrOGLRaise(w)
 {
     XRaiseWindow(grXdpy, (Window) w->w_grdata );
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -975,7 +975,7 @@ GrOGLLower(w)
 {
     XLowerWindow(grXdpy, (Window) w->w_grdata );
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1008,7 +1008,7 @@ GrOGLLock(w, flag)
 			 w->w_allArea.r_ytop - w->w_allArea.r_ybot);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1031,7 +1031,7 @@ GrOGLUnlock(w)
     GrOGLFlush();
     grSimpleUnlock(w);
 }
-
+
 
 /*
  *-------------------------------------------------------------------------

@@ -39,7 +39,7 @@ bool GlDebugCrossings = FALSE;
 
 #define isSpaceTile(tile) (TiGetBody(tile) == NULL)
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -89,7 +89,7 @@ glAdjacentChannel(ch, point)
 
     return (glTileToChannel(TiSrPointNoHint(RtrChannelPlane, &p)));
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -127,7 +127,7 @@ glBadChannel(oldCh, newCh, entryPt)
 
     return (FALSE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -173,7 +173,7 @@ glDebug(point, text, value, size)
 	GlDebugCrossings = FALSE;
     TxPrintf("\n");
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -218,7 +218,7 @@ glPointToChannel(point, dir)
     }
     return (glTileToChannel(TiSrPointNoHint(RtrChannelPlane, &p)));
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -263,7 +263,7 @@ glPointToSide(ch, pt)
     ASSERT(FALSE, "glPointToSide point not on edge");
     return (GEO_CENTER);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -358,7 +358,7 @@ glSide(point)
     }
     return(GEO_CENTER);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

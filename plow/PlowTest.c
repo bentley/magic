@@ -66,7 +66,7 @@ Point plowWhenTopPoint, plowWhenBotPoint;
 
 /* Imports */
 extern CellDef *plowSpareDef;
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -385,7 +385,7 @@ PlowTest(w, cmd)
 	    break;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -427,7 +427,7 @@ plowGetCommand(cmd)
 
     return (plowCmds[plowIndex].p_cmd);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -468,7 +468,7 @@ plowDebugInit()
     for (n = 0; debug[n].di_name; n++)
 	*(debug[n].di_id) = DebugAddFlag(plowDebugID, debug[n].di_name);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -504,7 +504,7 @@ plowShowShadow(edge, def)
     edgeArea.r_ytop = edge->e_ytop * scaleFactor;
     DBWFeedbackAdd(&edgeArea, mesg, def, scaleFactor, STYLE_SOLIDHIGHLIGHTS);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -578,7 +578,7 @@ plowTestJog(def, area)
     DBWAreaChanged(def, area, DBW_ALLWINDOWS, &DBAllButSpaceBits);
     DRCCheckThis(def, TT_CHECKPAINT, area);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -653,7 +653,7 @@ plowDebugEdge(edge, rtePtr, mesg)
     DBWFeedbackClear(NULL);
     WindUpdate();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -689,7 +689,7 @@ again:
 	goto again;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -785,7 +785,7 @@ plowShowOutline(outline, clipArea)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

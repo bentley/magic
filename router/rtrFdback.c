@@ -55,7 +55,7 @@ typedef struct rtrFb
 RtrFB * rtrFList[] = {(RtrFB *) NULL, (RtrFB *) NULL}; /* Lists of feedback */
 int     rtrFNum; /* Says which list is active */
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -112,7 +112,7 @@ RtrChannelError(ch, col, track, msg, net)
 
     (void) rtrFBAdd(&box, buff);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -148,7 +148,7 @@ rtrFBClear()
     }
     rtrFNum=0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -179,7 +179,7 @@ rtrFBAdd(r, t)
     new->rtr_Fnext=rtrFList[rtrFNum];
     rtrFList[rtrFNum]=new;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -207,7 +207,7 @@ RtrFBPaint(num)
 		1, STYLE_PALEHIGHLIGHTS);
     rtrFBClear();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

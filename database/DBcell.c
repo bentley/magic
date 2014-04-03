@@ -51,7 +51,7 @@ struct searchArg
 #define 	TOPBOTTOMLEFTRIGHT	15
 
 int dbCellDebug = 0;
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -104,7 +104,7 @@ DBCellFindDup(use, parent)
     }
     return (CellUse *) NULL;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -155,7 +155,7 @@ DBPlaceCell (celluse, targetcell)
 	DBUndoCellUse(celluse, UNDO_CELL_PLACE);
     SigEnableInterrupts();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * DBDeleteCell --
@@ -200,7 +200,7 @@ DBDeleteCell (celluse)
     celluse->cu_parent = (CellDef *) NULL;
     SigEnableInterrupts();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * placeCellFunc --
@@ -267,7 +267,7 @@ placeCellFunc (tile, arg)
     	    cellTileMerge (tp, arg->plane, TOPLEFT);
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * deleteCellFunc --
@@ -340,7 +340,7 @@ deleteCellFunc (tile, arg)
     	    cellTileMerge (tile, arg->plane, TOPLEFT);
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * clipCellTile -- 
@@ -405,7 +405,7 @@ clipCellTile (tile, plane, rect)
     }
     return (tile);
 } /* clipCellTile */
-
+
 /*
  * ----------------------------------------------------------------------------
  * dupTileBody -- 
@@ -450,7 +450,7 @@ dupTileBody (oldtp, newtp)
     }
     else TiSetBody(newtp, NULL);
 } /* dupTileBody */
-
+
 /*
  * ----------------------------------------------------------------------------
  * cellTileMerge -- 
@@ -641,7 +641,7 @@ cellTileMerge (tile, plane, direction)
 	}
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * freeCTBList -- 
@@ -671,7 +671,7 @@ freeCTBList (tile)
     }
     TiSetBody(tile, NULL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  * ctbListMatch -- 

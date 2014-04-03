@@ -23,7 +23,7 @@
 #include "utils/geometry.h"
 #include "tiles/tile.h"
 #include "gcr/gcr.h"
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -76,7 +76,7 @@ gcrWanted(ch, track, column)
 	    col[next->gcr_y].gcr_wanted = net;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -106,7 +106,7 @@ gcrMarkWanted(ch)
 	if (pin[track].gcr_pId)
 	    col[track].gcr_wanted = pin[track].gcr_pId;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -56,7 +56,7 @@ float RtrEndConst = 1.0;
 extern int rtrChannelObstacleMark();
 extern void rtrChannelObstaclePins();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -181,7 +181,7 @@ bottom:
     *pCount += errs1;
     RtrMilestonePrint();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -240,7 +240,7 @@ RtrChannelBounds(loc, pLength, pWidth, origin)
     }
     *pWidth = (hi - lo) / RtrGridSpacing + 1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -307,7 +307,7 @@ RtrChannelObstacles(use, ch)
 
     rtrChannelObstaclePins(ch);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -372,7 +372,7 @@ rtrChannelObstaclePins(ch)
 	else if (!CLEAR(res[col][end])) ch->gcr_tPins[col].gcr_pFlags = GCROBST;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -476,7 +476,7 @@ rtrChannelObstacleMark(tile, cxp)
 
     return (0);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -553,7 +553,7 @@ RtrChannelDensity(ch)
 	if (*vdens > density) density = *vdens;
     ch->gcr_dMaxByRow = density;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -115,7 +115,7 @@ extern void GrX11Delete(), GrX11Configure(), GrX11Raise(), GrX11Lower();
 extern void GrX11Lock(), GrX11Unlock(), GrX11IconUpdate();
 extern void grXWStdin();
 
-
+
 /*---------------------------------------------------------
  * grxSetWMandC:
  *	This is a local routine that resets the value of the current
@@ -156,7 +156,7 @@ grx11SetWMandC (mask, c)
     oldM = mask;
 }
 
-
+
 /*---------------------------------------------------------
  * grxSetLineStyle:
  *	This local routine sets the current line style.
@@ -251,7 +251,7 @@ grx11SetLineStyle (style)
 #endif
 }
 
-
+
 /*---------------------------------------------------------
  * grxSetSPattern:
  *	xSetSPattern associates a stipple pattern with a given
@@ -291,7 +291,7 @@ grx11SetSPattern (sttable, numstipples)
     }
 }
 
-
+
 /*---------------------------------------------------------
  * grxSetStipple:
  *	This routine sets the Xs current stipple number.
@@ -321,7 +321,7 @@ grx11SetStipple (stipple)
     }
 }
 
-
+
 /*---------------------------------------------------------
  * GrX11Init:
  *
@@ -674,7 +674,7 @@ GrX11Init(dispType)
     return grx11LoadFont();
 }
 
-
+
 /*---------------------------------------------------------
  * GrXClose --
  *
@@ -708,7 +708,7 @@ GrX11Close ()
 #endif
 }
 
-
+
 /*---------------------------------------------------------
  * GrXFlush:
  * 	Flush output to display.
@@ -728,7 +728,7 @@ GrX11Flush ()
    XFlush(grXdpy);
 }
 
-
+
 /*
  * ---------------------------------------------------------------------------
  *
@@ -927,7 +927,7 @@ grX11Stdin()
      }
 }
 
-
+
 /*---------------------------------------------------------
  * x11SetDisplay:
  *	This routine sets the appropriate parameters so that
@@ -1074,7 +1074,7 @@ x11SetDisplay (dispType, outFileName, mouseFileName)
 
     return TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1111,7 +1111,7 @@ grXWStdin(fd, cdata)
     event->txe_p.p_y = GR_CURSOR_Y;
     TxAddEvent(event);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1244,7 +1244,7 @@ GrX11Create(w, name)
 
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1273,7 +1273,7 @@ GrX11Delete(w)
     
     XDestroyWindow(grXdpy,xw);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1298,7 +1298,7 @@ GrX11Configure(w)
 		w->w_frameArea.r_xtop - w->w_frameArea.r_xbot,
 		    w->w_frameArea.r_ytop - w->w_frameArea.r_ybot);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1321,7 +1321,7 @@ GrX11Raise(w)
 {
     XRaiseWindow(grXdpy, (Window) w->w_grdata );
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1345,7 +1345,7 @@ GrX11Lower(w)
     XLowerWindow(grXdpy, (Window) w->w_grdata );
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1375,7 +1375,7 @@ GrX11Lock(w, flag)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1400,7 +1400,7 @@ GrX11Unlock(w)
     grSimpleUnlock(w);
 }
 
-
+
 /*
  *-------------------------------------------------------------------------
  *

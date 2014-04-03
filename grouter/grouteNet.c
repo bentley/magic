@@ -101,7 +101,7 @@ int fudgeDenom = 10;
 
 /* Marker to indicate an already-processed GlPoint */
 #define	PROCESSED_MARK	((GlPoint *) 1)
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -242,7 +242,7 @@ glRouteToPoint(loc, bestCost)
 
     return (lastPt);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -272,7 +272,7 @@ glScalePenalties()
     glChanPenalty *= RtrGridSpacing;
     glPenaltiesScaled = TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -466,7 +466,7 @@ glPopFromHeap(pNewBest, newPaths, hEntry)
     }
     return TRUE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -540,7 +540,7 @@ glFinalPropagate(inPt, loc)
 
     return (TRUE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -607,7 +607,7 @@ glRiverPropagate(inPt)
 
     return (-1);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -885,7 +885,7 @@ glNormalPropagate(inPt, inCh, heapCost)
     }
     else glCrossingsComplete++;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1061,7 +1061,7 @@ glPinCost(inPt, pin, oldCost)
 
     return (MIN(cost, oldCost));
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1163,7 +1163,7 @@ glSetDensityClip(inPt, ch, dRect)
 
     return (dRect->r_xtop >= dRect->r_xbot && dRect->r_ytop >= dRect->r_ybot);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1249,7 +1249,7 @@ glSetPinClip(inPt, inCh, heapCost, dRect, pRect)
     /* Clip against dRect */
     GEOCLIP(pRect, dRect);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1290,7 +1290,7 @@ glResetCost(headPage, headFree)
 	headFree = 0;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1374,7 +1374,7 @@ glPropagateFn(outCh, outPin, inPt)
     }
     return (finalCost);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1494,7 +1494,7 @@ glCrossPenalty(cost, inCh, outCh, inPin, outPin)
 
     return (cost);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1559,7 +1559,7 @@ glDensityExceeded(inCh, inPin, outPin)
 
     return (FALSE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1618,7 +1618,7 @@ glRectToRange(ch, r, pr)
     if (r->r_xtop == ch->gcr_length + 1)
 	pr->pr_rmin = clipR.r_ybot, pr->pr_rmax = clipR.r_ytop;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1667,7 +1667,7 @@ glJogsAcrossChannel(inPin, outPin)
 
     return (FALSE);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1728,7 +1728,7 @@ glPropagateDebug(inPt, inPin, outCh, outPin, prevCost, distCost)
     nrMore(mesg);
     nrShowRect(EditCellUse->cu_def, &r, STYLE_ERASEHIGHLIGHTS);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1762,7 +1762,7 @@ glLogPath(inPt, cost)
 		inPt->gl_length, cost);
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

@@ -21,7 +21,7 @@
 #include "utils/geometry.h"
 #include "database/database.h"
 #include "tiles/tile.h"
-
+
 
 typedef struct dbcellboundstruct
 {
@@ -177,7 +177,7 @@ DBBoundPlane(plane, rect)
 
     return (TRUE);
 }
-
+
 /*
  * --------------------------------------------------------------------
  *

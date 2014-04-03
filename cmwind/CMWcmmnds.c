@@ -60,7 +60,7 @@ bool cmwWatchButtonUp;
 
 bool cmwModified = FALSE;
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -425,7 +425,7 @@ cmwColor(w, cmd)
     else 
 	TxError("Usage: color [#|next|last|get|rgb]\n");
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -469,7 +469,7 @@ cmwSave(w, cmd)
     }
     if (ok) cmwModified = FALSE;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -510,7 +510,7 @@ cmwLoad(w, cmd)
     else (void) GrReadCMap(DBWStyleType, (char *) NULL,
 	   MainMonType, ".", SysLibPath);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *

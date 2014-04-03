@@ -45,7 +45,7 @@ static XFontStruct *grXFonts[4];
 #define	grXLargeFont	grXFonts[3]
 
 
-
+
 /*---------------------------------------------------------
  * grxDrawGrid:
  *	grxDrawGrid adds a grid to the grid layer, using the current
@@ -130,7 +130,7 @@ grx11DrawGrid (prect, outline, clip)
     return TRUE;
 }
 
-
+
 /*---------------------------------------------------------
  * grxLoadFont
  *	This local routine loads the X fonts used by Magic.
@@ -175,7 +175,7 @@ grx11LoadFont()
     return TRUE;
 }
 
-
+
 /*---------------------------------------------------------
  * grxSetCharSize:
  *	This local routine sets the character size in the display,
@@ -214,7 +214,7 @@ grx11SetCharSize (size)
     }
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrXTextSize --
@@ -268,7 +268,7 @@ GrX11TextSize(text, size, r)
     r->r_xbot = -overall.lbearing - 1;
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrXReadPixel --
@@ -303,7 +303,7 @@ GrX11ReadPixel (w, x, y)
     return (value & (1 << grDisplay.depth) - 1);
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  * GrXBitBlt --

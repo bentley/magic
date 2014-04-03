@@ -78,7 +78,7 @@ bool rtrSrArea();
 bool rtrStemMask();
 bool RtrComputeJogs();
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -197,7 +197,7 @@ RtrStemProcessAll(use, netList, doWarn, func)
 out:
     RtrMilestoneDone();
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -420,7 +420,7 @@ rtrStemExpandFunc(Tile *t, TreeContext *cxp)
 	return 0;	/* Probably should report an error and stop */
 }
 
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -490,7 +490,7 @@ rtrStemTip(loc, si, use)
     }
     return ((GCRPin *) NULL);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -513,7 +513,7 @@ rtrAbort(tile)
 {
     return 1;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -618,7 +618,7 @@ rtrStemTryPin(loc, dir, p, use)
     loc->nloc_pin = pin;
     return (pin);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -706,7 +706,7 @@ rtrTreeSrArea(loc, dir, p, use)
 
     return FALSE;
 }
-
+
 bool
 rtrSrArea(dir,use,tmp,delta)
     int	dir;
@@ -869,7 +869,7 @@ rtrStemRange(loc, dir, si)
 	    break;
     }
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -904,7 +904,7 @@ rtrStemContactLine(lo, hi, origin)
 
     return (center);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -966,7 +966,7 @@ rtrStemSearch(center, dir, point)
 
     return (ch);
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
@@ -1209,7 +1209,7 @@ rtrStemTypes(startMask, finalMask, startType, finalType)
     }
     return 0;
 }
-
+
 /*
  * ----------------------------------------------------------------------------
  *
