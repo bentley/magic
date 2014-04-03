@@ -17,8 +17,6 @@
  *  software outside of the United States of America may require an
  *  export license.
  *
- *  $Id: lispInt.h,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $
- *
  *************************************************************************/
 #ifndef __LISPINT_H__
 #define __LISPINT_H__

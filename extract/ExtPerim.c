@@ -18,10 +18,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/extract/ExtPerim.c,v 1.5 2010/09/12 20:32:33 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <math.h>
 

@@ -16,8 +16,6 @@
  *     *********************************************************************
  *
  * Needs to include: magic.h database.h
- *
- * rcsid $Header: /usr/cvsroot/magic-8.0/drc/drc.h,v 1.6 2010/09/20 21:13:22 tim Exp $
  */
 
 #ifndef _DRC_H

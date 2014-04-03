@@ -1,7 +1,3 @@
-#
-# rcsid="$Header: /usr/cvsroot/magic-8.0/router/Makefile,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $"
-#
-
 MODULE    = router
 MAGICDIR  = ..
 SRCS      = rtrCmd.c rtrMain.c rtrDcmpose.c rtrFdback.c rtrHazards.c \

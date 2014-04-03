@@ -17,10 +17,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/calma/CalmaRdpt.c,v 1.7 2010/08/25 17:33:54 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <stdlib.h>             /* for abs() */
 #include <string.h>		/* for strlen() */

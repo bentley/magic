@@ -16,8 +16,6 @@
  * elements:  points, rectangles, and transforms.
  */
 
-/* rcsid "$Header: /usr/cvsroot/magic-8.0/utils/geometry.h,v 1.2 2009/09/10 20:32:55 tim Exp $" */
-
 #ifndef _GEOMETRY_H
 #define _GEOMETRY_H 1
 

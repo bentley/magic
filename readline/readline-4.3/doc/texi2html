@@ -35,9 +35,6 @@ require 5.0;
 #
 #--##############################################################################
 
-# CVS version:
-# $Id: texi2html,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $
-
 # Homepage:
 $T2H_HOMEPAGE = <<EOT;
 http://www.mathematik.uni-kl.de/~obachman/Texi2html
@@ -91,8 +88,6 @@ eval { ($T2H_USER = (getpwuid ($<))[6]) =~ s/,.*//;}; # Who am i
 #
 # Copy this file and make changes to it, if you like.
 # Afterwards, either, load it with command-line option -init_file <your_init_file>
-#
-# $Id: texi2html,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $
 
 ######################################################################
 # stuff which can also be set by command-line options

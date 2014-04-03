@@ -18,9 +18,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- *
- *
- * rcsid $Header: /usr/cvsroot/magic-8.0/mzrouter/mzInternal.h,v 1.2 2008/06/01 18:37:44 tim Exp $
  */
 
 #ifndef _MZINTERNAL_H

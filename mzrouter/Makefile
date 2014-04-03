@@ -1,7 +1,3 @@
-#
-# rcsid $Header: /usr/cvsroot/magic-8.0/mzrouter/Makefile,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $
-#
-
 MODULE    = mzrouter
 MAGICDIR  = ..
 SRCS      = mzBlock.c mzDebug.c mzEstimate.c mzXtndDown.c \

@@ -17,10 +17,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/extflat/EFread.c,v 1.4 2009/01/30 03:51:02 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

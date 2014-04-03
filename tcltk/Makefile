@@ -1,7 +1,3 @@
-#
-# rcsid $Header: /usr/cvsroot/magic-8.0/tcltk/Makefile,v 1.6 2010/06/24 12:37:56 tim Exp $
-#
-
 MODULE   = tcltk
 MAGICDIR = ..
 SRCS = tclmagic.c

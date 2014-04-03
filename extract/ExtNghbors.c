@@ -19,10 +19,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/extract/ExtNghbors.c,v 1.3 2010/09/12 20:32:33 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 
 #include "utils/magic.h"

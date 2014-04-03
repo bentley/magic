@@ -15,8 +15,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- *
- * rcsid $Header: /usr/cvsroot/magic-8.0/plot/plotInt.h,v 1.2 2010/03/08 13:33:33 tim Exp $
  */
 
 #ifndef _PLOTINT_H

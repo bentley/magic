@@ -3,8 +3,6 @@
  *
  * Defines the exported interface to the circuit extractor.
  *
- * rcsid "$Header: /usr/cvsroot/magic-8.0/extract/extract.h,v 1.3 2009/01/30 03:51:02 tim Exp $"
- *
  *     ********************************************************************* 
  *     * Copyright (C) 1985, 1990 Regents of the University of California. * 
  *     * Permission to use, copy, modify, and distribute this              * 

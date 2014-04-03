@@ -18,10 +18,6 @@
  * a table with no abbreviations allowed.
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/utils/lookupfull.c,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <string.h>
 

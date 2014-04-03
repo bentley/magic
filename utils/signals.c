@@ -16,10 +16,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/utils/signals.c,v 1.2 2010/03/08 13:33:34 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

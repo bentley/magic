@@ -16,10 +16,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/database/DBundo.c,v 1.5 2010/09/24 19:53:19 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <string.h>
 

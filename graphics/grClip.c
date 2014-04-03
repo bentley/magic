@@ -17,11 +17,6 @@
  * drawing routines.
  */
 
-
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/graphics/grClip.c,v 1.4 2010/06/24 12:37:18 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 
 #include "utils/magic.h"

@@ -83,10 +83,6 @@
  * broken up into many tiles.
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/mzrouter/mzBlock.c,v 1.2 2010/10/22 15:02:15 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 
 #include "utils/magic.h"

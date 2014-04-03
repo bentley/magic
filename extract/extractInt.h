@@ -4,8 +4,6 @@
  * Defines things shared internally by the extract module of Magic,
  * but not generally needed outside the extract module.
  *
- * rcsid "$Header: /usr/cvsroot/magic-8.0/extract/extractInt.h,v 1.7 2010/08/10 00:18:46 tim Exp $"
- *
  *     ********************************************************************* 
  *     * Copyright (C) 1985, 1990 Regents of the University of California. * 
  *     * Permission to use, copy, modify, and distribute this              * 

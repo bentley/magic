@@ -16,8 +16,6 @@
  * Magic utility routines.
  */
 
-/* rcsid "$Header: /usr/cvsroot/magic-8.0/utils/utils.h,v 1.2 2009/09/10 20:32:55 tim Exp $" */
-
 #ifndef _UTILS_H
 #define _UTILS_H 1
 

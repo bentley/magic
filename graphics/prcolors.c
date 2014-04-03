@@ -1,11 +1,6 @@
 #include <stdio.h>
 #include <X/Xlib.h>
 
-
-#ifndef lint
-static char rcsid[]="$Header: /usr/cvsroot/magic-8.0/graphics/prcolors.c,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $";
-#endif  /* not lint */
-
 main()
 {
     Color color;

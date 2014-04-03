@@ -15,8 +15,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- *
- * rcsid $Header: /usr/cvsroot/magic-8.0/extflat/EFint.h,v 1.6 2010/12/16 18:59:03 tim Exp $
  */
 
 #ifndef _EFINT_H

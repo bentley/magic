@@ -17,9 +17,6 @@
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
  */
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header:";
-#endif  /* not lint */
 
 #include <stdio.h>
 

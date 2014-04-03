@@ -16,8 +16,6 @@
  *     *********************************************************************
  *
  * Needs to include: magic.h, tile.h, database.h
- *
- * rcsid $Header: /usr/cvsroot/magic-8.0/database/databaseInt.h,v 1.3 2010/06/24 12:37:15 tim Exp $
  */
 
 #ifndef _DATABASEINT_H

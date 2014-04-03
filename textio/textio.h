@@ -18,8 +18,6 @@
  * Needs:
  *	stdio.h
  *	magic.h
- *
- * rcsid $Header: /usr/cvsroot/magic-8.0/textio/textio.h,v 1.2 2008/02/18 01:01:35 tim Exp $
  */
 
 #ifndef _TEXTIO_H

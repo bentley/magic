@@ -19,10 +19,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/netmenu/NMwiring.c,v 1.3 2008/12/11 04:20:11 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <string.h>
 

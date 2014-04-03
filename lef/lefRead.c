@@ -13,10 +13,6 @@
  * tile type in the technology file.  Layer names are not case sensitive.
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/lef/lefRead.c,v 1.2 2008/12/17 18:40:04 tim Exp $";            
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>

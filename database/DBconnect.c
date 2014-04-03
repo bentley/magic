@@ -19,10 +19,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/database/DBconnect.c,v 1.6 2010/09/15 18:15:40 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <string.h>		// for memcpy()
 #include "utils/magic.h"

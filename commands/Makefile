@@ -1,7 +1,3 @@
-#
-# rcsid $Header: /usr/cvsroot/magic-8.0/commands/Makefile,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $
-#
-
 MODULE    = commands
 MAGICDIR  = ..
 SRCS      = CmdSubrs.c CmdAB.c CmdCD.c CmdE.c CmdFI.c \

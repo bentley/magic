@@ -3,8 +3,6 @@
  *
  * This file defines things that are used by internal LEF routines in
  * various files.
- *
- * rcsid $Header: /usr/cvsroot/magic-8.0/lef/lefInt.h,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $
  */
 
 #ifndef _LEFINT_H

@@ -17,10 +17,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/dbwind/DBWprocs.c,v 1.3 2008/06/01 18:37:39 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>

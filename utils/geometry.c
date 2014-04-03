@@ -16,10 +16,6 @@
  * boxes, points, and transforms.
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/utils/geometry.c,v 1.5 2008/12/11 14:11:46 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <math.h>	/* For atan2() function */
 

@@ -1,9 +1,6 @@
 #
 #    14-pixel wide glyphs for the window package
 #
-#	rcsid $Header: /usr/cvsroot/magic-8.0/windows/windows14.glyphs,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $
-#
-#
 
 # syntax of first line:  size <number of glyphs> <width> <height>
 size 5 14 14

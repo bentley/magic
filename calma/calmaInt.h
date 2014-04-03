@@ -15,8 +15,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- *
- * rcsid $Header: /usr/cvsroot/magic-8.0/calma/calmaInt.h,v 1.2 2010/06/24 12:37:15 tim Exp $
  */
 
 #ifndef _CALMAINT_H

@@ -17,8 +17,6 @@
  * pointers in order to achieve graphics display independence.
  */
 
-/* rcsid "$Header: /usr/cvsroot/magic-8.0/graphics/graphics.h,v 1.3 2010/06/24 12:37:18 tim Exp $" */
-
 #ifndef _GRAPHICS_H
 #define	_GRAPHICS_H
 

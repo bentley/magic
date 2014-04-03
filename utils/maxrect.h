@@ -16,8 +16,6 @@
  *     *********************************************************************
  *
  * Needs to include: magic.h database.h
- *
- * rcsid $Header: /usr/cvsroot/magic-8.0/utils/maxrect.h,v 1.1 2008/12/04 16:21:44 tim Exp $
  */
 
 #ifndef _MAXRECT_H

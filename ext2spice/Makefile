@@ -1,7 +1,3 @@
-#
-# rcsid "$Header: /usr/cvsroot/magic-8.0/ext2spice/Makefile,v 1.2 2010/08/10 00:18:45 tim Exp $"
-#
-
 MODULE   = ext2spice
 MAGICDIR = ..
 SRCS     = ext2spice.c ext2hier.c

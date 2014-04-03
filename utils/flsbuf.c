@@ -21,11 +21,6 @@
  * @(#)flsbuf.c	4.5 (Berkeley) 12/16/82
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/utils/flsbuf.c,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $";
-#endif  /* not lint */
-
-
 /* NOTE: do not move the #ifdef vax up since the loader doesn't like files
  * with no symbols.
  */

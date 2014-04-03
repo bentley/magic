@@ -86,10 +86,6 @@
  *        always cheaper than a second e1, e1 is thrown away.
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/mzrouter/mzEstimate.c,v 1.2 2008/06/01 18:37:44 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 
 #include "utils/magic.h"

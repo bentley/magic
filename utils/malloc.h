@@ -4,8 +4,6 @@
  *	See malloc.c for a description of magic's allocation functions.
  *	Magic's built-in malloc() function has been removed.
  *
- * rcsid "$Header: /usr/cvsroot/magic-8.0/utils/malloc.h,v 1.2 2009/09/10 20:32:55 tim Exp $"
- *
  *     ********************************************************************* 
  *     * Copyright (C) 1985, 1990 Regents of the University of California. * 
  *     * Permission to use, copy, modify, and distribute this              * 

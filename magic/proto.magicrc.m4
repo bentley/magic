@@ -1,8 +1,6 @@
 #	$(CAD_ROOT)/magic/sys/.magicrc 
 # 	System wide start up file for magic, defines default macros.
 #
-#	rcsid $Header: /usr/cvsroot/magic-8.0/magic/proto.magicrc.m4,v 1.4 2008/12/11 04:20:09 tim Exp $
-#
 dnl
 dnl	Source file proto.magicrc.m4
 dnl	Process this file with the m4 macro processor

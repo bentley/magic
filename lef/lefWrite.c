@@ -12,10 +12,6 @@
  *
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/lef/lefWrite.c,v 1.3 2010/06/24 12:37:18 tim Exp $";            
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

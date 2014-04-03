@@ -17,10 +17,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/mzrouter/mzSubrs.c,v 1.2 2008/06/01 18:37:44 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 
 #include "utils/magic.h"

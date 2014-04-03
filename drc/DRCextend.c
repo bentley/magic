@@ -1,8 +1,3 @@
-
-#ifndef	lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/drc/DRCextend.c,v 1.6 2010/09/20 21:13:22 tim Exp $";
-#endif	
-
 #include <sys/types.h>
 #include <stdio.h>
 #include <string.h>

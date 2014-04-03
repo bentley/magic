@@ -1,7 +1,3 @@
-#
-# rcsid "$Header: /usr/cvsroot/magic-8.0/extcheck/Makefile,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $"
-#
- 
 MODULE   = extcheck
 MAGICDIR = ..
 SRCS     = extcheck.c

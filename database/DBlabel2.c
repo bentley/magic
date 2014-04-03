@@ -16,10 +16,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/database/DBlabel2.c,v 1.3 2010/09/12 20:32:31 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <string.h>
 

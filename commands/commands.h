@@ -16,8 +16,6 @@
  *     *********************************************************************
  *
  * Needs to include: tiles.h, database.h
- *
- * rcsid $Header: /usr/cvsroot/magic-8.0/commands/commands.h,v 1.3 2009/01/19 15:43:03 tim Exp $
  */
 
 #ifndef _COMMANDS_H

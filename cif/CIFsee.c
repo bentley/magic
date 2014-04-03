@@ -16,10 +16,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/cif/CIFsee.c,v 1.5 2010/06/24 12:37:15 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include "utils/magic.h"
 #include "utils/geometry.h"

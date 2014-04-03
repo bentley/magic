@@ -14,8 +14,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- *
- * rcsid:  $Header: /usr/cvsroot/magic-8.0/utils/styles.h,v 1.2 2008/12/11 04:20:14 tim Exp $
  */
 
 #ifndef _STYLES_H

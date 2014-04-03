@@ -17,10 +17,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) ="$Header: /usr/cvsroot/magic-8.0/textio/txCommands.c,v 1.6 2009/09/11 16:09:49 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>

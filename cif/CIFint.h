@@ -15,8 +15,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- *
- * rcsid "$Header: /usr/cvsroot/magic-8.0/cif/CIFint.h,v 1.3 2008/12/04 17:10:29 tim Exp $"
  */
 
 #ifndef _CIFINT_H

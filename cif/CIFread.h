@@ -16,9 +16,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- *
- *
- * rcsid "$Header: /usr/cvsroot/magic-8.0/cif/CIFread.h,v 1.3 2010/08/25 17:33:55 tim Exp $
  */
 
 #ifndef _CIFREAD_H

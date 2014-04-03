@@ -16,10 +16,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/database/DBbound.c,v 1.2 2008/12/11 04:20:04 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include "utils/magic.h"
 #include "utils/geometry.h"

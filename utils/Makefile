@@ -1,7 +1,3 @@
-#
-# rcsid $Header: /usr/cvsroot/magic-8.0/utils/Makefile,v 1.2 2008/12/04 16:21:44 tim Exp $
-#
-
 MODULE    = utils
 MAGICDIR  = ..
 LIB_SRCS  = LIBdbio.c LIBmain.c LIBtextio.c

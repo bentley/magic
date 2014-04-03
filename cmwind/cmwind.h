@@ -15,8 +15,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- *
- * rcsid $Header: /usr/cvsroot/magic-8.0/cmwind/cmwind.h,v 1.2 2009/09/10 20:32:51 tim Exp $
  */
 
 #ifndef _CMWIND_H

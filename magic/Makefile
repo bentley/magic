@@ -1,7 +1,3 @@
-#
-# rcsid $Header: /usr/cvsroot/magic-8.0/magic/Makefile,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $
-#
-
 MODULE   = magic
 MAGICDIR = ..
 SRCS     = magicTop.c

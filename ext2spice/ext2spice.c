@@ -12,10 +12,6 @@
  *
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/ext2spice/ext2spice.c,v 1.8 2010/08/25 17:33:56 tim Exp $";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <stdlib.h>		/* for atof() */
 #include <string.h>

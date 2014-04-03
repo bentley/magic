@@ -14,9 +14,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- *
- *
- * rcsid "$Header: /usr/cvsroot/magic-8.0/gcr/gcr.h,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $"
  */
 
 #ifndef _GCR_H

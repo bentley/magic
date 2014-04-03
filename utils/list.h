@@ -21,8 +21,6 @@
  *     *********************************************************************
  *
  * Needs to include <stdio.h> and <sys/types.h>
- *
- * rcsid $Header: /usr/cvsroot/magic-8.0/utils/list.h,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $
  */
 
 #ifndef	_LIST_H

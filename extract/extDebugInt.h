@@ -6,8 +6,6 @@
  * can be added to it without forcing recompilation of the
  * entire extract module.
  *
- * rcsid "$Header: /usr/cvsroot/magic-8.0/extract/extDebugInt.h,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $"
- *
  *     ********************************************************************* 
  *     * Copyright (C) 1985, 1990 Regents of the University of California. * 
  *     * Permission to use, copy, modify, and distribute this              * 

@@ -15,8 +15,6 @@
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
  *
- * rcsid "$Header: /usr/cvsroot/magic-8.0/utils/heap.h,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $";
- *
  * This heap supports the creation and manipulation of heaps.  Features are:
  *	- Ascending and descending heaps.
  *	- Heaps are managed as arrays.  Left and right children are accessed

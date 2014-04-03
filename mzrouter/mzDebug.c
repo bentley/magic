@@ -17,10 +17,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char rcsid[] __attribute__ ((unused)) = "$$";
-#endif  /* not lint */
-
 #include <stdio.h>
 
 #include "utils/magic.h"

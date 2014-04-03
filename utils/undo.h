@@ -17,8 +17,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- *
- * rcsid "$Header: /usr/cvsroot/magic-8.0/utils/undo.h,v 1.2 2009/09/10 20:32:55 tim Exp $"
  */
 
 #ifndef	_UNDO_H

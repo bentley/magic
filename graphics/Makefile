@@ -1,7 +1,3 @@
-#
-# rcsid $Header: /usr/cvsroot/magic-8.0/graphics/Makefile,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $
-#
-
 MODULE    = graphics
 MAGICDIR  = ..
 BASE_SRCS = grMain.c grLock.c grDStyle.c grText.c grCMap.c grClip.c \

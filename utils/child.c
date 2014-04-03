@@ -5,8 +5,6 @@
  *  Pasadena, CA 91125.
  *  All Rights Reserved
  *
- *  $Id: child.c,v 1.1.1.1 2008/02/03 20:43:50 tim Exp $
- *
  *************************************************************************/
 #include <stdio.h>
 #include <string.h>

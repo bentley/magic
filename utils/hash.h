@@ -16,8 +16,6 @@
  * which maintains hash tables.
  */
 
-/* rcsid "$Header: /usr/cvsroot/magic-8.0/utils/hash.h,v 1.2 2009/09/10 20:32:55 tim Exp $" */
-
 #ifndef	_HASH_H
 #define	_HASH_H
 
