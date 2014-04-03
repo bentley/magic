@@ -16,8 +16,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- * of California.  All rights reserved.
- *
  */
 
 #ifdef RSIM_MODULE
@@ -259,7 +257,7 @@ SimStartRsim(argv)
 	_exit(5);			/* pick a number, any number */
 
     }
-    return(FALSE);			/* to keep lint happy */
+    return(FALSE);
 }    
 
 

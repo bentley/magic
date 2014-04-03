@@ -267,9 +267,6 @@ calmaParseUnits()
     double cuPerDBUnit;
 
     READRH(nbytes, rtype);
-#ifdef	lint
-    nbytes = nbytes;
-#endif	/* lint */
 
     if (rtype != CALMA_UNITS)
     {

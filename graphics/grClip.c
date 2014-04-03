@@ -37,11 +37,15 @@ extern bool GrDisjoint();
 extern void GrClipTriangle();
 
 /* The following rectangle defines the size of the cross drawn for
- * zero-size rectangles.  This must be all on one line to keep
- * lintpick happy!
+ * zero-size rectangles.
  */
 
-global Rect GrCrossRect = {-GR_CROSSSIZE, -GR_CROSSSIZE, GR_CROSSSIZE, GR_CROSSSIZE};
+global Rect GrCrossRect = {
+	-GR_CROSSSIZE,
+	-GR_CROSSSIZE,
+	 GR_CROSSSIZE,
+	 GR_CROSSSIZE
+};
 global int GrNumClipBoxes = 0;	/* for benchmarking */
 global int grCurDStyle;
 global unsigned char GrGridMultiple = 1;

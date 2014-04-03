@@ -157,8 +157,6 @@ extern GR_STYLE_LINE *GrStyleTable;
 extern int **GrStippleTable;
 extern int GrStyleNames[];
 
-#ifndef lint
-
 /* Constants for easy access */
 
 #define GrLock (*GrLockPtr)
@@ -177,8 +175,6 @@ extern int GrStyleNames[];
 #define GrGetCursorPos (*GrGetCursorPosPtr)
 #define GrGetButtons (*GrGetButtonsPtr)
 #define GrSetCursor (*GrSetCursorPtr)
-
-#endif
 
 enum { DISPLAY_IDLE, DISPLAY_IN_PROGRESS, DISPLAY_BREAK_PENDING, DISPLAY_SUSPEND };
 extern unsigned char GrDisplayStatus;

@@ -16,7 +16,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- * of California.
  */
 
 #include <stdio.h>

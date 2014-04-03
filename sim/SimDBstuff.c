@@ -1,4 +1,3 @@
-
 /* SimDBstuff.c -
  *
  *	This file contains routines that extract electrically connected
@@ -20,7 +19,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- * University of California
  */
 
 #include <stdio.h>

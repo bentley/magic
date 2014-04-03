@@ -50,11 +50,7 @@ Plane *RtrChannelPlane;
 GCRChannel *RtrChannelList = NULL;
 
 /* Multiplier for when to make end connections */ 
-#ifndef	lint
 float RtrEndConst = 1.0;
-#else
-float RtrEndConst;	/* Sun lint brain death */
-#endif	/* lint */
 
 /* Forward declarations */
 extern int rtrChannelObstacleMark();

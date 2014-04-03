@@ -34,11 +34,7 @@ int   GCRsplitAt  	=0;
 bool  GcrShowResult	=FALSE;
 bool  GcrNoCheck   	=TRUE;
 bool  GcrDebug		=FALSE;
-#ifndef	lint
 float GCRObstDist 	= 0.7;
-#else
-float GCRObstDist;	/* Sun lint brain death */
-#endif	/* lint */
 
 /* Forward declarations */
 void gcrLinkPin();

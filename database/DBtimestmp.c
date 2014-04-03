@@ -58,8 +58,7 @@
  * at convenient times (between commands), the DBFixMismatch routine
  * is called to process the entries.  It updates bounding boxes (the
  * bounding box update cannot be done at arbitrary times, because it
- * can reorganize tile planes that are pending in searches.  The
- * indentation below is necessary to keep lintpick happy.
+ * can reorganize tile planes that are pending in searches.
  */
 
     typedef struct mm {
