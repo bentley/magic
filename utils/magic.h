@@ -26,15 +26,6 @@
 #include <errno.h>
 #include <limits.h>
 
-/* Below is deprecated---magic from 7.2 rev. 56 is 64-bit clean! */
-#ifdef ALPHA32BIT
-/* must be before any declarations with pointers in them! */
-#pragma pointer_size(short)
-#ifndef ALPHA
-#define	ALPHA
-#endif
-#endif
-
 /* ------------------- Universal pointer typecast --------------------- */
 
 /* Set default value for backwards compatibility with non-autoconf make */
