@@ -21,19 +21,8 @@
 #ifndef _MAGIC_H
 #define	_MAGIC_H
 
-/*
- * Note:  System files, such as "stdio.h" and "sys/types.h", should be
- * included before this magic.h file.  This is done automatically below
- * based on the _STDIO_H and _SYS_TYPES_H standard definitions.
- */
-
-#ifndef _STDIO_H
 #include <stdio.h>
-#endif
-#ifndef _SYS_TYPES_H
 #include <sys/types.h>
-#endif
-
 #include <errno.h>
 
 /* Below is deprecated---magic from 7.2 rev. 56 is 64-bit clean! */
