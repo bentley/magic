@@ -29,15 +29,6 @@
 /* ------------------- Universal pointer typecast --------------------- */
 
 /* Set default value for backwards compatibility with non-autoconf make */
-#ifndef SIZEOF_UNSIGNED_INT
-#define SIZEOF_UNSIGNED_INT 4
-#endif
-#ifndef SIZEOF_UNSIGNED_LONG
-#define SIZEOF_UNSIGNED_LONG 4
-#endif
-#ifndef SIZEOF_UNSIGNED_LONG_LONG
-#define SIZEOF_UNSIGNED_LONG_LONG 8
-#endif
 #ifndef SIZEOF_VOID_P
 #define SIZEOF_VOID_P SIZEOF_UNSIGNED_INT
 #endif
