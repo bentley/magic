@@ -358,8 +358,8 @@ mzBuildEstimate()
 	RouteLayer *rL;
 
 	/* set space costs to min costs of active layers */
-	spaceCosts.tc_hCost = MAXINT;
-	spaceCosts.tc_vCost = MAXINT;
+	spaceCosts.tc_hCost = INT_MAX;
+	spaceCosts.tc_vCost = INT_MAX;
 	for(rL = mzRouteLayers; rL!=NULL; rL=rL->rl_next)
 	{
 	    if(rL->rl_routeType.rt_active)
@@ -783,8 +783,8 @@ mzAssignCostsFunc(tile, spaceCosts)
 
 	case TT_EST_FENCE:
 	case TT_EST_SUBCELL:
-	newCosts->tc_hCost = MAXINT;
-	newCosts->tc_vCost = MAXINT;
+	newCosts->tc_hCost = INT_MAX;
+	newCosts->tc_vCost = INT_MAX;
 	break;
 	
 	default:
@@ -1112,7 +1112,7 @@ mzBuildStraightShotEstimators(tile)
 	    e = (Estimate *) mallocMagic((unsigned)(sizeof(Estimate)));
 	    e->e_x0 = RIGHT(tile);
 	    e->e_y0 = 0;
-	    if (tc->tc_hCost == MAXINT)
+	    if (tc->tc_hCost == INT_MAX)
 		e->e_cost0 = COST_MAX;
 	    else
 	        e->e_cost0 = (dlong) (LEFT(tSolid) - RIGHT(tile)) * tc->tc_hCost;
@@ -1142,7 +1142,7 @@ mzBuildStraightShotEstimators(tile)
 	    e = (Estimate *) mallocMagic((unsigned)(sizeof(Estimate)));
 	    e->e_x0 = LEFT(tile);
 	    e->e_y0 = 0;
-	    if (tc->tc_hCost == MAXINT)
+	    if (tc->tc_hCost == INT_MAX)
 		e->e_cost0 = COST_MAX;
 	    else
 		e->e_cost0 = (dlong) (RIGHT(tSolid) - LEFT(tile)) * tc->tc_hCost;
@@ -1172,7 +1172,7 @@ mzBuildStraightShotEstimators(tile)
 	    e = (Estimate *) mallocMagic((unsigned)(sizeof(Estimate)));
 	    e->e_x0 = 0;
 	    e->e_y0 = TOP(tile);
-	    if (tc->tc_vCost == MAXINT)
+	    if (tc->tc_vCost == INT_MAX)
 		e->e_cost0 = COST_MAX;
 	    else
 		e->e_cost0 = (dlong) (BOTTOM(tSolid) - TOP(tile)) * tc->tc_vCost;
@@ -1202,7 +1202,7 @@ mzBuildStraightShotEstimators(tile)
 	    e = (Estimate *) mallocMagic((unsigned)(sizeof(Estimate)));
 	    e->e_x0 = 0;
 	    e->e_y0 = BOTTOM(tile);
-	    if (tc->tc_vCost == MAXINT)
+	    if (tc->tc_vCost == INT_MAX)
 		e->e_cost0 = COST_MAX;
 	    else
 		e->e_cost0 = (dlong)(TOP(tSolid) - BOTTOM(tile)) * tc->tc_vCost;
@@ -1275,7 +1275,7 @@ AlwaysAsGood(est1, est2, tile)
 	{
  	    dlong hCost, vCost, cost;
 
-	    if ((est1->e_hCost == MAXINT) || (est1->e_vCost == MAXINT))
+	    if ((est1->e_hCost == INT_MAX) || (est1->e_vCost == INT_MAX))
 		return FALSE;
 
 	    hCost = (dlong) (est1->e_hCost *
@@ -1656,7 +1656,7 @@ mzAddVertex(vxThis, adjHeap)
 	    rate =  MIN(((TileCosts *)(tLoc->ti_client))->tc_vCost,
 		    ((TileCosts *)(tLeft->ti_client))->tc_vCost);
 
-	    if(rate == MAXINT) goto noAbove;
+	    if(rate == INT_MAX) goto noAbove;
 
 	    distance = yAbove - loc.p_y;
 	    newCost = (dlong) (rate * distance);
@@ -1714,7 +1714,7 @@ mzAddVertex(vxThis, adjHeap)
 		    ((TileCosts *)(tLoc->ti_client))->tc_hCost,
 		    ((TileCosts *)(tBelow->ti_client))->tc_hCost);
 
-	    if(rate == MAXINT) goto noRight;
+	    if(rate == INT_MAX) goto noRight;
 
 	    distance = xRight - loc.p_x;
 	    newCost = (dlong) (rate * distance);
@@ -1789,7 +1789,7 @@ mzAddVertex(vxThis, adjHeap)
 		    ((TileCosts *)(tLoc->ti_client))->tc_vCost,
 		    ((TileCosts *)(tRight->ti_client))->tc_vCost);
 
-	    if(rate == MAXINT) goto noBelow;
+	    if(rate == INT_MAX) goto noBelow;
 
 	    distance = loc.p_y - yBelow;
 	    newCost = (dlong) (rate * distance);
@@ -1837,7 +1837,7 @@ mzAddVertex(vxThis, adjHeap)
 		    ((TileCosts *)(tLoc->ti_client))->tc_hCost,
 		    ((TileCosts *)(tAbove->ti_client))->tc_hCost);
 
-	    if(rate == MAXINT) goto noLeft;
+	    if(rate == INT_MAX) goto noLeft;
 
 	    distance = loc.p_x - xLeft;
 	    newCost = (dlong) (rate * distance);
@@ -1882,7 +1882,7 @@ mzEstimatedCost(point)
     {
 	dlong hCost, vCost, cost;
 
-	if (e->e_hCost == MAXINT || e->e_vCost == MAXINT) continue;
+	if (e->e_hCost == INT_MAX || e->e_vCost == INT_MAX) continue;
 
 	hCost = (dlong)e->e_hCost * (dlong)ABS(point->p_x - e->e_x0);
 	vCost = (dlong)e->e_vCost * (dlong)ABS(point->p_y - e->e_y0);

@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <errno.h>
+#include <limits.h>
 
 /* Below is deprecated---magic from 7.2 rev. 56 is 64-bit clean! */
 #ifdef ALPHA32BIT
@@ -133,13 +134,6 @@ typedef unsigned char bool;
 #endif
 #ifndef FALSE
 #define	FALSE	((bool)0)
-#endif
-
-/* --------------------------- Infinities ------------------------------ */
-
-/* maximum representable positive integer */
-#ifndef MAXINT
-#define MAXINT (((unsigned int) ~0) >> 1)
 #endif
 
 /* ----------------------- Simple functions --------------------------- */

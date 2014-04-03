@@ -327,7 +327,7 @@ selShortFindPath(tile, pnum, rlist, fdir)
 {
     Tile *tp, *mintp;
     // int mincost = (int)tile->ti_client;
-    int mincost = MAXINT;
+    int mincost = INT_MAX;
     ExtRectList *newrrec;
     int minp, p, mindir;
     TileType ttype;
@@ -483,8 +483,8 @@ donesides:
 	}
     }
 
-    /* If mincost is still set to MAXINT we have a real serious problem! */
-    if (mincost == MAXINT) return 1;
+    /* If mincost is still set to INT_MAX we have a real serious problem! */
+    if (mincost == INT_MAX) return 1;
 
     /* If no tile had lower cost than this one, then we have an error */
     // if (mincost == (int)tile->ti_client) return 1;
@@ -728,7 +728,7 @@ SelectShort(char *lab1, char *lab2)
 	    if (TiGetType(tile) == srclab->lab_type) break;
 	}
     }
-    best = MAXINT;
+    best = INT_MAX;
     selShortFindNext(tile, pnum, &destlab->lab_rect.r_ll, 0, &best, GEO_CENTER,
 		&DBConnectTbl[srclab->lab_type]);
 

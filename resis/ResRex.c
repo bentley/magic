@@ -5,8 +5,6 @@
 #include <math.h>
 #include <float.h>
 
-#undef	MAXINT
-
 #include "tcltk/tclmagic.h"
 #include "utils/magic.h"
 #include "utils/geometry.h"
