@@ -435,15 +435,6 @@ done:
 void
 TxStopMore()
 {
-
-/*
-#if defined(SYSV) | defined(ALPHA)
-    int status;
-#else
-    union wait status;
-#endif
-*/
-
     /* TxMoreFile may be NULL if the "more" executable was not found */
     if (TxMoreFile == NULL) return;
 
@@ -460,7 +451,6 @@ TxStopMore()
   
     WaitPid (txMorePid, 0);
     txMorePid = 0;
-/*  while (wait(&status) != txMorePid) */ /* try again */; 
 }
 
 #endif /* !MAGIC_WRAPPER */
