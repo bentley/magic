@@ -15,12 +15,7 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- * of California
  */
-
-#ifndef lint
-static char sccsid[] = "@(#)SimSelect.c	4.14 MAGIC (Berkeley) 10/3/85";
-#endif  /* not lint */
 
 #include <stdio.h>
 #include <string.h>

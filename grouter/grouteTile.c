@@ -15,10 +15,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)grouteTile.c	4.3 MAGIC (Berkeley) 10/31/85";
-#endif  /* not lint */
-
 #include <stdio.h>
 
 #include "utils/magic.h"

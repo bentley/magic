@@ -16,8 +16,6 @@
  *     *********************************************************************
  *
  * Needs to include magic.h
- *
- * sccsid @(#)stack.h	4.1 MAGIC (Berkeley) 7/4/85
  */
 
 #ifndef	_STACK_H

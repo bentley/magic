@@ -14,9 +14,6 @@
  *     * express or implied warranty.  Export of this software outside     * 
  *     * of the United States of America may require an export license.    * 
  *     *********************************************************************
- *
- *
- * sccsid "@(#)grouter.h	4.5 MAGIC (Berkeley) 10/31/85"
  */
 
 #ifndef _GROUTER_H

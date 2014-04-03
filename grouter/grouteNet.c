@@ -21,10 +21,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)grouteNet.c	4.3 MAGIC (Berkeley) 12/6/85";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/times.h>

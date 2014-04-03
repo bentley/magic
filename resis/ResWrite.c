@@ -1,4 +1,3 @@
-
 /*
  *-------------------------------------------------------------------------
  *
@@ -11,9 +10,6 @@
 #define	MILLITOKILO	1e-6
 
 
-#ifndef lint
-static char sccsid[] = "@(#)Write.c	4.10 MAGIC (Stanford Addition) 07/86";
-#endif  /* not lint */
 #include <stdio.h>
 #include <ctype.h>
 #include <math.h>

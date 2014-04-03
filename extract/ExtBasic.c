@@ -17,10 +17,6 @@
  *     *********************************************************************
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)ExtBasic.c	4.13 MAGIC (Berkeley) 12/5/85";
-#endif  /* not lint */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
