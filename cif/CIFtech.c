@@ -547,7 +547,7 @@ CIFTechLine(sectionName, argc, argv)
 	for (newStyle = CIFStyleList; newStyle != NULL; 
 		newStyle = newStyle->cs_next)
 	{
-	    /* Here we're only establishing existance;		*/
+	    /* Here we're only establishing existence;		*/
 	    /* break on the first variant found.		*/
 
 	    if (!strncmp(newStyle->cs_name, argv[1], l))

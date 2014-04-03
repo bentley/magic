@@ -656,7 +656,7 @@ mainInitAfterArgs()
     /* initialize commands */
     CmdInit();
 
-    /* Initalize the interface between windows and its clients */
+    /* Initialize the interface between windows and its clients */
     DBWinit();
 #ifdef USE_READLINE
     TxInitReadline();

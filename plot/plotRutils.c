@@ -532,7 +532,7 @@ PlotDumpRaster(raster, file)
  *
  * 	Loads a font into memory, if it isn't already there.
  *
- ** Patched to accomodate both VAX format and Sun format vfont(5) files,
+ ** Patched to accommodate both VAX format and Sun format vfont(5) files,
  ** regardless of the native byte order of the processor.  J. Gealow 3/30/94
  *
  * Results:

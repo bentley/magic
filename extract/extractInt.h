@@ -827,7 +827,7 @@ typedef struct extstyle
 	 * exts_unitsPerLambda; we produce a "scale" line in the .ext file
 	 * indicating this.  All area dimensions should be multiplied
 	 * by exts_unitsPerLambda**2.
-	 * (changed to type float May 11, 2006 to accomodate, e.g., 90
+	 * (changed to type float May 11, 2006 to accommodate, e.g., 90
 	 * and 130 nm technologies)
 	 */
     float		 exts_unitsPerLambda;

@@ -775,7 +775,7 @@ extComputeEffectiveLW(rlengthptr, rwidthptr, numregions, chop)
 	}
     }
 
-    /* fprintf(stderr, "Annular transistor detailed L,W computaton:\n"); */
+    /* fprintf(stderr, "Annular transistor detailed L,W computation:\n"); */
 
     width = 0;
     length = 0;

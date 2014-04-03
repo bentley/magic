@@ -1127,7 +1127,7 @@ values for only those capabilities Readline uses.
 An alternate interface is available to plain @code{readline()}.  Some
 applications need to interleave keyboard I/O with file, device, or
 window system I/O, typically by using a main loop to @code{select()}
-on various file descriptors.  To accomodate this need, readline can
+on various file descriptors.  To accommodate this need, readline can
 also be invoked as a `callback' function from an event loop.  There
 are functions available to make this easy.
 

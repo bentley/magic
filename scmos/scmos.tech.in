@@ -844,7 +844,7 @@ end
 
 cifoutput
 /* default: fab on 2.0 micron (Nwell) rules each magic unit is 100  */
-/*   centmicrons                                                    */
+/*   centimicrons                                                   */
 /* SCN technology : Both CSN and CSP are generated to reduce field  */
 /*   poly sheet resistance                                          */
 
@@ -1382,7 +1382,7 @@ drc
 /*  users who like to use explicit "glass" layer...		    */
 /*								    */
 /*   edge4way    space glass 1 allMetal2 0 0 \                      */
-/*	"There must be metal 2 under the glass openning" metal2     */
+/*	"There must be metal 2 under the glass opening" metal2      */
 /*                                                                  */
 /* I am removing this rule simply we have metal3 now and there's no */
 /* way to tell which process the pad is intended for. Basically, I  */
@@ -1607,7 +1607,7 @@ drc
     edge4way  ~(nw)/w  nw  3  ~(col,clc)/a nw  3 \
 	"N-well overlap of collector must be at least 3 (MOSIS rule #16.11)" active
 
-/* This is a special rule to gurantee the emitter width             */
+/* This is a special rule to guarantee the emitter width            */
     width em,emc/a 4 \
 	"Emitter width must be at least 4 (Magic Bipolar Transistor rule)"
 
@@ -1715,7 +1715,7 @@ drc
 	"CCD channel spacing must be at least 4 (MOSIS rule #19.2)" active
 
 /* 19.3 + 19.4 + 19.5 */
-/* guranteed by the CIF output generation			    */
+/* guaranteed by the CIF output generation			    */
 
 /* 19.6 */
 /* This first one check poly and electrode overhang		    */
@@ -1790,7 +1790,7 @@ drc
 
 /* 20.4 */
 /* Poly1 must not be used as an transistor for high-voltage design  */
-/* guranteed by the composition rules                               */
+/* guaranteed by the composition rules                              */
 
 /* 20.5 */
 /* High-Voltage Active overlap of contact is now 2 lambda           */

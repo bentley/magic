@@ -26,7 +26,7 @@
 #include "utils/hash.h"
 #include "database/database.h"
 
-/* ----------------------- Strucs local to this file ------------------- */
+/* ----------------------- Structs local to this file ------------------- */
 
 typedef struct touchingfuncparms
 {

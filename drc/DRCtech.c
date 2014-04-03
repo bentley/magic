@@ -648,7 +648,7 @@ DRCTechLine(sectionName, argc, argv)
 	for (newStyle = DRCStyleList; newStyle != NULL;
 		newStyle = newStyle->ds_next)
 	{
-	    /* Here we're only establishing existance;  break on
+	    /* Here we're only establishing existence;  break on
 	     * the first variant found.
 	     */
 	    if (!strncmp(newStyle->ds_name, argv[1], l))

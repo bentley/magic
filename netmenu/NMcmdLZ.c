@@ -192,7 +192,7 @@ NMCmdPrint(w, cmd)
 
 int
 nmCmdPrintFunc(name, pGotAny)
-    char *name;			/* Name of termnal. */
+    char *name;			/* Name of terminal. */
     int *pGotAny;		/* Pointer to integer, initially FALSE. */
 {
     if (*pGotAny == FALSE)

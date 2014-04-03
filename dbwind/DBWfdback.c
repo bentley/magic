@@ -165,7 +165,7 @@ DBWFeedbackRedraw(window, plane)
 	GeoClip(&tmp, &worldArea);
 
 	/*
-	 * Ignore areas which have been clipped out of existance
+	 * Ignore areas which have been clipped out of existence
 	 */
 	if (tmp.r_xtop < tmp.r_xbot || tmp.r_ytop < tmp.r_ybot)
 	    continue;

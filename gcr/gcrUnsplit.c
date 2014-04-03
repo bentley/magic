@@ -311,7 +311,7 @@ gcrClassify(ch, count)
 
 		if( ((next->gcr_y-i)>0)!=(dist>0) )
 		{
-		    dist=0;		/*Pin in the oposite direction*/
+		    dist=0;		/*Pin in the opposite direction*/
 		    break;
 		}
 	    }
@@ -406,7 +406,7 @@ gcrClass(net, track)
 	    return(dist);	/*Too far => doesn't count*/
 
 	if( ((next->gcr_y-track)>0)!=(dist>0) )
-	    return(0);		/*Pin in the oposite direction*/
+	    return(0);		/*Pin in the opposite direction*/
     }
     return(dist);
 }

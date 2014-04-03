@@ -25,7 +25,7 @@ style lambda=lambda_v
 	or allPoly
 	labels poly,nfet,pfet
 	calma 46 1
-    /* "clc" here for savety reason */
+    /* "clc" here for safety reason */
     layer CAA clc
 	grow lambda_1
 	or em,emc,col

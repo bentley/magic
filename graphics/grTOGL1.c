@@ -283,7 +283,7 @@ GrTOGLInit ()
 
     if (!grVisualInfo)
     {
-	/* Try for a double-buffered confguration */
+	/* Try for a double-buffered configuration */
 #ifdef THREE_D
 	attributeList[1] = None;
 #else

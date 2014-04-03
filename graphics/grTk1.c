@@ -466,7 +466,7 @@ GrTkInit(dispType)
 		visual_table[2] = j; /* GreyScale */
 	    if ((grvisual_get[j].class == 3) && (grvisual_get[j].depth == 8)
 			&& (visual_table[3] == -1))
-		visual_table[3] = j; /* Psuedocolor */
+		visual_table[3] = j; /* Pseudocolor */
 	    if ((grvisual_get[j].class == 4) && (grvisual_get[j].depth == 15)
 			&& (visual_table[4] == -1))
 		visual_table[4] = j; /* TrueColor */

@@ -192,7 +192,7 @@ int mzReportInterval;    /* frequency that # of paths etc.
 				 * is reported. */
 int mzPathsTilReport;	/* counts down to next path report */
 
-/* Variables controling search */
+/* Variables controlling search */
 dlong mzWInitialMinToGo;
 dlong mzWInitialMaxToGo;
 dlong mzBloomMaxCost;	

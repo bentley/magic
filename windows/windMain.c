@@ -8,7 +8,7 @@
  *	Windows near the front of the list are on top of windows further
  *	towards the tail of the list.  Each window has some information
  *	about what is in the window, as well as the size of the window
- *	(both unclipped and clipped to accomodate windows that overlay it).
+ *	(both unclipped and clipped to accommodate windows that overlay it).
  *	Transforms control what portion of the window's contents show up
  *	on the screen, and at what magnification.
  *

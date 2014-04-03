@@ -2403,7 +2403,7 @@ irSaveParametersCmd(w, cmd)
 	fprintf(saveFile,"\n");
     }
 
-    /* save LAYER paramters */
+    /* save LAYER parameters */
     for (rL=irRouteLayers; rL!= NULL; rL=rL->rl_next)
     {
 	int n;

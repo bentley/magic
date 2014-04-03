@@ -97,7 +97,7 @@ char *magic_direction_list[] = {
 #define OSTYLE_COMPL  9
 #define DIRECT_COMPL  10
 
-/* Can only accomodate 32 arg options, increase as necessary */
+/* Can only accommodate 32 arg options, increase as necessary */
 static struct cmd_spec {
   char *cmd;
   int   type;

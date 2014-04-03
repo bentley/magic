@@ -2393,8 +2393,8 @@ ExtTechLine(sectionName, argc, argv)
 	    }
 	    break;
 	case SIDEHALO:
-	    /* Allow floating-point and increase by factor of 1000	*/
-	    /* to accomodate "units microns".				*/
+	    /* Allow floating-point and increase by factor of 1000      */
+	    /* to accommodate "units microns".                          */
 
 	    /* Warning:  Due to some gcc bug with an i686 FPU, using a	*/
 	    /* result from atof() with a static value like 1000		*/
@@ -2752,7 +2752,7 @@ zinit:
 	style->exts_stepSize = 100;		/* Revert to default */
     }
 
-    /* We had multiplied sideCoupleHalo by 1000 to accomodate a 	*/
+    /* We had multiplied sideCoupleHalo by 1000 to accommodate a 	*/
     /* floating-point value in microns, whether or not doConvert was	*/
     /* needed, so normalize it back to lambda units.			*/
 

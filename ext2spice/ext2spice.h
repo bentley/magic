@@ -59,7 +59,7 @@ extern int esNodeNum;  /* just in case we're extracting spice2 */
 extern int esSbckNum; 	/* used in hspice node name shortening   */
 extern int esNoModelType;  /* index for device type "None" (model-less device) */
 
-extern bool esMergeDevsA; /* aggresive merging of devs L1=L2 merge them */
+extern bool esMergeDevsA; /* aggressive merging of devs L1=L2 merge them */
 extern bool esMergeDevsC; /* conservative merging of devs L1=L2 and W1=W2 */
 			   /* used with the hspice multiplier */
 extern bool esDistrJunct;

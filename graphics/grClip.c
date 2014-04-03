@@ -1245,7 +1245,7 @@ GrClipTriangle(r, c, clipped, dinfo, points, np)
 		    *np = 4;
 		}
 		if (points[1].p_x > points[0].p_x || points[2].p_y > points[1].p_y)
-		    *np = 0;	/* clipped out of existance */
+		    *np = 0;	/* clipped out of existence */
 		break;
 
 	    case TT_DIAGONAL | TT_DIRECTION:	/* sw */
@@ -1294,7 +1294,7 @@ GrClipTriangle(r, c, clipped, dinfo, points, np)
 		    *np = 4;
 		}
 		if (points[1].p_y > points[0].p_y || points[2].p_x < points[1].p_x)
-		    *np = 0;	/* clipped out of existance */
+		    *np = 0;	/* clipped out of existence */
 		break;
 
 	    case TT_DIAGONAL | TT_SIDE:	/* se */
@@ -1344,7 +1344,7 @@ GrClipTriangle(r, c, clipped, dinfo, points, np)
 		    *np = 4;
 		}
 		if (points[0].p_x > points[1].p_x || points[1].p_y > points[2].p_y)
-		    *np = 0;	/* clipped out of existance */
+		    *np = 0;	/* clipped out of existence */
 		break;
 
 	    case TT_DIAGONAL | TT_SIDE | TT_DIRECTION:	/* ne */
@@ -1394,7 +1394,7 @@ GrClipTriangle(r, c, clipped, dinfo, points, np)
 		    *np = 4;
 		}
 		if (points[1].p_y < points[0].p_y || points[2].p_x > points[1].p_x)
-		    *np = 0;	/* clipped out of existance */
+		    *np = 0;	/* clipped out of existence */
 		break;
 	}
     }

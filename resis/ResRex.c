@@ -39,7 +39,7 @@
 #define MAXNAME			1000
 
 
-/* time constants are produced by multipliying attofarads by milliohms, */
+/* time constants are produced by multiplying attofarads by milliohms,  */
 /* giving zeptoseconds (yes, really.  Look it up).  This constant 	*/
 /* converts zeptoseconts to nanoseconds.				*/
 #define Z_TO_N		1e12

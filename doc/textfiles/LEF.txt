@@ -4,7 +4,7 @@ LEF extensions to Magic-7.2
 
    A new method exists for declaring a cell to be a subcircuit.
    This involves the creation of ports, which are a special kind
-   of label.  The existance of any port in a cell marks that cell
+   of label.  The existence of any port in a cell marks that cell
    as a subcircuit, which causes it to be treated differently
    during the process of extraction and netlist generation:
 

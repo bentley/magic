@@ -417,7 +417,7 @@ extern int mzReportInterval;    /* frequency that # of paths etc.
 				 * is reported. */
 extern int mzPathsTilReport;	/* counts down to next path report */
 
-/* Variables controling search */
+/* Variables controlling search */
 extern dlong mzWInitialMinToGo;
 extern dlong mzWInitialMaxToGo;
 extern dlong mzBloomMaxCost;	

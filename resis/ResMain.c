@@ -23,7 +23,7 @@ CellUse 		*ResUse=NULL;		/* Our use and def */
 CellDef 		*ResDef=NULL;
 TileTypeBitMask 	ResConnectWithSD[NT];	/* A mask that goes from  */
 						/* SD's to transistors.   */
-TileTypeBitMask 	ResCopyMask[NT];	/* Inidicates which tiles */
+TileTypeBitMask 	ResCopyMask[NT];	/* Indicates which tiles */
 						/* are to be copied.      */
 resResistor 		*ResResList=NULL;	/* Resistor list	  */
 resNode     		*ResNodeList=NULL;	/* Processed Nodes 	  */

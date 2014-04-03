@@ -60,7 +60,7 @@ extern char *TxGetLine();
  * would no further references would be made to free'ed storage.
  */
 
-/* Delay free'ing by one call, to accomodate Magic's needs. */
+/* Delay free'ing by one call, to accommodate Magic's needs. */
 static char *freeDelayedItem = NULL;
 
 /* Local definitions */

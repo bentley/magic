@@ -487,7 +487,7 @@ typedef struct capval
 #define		PORTNODE		0x0000200
 #define		REDUNDANT		0x0000400
 
-/* Capacitance table contstants */
+/* Capacitance table constants */
 #define		RES_CAP_GND		0
 #define		RES_CAP_VDD		1
 #define		RES_CAP_COUPLE		2

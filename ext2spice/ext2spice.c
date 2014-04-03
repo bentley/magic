@@ -86,7 +86,7 @@ typedef struct GLL {
 
 unsigned long	initMask = 0;
 
-bool esMergeDevsA = FALSE; /* aggresive merging of devs L1=L2 merge them */
+bool esMergeDevsA = FALSE; /* aggressive merging of devs L1=L2 merge them */
 bool esMergeDevsC = FALSE; /* conservative merging of devs L1=L2 and W1=W2 */
 			   /* used with the hspice multiplier */
 bool esDistrJunct = FALSE;

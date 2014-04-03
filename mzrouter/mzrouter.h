@@ -212,10 +212,10 @@ typedef struct routeFloat
     int 	rf_nExponent;
 } RouteFloat;
 
-/*---------------------------- MazeParmeters ------------------------------*/
+/*---------------------------- MazeParameters ------------------------------*/
 
 /* 
- * This sturcture contains all maze router paramters, including design rules.
+ * This sturcture contains all maze router parameters, including design rules.
  */
 typedef struct mazeparameters
 {
