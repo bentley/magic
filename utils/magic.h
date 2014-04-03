@@ -187,14 +187,6 @@ typedef unsigned char bool;
 #define roundf(x) ((float)((int)((float)(x) + ((x < 0) ? -0.5 : 0.5))))
 #endif
 
-/* ------------ Function headers of globally used functions ----------- */
-
-#ifndef __STDC__
-extern char *strcpy(), *strncpy(), *strchr(), *strrchr();
-extern char *strcat(), *strncat();
-#endif
-
-
 /* -------------------------- Search paths ---------------------------- */
 
 extern char *CellLibPath;	/* Path for finding cells. */
